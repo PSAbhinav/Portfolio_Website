@@ -1,41 +1,46 @@
-'use client'
+'use client';
 
-import { useEffect, useRef } from 'react'
-import { motion, useAnimation, useInView } from 'framer-motion'
-import { FaPython, FaGithub, FaGoogle, FaReact } from 'react-icons/fa'
-import { SiFirebase, SiNextdotjs, SiTailwindcss, SiTensorflow, SiTypescript } from 'react-icons/si'
-import { LiaBrainSolid } from 'react-icons/lia'
+import { useEffect, useRef } from 'react';
+import { motion, useAnimation, useInView } from 'framer-motion';
+import {
+  FaPython,
+  FaReact,
+  FaHtml5
+} from 'react-icons/fa';
+import {
+  SiTailwindcss,
+  SiTypescript
+} from 'react-icons/si';
+import { CgCPlusPlus } from 'react-icons/cg'; // Used for C icon (closest available)
 
 const skills = [
   { name: 'Python', icon: <FaPython size={40} className="text-yellow-300" /> },
-  { name: 'React', icon: <FaReact size={40} className="text-cyan-400" /> },
+  { name: 'C', icon: <CgCPlusPlus size={40} className="text-blue-300" /> },
+  { name: 'HTML', icon: <FaHtml5 size={40} className="text-orange-500" /> },
   { name: 'Tailwind CSS', icon: <SiTailwindcss size={40} className="text-sky-400" /> },
-  { name: 'Firebase', icon: <SiFirebase size={40} className="text-yellow-500" /> },
-  { name: 'Google Cloud', icon: <FaGoogle size={40} className="text-blue-500" /> },
-  { name: 'AI/ML', icon: <LiaBrainSolid size={40} className="text-purple-400" /> },
-  { name: 'TensorFlow', icon: <SiTensorflow size={40} className="text-orange-400" /> },
-  { name: 'TypeScript', icon: <SiTypescript size={40} className="text-blue-400" /> },
-  { name: 'GitHub', icon: <FaGithub size={40} className="text-gray-300" /> },
-]
+  { name: 'React', icon: <FaReact size={40} className="text-cyan-400" /> },
+  { name: 'TypeScript', icon: <SiTypescript size={40} className="text-blue-400" /> }
+];
 
 export default function Skills() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { margin: ' -20% 0px', amount: 0.2 })
-  const controls = useAnimation()
+  const ref = useRef(null);
+  const isInView = useInView(ref, { margin: '-20% 0px', amount: 0.2 });
+  const controls = useAnimation();
 
   useEffect(() => {
     if (isInView) {
-      controls.start('visible')
+      controls.start('visible');
     } else {
-      controls.start('hidden')
+      controls.start('hidden');
     }
-  }, [isInView])
+  }, [isInView]);
 
   return (
     <section
       id="skills"
       ref={ref}
-      className="min-h-screen py-24 px-6 bg-black text-white relative overflow-hidden before:absolute before:inset-0 before:z-0 before:bg-gradient-to-r before:from-neutral-900/90 before:via-neutral-950/95 before:to-neutral-900/90 before:animate-horizontalScroll">
+      className="min-h-screen py-24 px-6 bg-black text-white relative overflow-hidden before:absolute before:inset-0 before:z-0 before:bg-gradient-to-r before:from-neutral-900/90 before:via-neutral-950/95 before:to-neutral-900/90 before:animate-horizontalScroll"
+    >
       <motion.h2
         variants={{
           hidden: { opacity: 0, y: 50 },
@@ -62,7 +67,7 @@ export default function Skills() {
             }}
             initial="hidden"
             animate={controls}
-            className="flex flex-col items-center bg-neutral-900 p-6 rounded-lg shadow-md hover:scale-105 transform transition z-10 "
+            className="flex flex-col items-center bg-neutral-900 p-6 rounded-lg shadow-md hover:scale-105 transform transition z-10"
           >
             {skill.icon}
             <span className="mt-2 text-sm">{skill.name}</span>
@@ -70,5 +75,5 @@ export default function Skills() {
         ))}
       </div>
     </section>
-  )
+  );
 }
