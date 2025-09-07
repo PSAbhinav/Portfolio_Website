@@ -41,7 +41,7 @@ export default function About() {
         className="flex-shrink-0 z-10"
       >
         <Image
-          src="/Profile_Pic.png"
+          src="/Profile_Pic.jpg"
           alt="Profile Picture"
           width={250}
           height={250}
