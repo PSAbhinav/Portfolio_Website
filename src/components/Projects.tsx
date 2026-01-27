@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa'
+import { FaGithub } from 'react-icons/fa'
 import { useState } from 'react'
 
 const projects = [
@@ -9,8 +9,7 @@ const projects = [
     title: 'AI Chess Bot',
     description: 'Play Smarter: A bot that plays chess using an AI engine trained to improve with every move. Built for fun, challenge, and learning.',
     image: '/projects/ai-chess-bot.png',
-    github: 'https://github.com/yourusername/recipe-recommendation',
-    demo: 'https://your-recipe-app.netlify.app',
+    github: 'https://github.com/PSAbhinav/recipe-recommendation',
     tags: ['Python', 'AI', 'Machine Learning'],
     color: 'from-purple-500 to-blue-500',
   },
@@ -18,8 +17,7 @@ const projects = [
     title: 'Audio-to-Text Converter',
     description: 'Convert Speech to Insights: A lightweight app that turns your audio notes into accurate, editable text using speech recognition.',
     image: '/projects/audio-to-text-converter.png',
-    github: 'https://github.com/yourusername/portfolio',
-    demo: 'https://your-portfolio.netlify.app',
+    github: 'https://github.com/PSAbhinav/portfolio',
     tags: ['Python', 'Speech Recognition', 'NLP'],
     color: 'from-cyan-500 to-blue-500',
   },
@@ -27,8 +25,7 @@ const projects = [
     title: 'Basic Firewall',
     description: 'Network Defense Simplified: A beginner-friendly but functional firewall that detects suspicious activity using basic filtering rules.',
     image: '/projects/basic-firewall.png',
-    github: 'https://github.com/yourusername/chat-app',
-    demo: 'https://your-chat-app.netlify.app',
+    github: 'https://github.com/PSAbhinav/chat-app',
     tags: ['Python', 'Networking', 'Security'],
     color: 'from-red-500 to-orange-500',
   },
@@ -36,8 +33,7 @@ const projects = [
     title: 'AcadMaster – CGPA/SGPA Calculator',
     description: 'Your Academic Companion: Automates GPA calculations, supports multiple grading systems, and stores historical results.',
     image: '/projects/acadmaster-cgpa-sgpa.png',
-    github: 'https://github.com/yourusername/chat-app',
-    demo: 'https://your-chat-app.netlify.app',
+    github: 'https://github.com/KarthikeyanJ04/AcadMaster.git',
     tags: ['React', 'JavaScript', 'Education'],
     color: 'from-green-500 to-teal-500',
   },
@@ -45,8 +41,7 @@ const projects = [
     title: 'AI Recipe Recommender',
     description: 'Cook with AI: Input your ingredients and let the AI suggest recipes. Includes voice assistant, cooking timer, and smart UX.',
     image: '/projects/ai-recipe-recommender.png',
-    github: 'https://github.com/yourusername/chat-app',
-    demo: 'https://your-chat-app.netlify.app',
+    github: '',
     tags: ['React', 'AI', 'Voice Assistant'],
     color: 'from-pink-500 to-purple-500',
   }
@@ -147,28 +142,25 @@ export default function Projects() {
                 </motion.h3>
                 <p className="text-gray-300 mb-4 text-sm leading-relaxed">{project.description}</p>
 
-                {/* Action Buttons */}
+                {/* Action Button */}
                 <div className="flex gap-4">
-                  <motion.a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`flex items-center gap-2 px-4 py-2 bg-gradient-to-r ${project.color} rounded-full text-sm font-semibold btn-glow`}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <FaGithub /> GitHub
-                  </motion.a>
-                  <motion.a
-                    href={project.demo}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-4 py-2 border border-white/30 rounded-full text-sm font-semibold hover:bg-white/10 transition-colors"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <FaExternalLinkAlt /> Demo
-                  </motion.a>
+                  {project.github && (
+                    <motion.a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`flex items-center gap-2 px-4 py-2 bg-gradient-to-r ${project.color} rounded-full text-sm font-semibold btn-glow`}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <FaGithub /> View on GitHub
+                    </motion.a>
+                  )}
+                  {!project.github && (
+                    <span className="flex items-center gap-2 px-4 py-2 bg-gray-700/50 rounded-full text-sm font-medium text-gray-400">
+                      Coming Soon
+                    </span>
+                  )}
                 </div>
               </div>
             </motion.div>
