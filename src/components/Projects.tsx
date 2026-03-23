@@ -6,15 +6,6 @@ import { useState } from 'react'
 
 const projects = [
   {
-    title: 'AI Quote Generator',
-    description: 'Daily Inspiration, Powered by AI: A smart application that generates unique, meaningful quotes using advanced language models.',
-    image: '/projects/ai-quote-generator.png',
-    github: 'https://github.com/PSAbhinav/ai-quote-generator',
-    demo: 'https://ai-quote-generator-638324870941.us-west1.run.app',
-    tags: ['Next.js', 'AI', 'Google Cloud', 'TypeScript'],
-    color: 'from-pink-500 to-rose-500',
-  },
-  {
     title: 'StockPro - AI Stock Dashboard',
     description: 'Real-time stock market dashboard featuring AI-powered price predictions, technical analysis, and live data for Indian & US stocks.',
     image: '/projects/stock-pro.png',
@@ -40,6 +31,14 @@ const projects = [
     demo: 'https://taskmanager-psi.vercel.app/',
     tags: ['React', 'Firebase', 'Vite', 'Glassmorphism'],
     color: 'from-orange-500 to-yellow-500',
+  },
+  {
+    title: 'AI Quote Generator',
+    description: 'Daily Inspiration, Powered by AI: A smart application that generates unique, meaningful quotes using advanced language models.',
+    image: '/projects/ai-quote-generator.png',
+    github: 'https://github.com/PSAbhinav/ai-quote-generator',
+    tags: ['Next.js', 'AI', 'Google Cloud', 'TypeScript'],
+    color: 'from-pink-500 to-rose-500',
   },
   {
     title: 'AI Chess Bot',
