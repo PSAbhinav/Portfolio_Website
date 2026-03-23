@@ -278,13 +278,13 @@ export default function About() {
 
         <motion.div className="space-y-4">
           {[
-            "I have worked on different domains ranging from AI based Chess Engine to Audio-to-Text Conversion tool to CGPA Calculator.",
-            "Currently, I am working on an AI-based Recipe Recommendation System combining machine learning techniques with a real-time conversational environment for cooking assistance.",
-            "I'm all about bringing ideas to life with clean, scalable code and intuitive UX."
+            "I’m a Computer Science student who enjoys building practical applications and experimenting with new technologies, especially in AI and full-stack development. I’ve worked on projects across different domains, including a stock prediction platform, AI-based tools, and full-stack applications like task management systems and e-commerce setups.",
+            "I focus on building things that go beyond basic prototypes—making them functional, usable, and closer to real-world applications. I’m particularly interested in integrating AI into everyday use cases and improving user experience through clean and intuitive design.",
+            "Most of my learning comes from building, breaking, and figuring things out along the way. I’m always looking for opportunities to work on ideas that challenge me and help me grow as a developer."
           ].map((paragraph, index) => (
             <motion.p
               key={index}
-              className="text-lg text-gray-300 leading-relaxed"
+              className="text-lg text-gray-300 leading-relaxed text-justify"
               initial={{ opacity: 0, x: -30, filter: "blur(5px)" }}
               whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
               transition={{

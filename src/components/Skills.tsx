@@ -2,14 +2,21 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { motion, useAnimation, useInView } from 'framer-motion';
+import Image from 'next/image';
+
+const AIStudioIcon = ({ size, className }: any) => <Image src="/ai-studio.svg" width={size} height={size} className={`${className} object-contain`} style={{ width: size, height: size }} alt="AI Studio" />;
+const AntigravityIcon = ({ size, className }: any) => <Image src="/antigravity.png" width={size} height={size} className={`${className} object-contain`} style={{ width: size, height: size }} alt="Antigravity" />;
 import {
   FaPython,
   FaReact,
-  FaHtml5
+  FaHtml5,
+  FaBrain
 } from 'react-icons/fa';
 import {
   SiTailwindcss,
-  SiTypescript
+  SiTypescript,
+  SiFirebase,
+  SiGoogle
 } from 'react-icons/si';
 import { CgCPlusPlus } from 'react-icons/cg';
 import { useAnimationTheme } from './ThemeContext';
@@ -20,7 +27,10 @@ const skills = [
   { name: 'HTML', icon: FaHtml5, color: 'from-orange-400 to-orange-600', iconColor: 'text-orange-500', proficiency: 95 },
   { name: 'Tailwind CSS', icon: SiTailwindcss, color: 'from-sky-400 to-cyan-600', iconColor: 'text-sky-400', proficiency: 88 },
   { name: 'React', icon: FaReact, color: 'from-cyan-400 to-blue-500', iconColor: 'text-cyan-400', proficiency: 82 },
-  { name: 'TypeScript', icon: SiTypescript, color: 'from-blue-400 to-indigo-600', iconColor: 'text-blue-400', proficiency: 75 }
+  { name: 'TypeScript', icon: SiTypescript, color: 'from-blue-400 to-indigo-600', iconColor: 'text-blue-400', proficiency: 75 },
+  { name: 'Firebase', icon: SiFirebase, color: 'from-orange-400 to-yellow-500', iconColor: 'text-orange-500', proficiency: 85 },
+  { name: 'Antigravity', icon: AntigravityIcon, color: 'from-purple-400 to-pink-500', iconColor: 'text-purple-400', proficiency: 95 },
+  { name: 'AI Studio', icon: AIStudioIcon, color: 'from-blue-500 to-cyan-400', iconColor: 'text-blue-400', proficiency: 90 }
 ];
 
 export default function Skills() {
