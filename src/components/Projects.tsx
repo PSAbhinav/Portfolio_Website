@@ -6,6 +6,33 @@ import { useState } from 'react'
 
 const projects = [
   {
+    title: 'StockPro - AI Stock Dashboard',
+    description: 'Real-time stock market dashboard featuring AI-powered price predictions, technical analysis, and live data for Indian & US stocks.',
+    image: '/projects/stock-pro.png',
+    github: 'https://github.com/PSAbhinav/StockPro',
+    demo: 'https://stockpro-0kjn.onrender.com/',
+    tags: ['Python', 'React', 'AI', 'Socket.IO'],
+    color: 'from-blue-600 to-cyan-500',
+  },
+  {
+    title: 'NexusCommand - Digital Command Center',
+    description: 'Futuristic, cyberpunk-inspired personal command center with budget tracking, habit monitoring, and a sleek glassmorphic UI.',
+    image: '/projects/nexus-command.png',
+    github: 'https://github.com/PSAbhinav/nexus-command',
+    demo: 'https://nexuscommand.vercel.app/',
+    tags: ['React', 'Firebase', 'Vite', 'Cyberpunk'],
+    color: 'from-teal-500 to-emerald-500',
+  },
+  {
+    title: 'TaskManager - Student Portal',
+    description: 'Professional student portal for managing tasks, courses, and schedules with real-time cloud sync and university-restricted auth.',
+    image: '/projects/task-manager.png',
+    github: 'https://github.com/PSAbhinav/Task-Manager',
+    demo: 'https://taskmanager-psi.vercel.app/',
+    tags: ['React', 'Firebase', 'Vite', 'Glassmorphism'],
+    color: 'from-orange-500 to-yellow-500',
+  },
+  {
     title: 'AI Chess Bot',
     description: 'Play Smarter: A bot that plays chess using an AI engine trained to improve with every move. Built for fun, challenge, and learning.',
     image: '/projects/ai-chess-bot.png',
@@ -36,14 +63,6 @@ const projects = [
     github: 'https://github.com/KarthikeyanJ04/AcadMaster.git',
     tags: ['React', 'JavaScript', 'Education'],
     color: 'from-green-500 to-teal-500',
-  },
-  {
-    title: 'AI Recipe Recommender',
-    description: 'Cook with AI: Input your ingredients and let the AI suggest recipes. Includes voice assistant, cooking timer, and smart UX.',
-    image: '/projects/ai-recipe-recommender.png',
-    github: '',
-    tags: ['React', 'AI', 'Voice Assistant'],
-    color: 'from-pink-500 to-purple-500',
   }
 ]
 
@@ -140,24 +159,36 @@ export default function Projects() {
                 >
                   {project.title}
                 </motion.h3>
-                <p className="text-gray-300 mb-4 text-sm leading-relaxed">{project.description}</p>
+                <p className="text-gray-300 mb-4 text-sm leading-relaxed h-12 line-clamp-2">{project.description}</p>
 
-                {/* Action Button */}
-                <div className="flex gap-4">
+                {/* Action Buttons */}
+                <div className="flex flex-wrap gap-4">
                   {project.github && (
                     <motion.a
                       href={project.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`flex items-center gap-2 px-4 py-2 bg-gradient-to-r ${project.color} rounded-full text-sm font-semibold btn-glow`}
+                      className={`flex items-center gap-2 px-4 py-2 bg-gradient-to-r ${project.color} rounded-full text-xs font-semibold btn-glow text-white`}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
-                      <FaGithub /> View on GitHub
+                      <FaGithub /> GitHub
                     </motion.a>
                   )}
-                  {!project.github && (
-                    <span className="flex items-center gap-2 px-4 py-2 bg-gray-700/50 rounded-full text-sm font-medium text-gray-400">
+                  {project.demo && (
+                    <motion.a
+                      href={project.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`flex items-center gap-2 px-4 py-2 border border-white/20 backdrop-blur-sm rounded-full text-xs font-semibold hover:bg-white/10 transition-colors text-white`}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Try Here
+                    </motion.a>
+                  )}
+                  {!project.github && !project.demo && (
+                    <span className="flex items-center gap-2 px-4 py-2 bg-gray-700/50 rounded-full text-xs font-medium text-gray-400">
                       Coming Soon
                     </span>
                   )}
