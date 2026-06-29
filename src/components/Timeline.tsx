@@ -12,7 +12,7 @@ const roadmapData = [
     place: 'Sai Vidya Institute of technology (SVIT)',
     date: '2022 - 2026',
     icon: <FaGraduationCap size={20} />,
-    description: 'Specialized in core CSE concepts and Web-Development. Currently in 4th year with CGPA of 8.9.',
+    description: 'Specialized in core CSE concepts and Web-Development. Completed my B.Tech with a CGPA of 8.9.',
     color: 'bg-blue-500',
     gradientColor: 'from-blue-500 to-cyan-400',
   },
