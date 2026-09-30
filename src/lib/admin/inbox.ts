@@ -51,3 +51,8 @@ export async function getMessage(sql: Sql, id: string): Promise<InboxRow | null>
 export async function markDelivery(sql: Sql, id: string, delivery: Delivery, error = ""): Promise<void> {
   await sql`UPDATE contact_inbox SET delivery = ${delivery}, error = ${error} WHERE id = ${id}`;
 }
+
+export async function deleteMessage(sql: Sql, id: string): Promise<boolean> {
+  const rows = await sql`DELETE FROM contact_inbox WHERE id = ${id} RETURNING id`;
+  return rows.length > 0;
+}

@@ -109,6 +109,9 @@ export async function run() {
   const inboxText = await page.locator(".studio-inbox").innerText();
   check("admin: inbox lists the saved message as awaiting email", inboxText.includes("Inbox Tester") && /awaiting/i.test(inboxText));
   await shot("inbox");
+  await page.getByRole("button", { name: "Delete" }).first().click();
+  await page.waitForFunction(() => !document.querySelector(".studio-message"), null, { timeout: 8000 }).catch(() => {});
+  check("admin: a message can be deleted from the inbox", (await page.locator(".studio-message").count()) === 0);
 
   // Analytics loads.
   await page.getByRole("button", { name: "Analytics" }).click();

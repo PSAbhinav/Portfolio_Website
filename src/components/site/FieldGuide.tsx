@@ -6,7 +6,7 @@ import { useScrubProgress } from "@/components/motion/useScrubProgress";
 import RetrievalExplainer from "@/components/guide/RetrievalExplainer";
 import RoutingExplainer from "@/components/guide/RoutingExplainer";
 import ConnectorsExplainer from "@/components/guide/ConnectorsExplainer";
-import Film from "@/components/site/Film";
+import HelpdeskStory from "@/components/site/HelpdeskStory";
 import type { Highlight } from "@/lib/content-schema";
 import { formatRange } from "@/lib/format";
 
@@ -87,9 +87,7 @@ export default function FieldGuide() {
           </dl>
           <p className="guide-summary">{current.summary}</p>
         </div>
-        {settings.film.enabled && settings.film.src && (
-          <Film src={settings.film.src} poster={settings.film.poster} title={settings.film.title} caption={settings.film.caption} />
-        )}
+        {settings.film.enabled && <HelpdeskStory title={settings.film.title} caption={settings.film.caption} />}
         <div className="guide-chapters">
           {current.highlights.map((highlight, index) => (
             <Chapter key={highlight.label} highlight={highlight} index={index} />

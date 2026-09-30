@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useRef } from "react";
 
-// The living background: a field of hairlines drawn by a fragment shader.
-// The lines flow slowly, part around the pointer, stretch with scroll speed,
-// and warm toward the signal colour as the visitor moves through sections
+// The living background, drawn by a fragment shader: slow washes of light, a
+// dot lattice that wakes near the pointer and drifts with scroll, and grain.
+// It warms toward the signal colour as the visitor moves through sections
 // (see Choreography, which dispatches "signal:warmth"). Colours come from the
 // CSS tokens, so the theme toggle recolours the field too. With reduced motion
 // a single still frame is drawn and the loop never starts.
@@ -20,6 +20,7 @@ uniform float uTime;
 uniform vec2 uPointer;
 uniform float uPointerStrength;
 uniform float uScrollVel;
+uniform float uScroll;
 uniform float uWarmth;
 uniform vec3 uPaper;
 uniform vec3 uInk;
@@ -38,56 +39,46 @@ float fbm(vec2 p) {
   return v;
 }
 
+// Three drifting washes of light, a fine dot lattice that wakes up near the
+// pointer, and paper grain. Calm at rest, alive under the hand, and it
+// deepens in colour as the visitor moves through the sections.
 void main() {
   vec2 uv = gl_FragCoord.xy / uRes;
   float aspect = uRes.x / uRes.y;
   vec2 p = vec2(uv.x * aspect, uv.y);
+  float dark = step(0.5, 1.0 - dot(uPaper, vec3(0.333)));
 
-  // Two slow washes of colour drift behind everything: one in ink, one in
-  // the signal colour. They give the paper depth without competing with text.
-  vec2 w1 = vec2(0.72 * aspect + 0.18 * sin(uTime * 0.07), 0.62 + 0.14 * cos(uTime * 0.05));
-  vec2 w2 = vec2(0.30 * aspect + 0.20 * cos(uTime * 0.04 + 2.0), 0.25 + 0.16 * sin(uTime * 0.06 + 1.0));
-  float wash1 = exp(-pow(distance(p, w1), 2.0) * 2.2);
-  float wash2 = exp(-pow(distance(p, w2), 2.0) * 3.0);
+  // Washes: positions wander on slow noise, so the motion never repeats.
+  vec2 c1 = vec2(0.78 * aspect + 0.22 * (noise(vec2(uTime * 0.05, 1.3)) - 0.5), 0.70 + 0.24 * (noise(vec2(3.1, uTime * 0.04)) - 0.5));
+  vec2 c2 = vec2(0.22 * aspect + 0.26 * (noise(vec2(uTime * 0.04 + 7.0, 2.2)) - 0.5), 0.22 + 0.26 * (noise(vec2(5.7, uTime * 0.05 + 3.0)) - 0.5));
+  vec2 c3 = vec2(0.55 * aspect + 0.30 * (noise(vec2(uTime * 0.03 + 11.0, 4.4)) - 0.5), 0.55 + 0.30 * (noise(vec2(9.9, uTime * 0.035 + 6.0)) - 0.5));
+  float w1 = exp(-pow(distance(p, c1), 2.0) * 1.9);
+  float w2 = exp(-pow(distance(p, c2), 2.0) * 2.4);
+  float w3 = exp(-pow(distance(p, c3), 2.0) * 3.2);
+
   vec3 color = uPaper;
-  color = mix(color, uSignal, wash1 * (0.045 + 0.05 * uWarmth));
-  color = mix(color, uInk, wash2 * 0.035);
+  float glow = mix(0.10, 0.22, dark);
+  color = mix(color, uSignal, w1 * (glow + 0.08 * uWarmth));
+  color = mix(color, mix(uInk, uSignal, 0.35), w2 * glow * 0.6);
+  color = mix(color, mix(uPaper, uInk, 0.5), w3 * glow * 0.45);
 
-  // The field: horizontal hairlines, gently undulating.
-  float lines = 30.0;
-  float f = p.y * lines;
-  f += 0.9 * fbm(p * 1.4 + vec2(uTime * 0.03, uTime * 0.02));
-  // Scroll speed shears the field sideways, like a signal being pulled.
-  f += uScrollVel * 1.4 * sin(p.x * 2.2 + uTime * 0.2);
-  // The pointer is a charge the lines bend around.
+  // Dot lattice with gentle scroll parallax. Cell size scales with height so
+  // the density feels the same on every screen.
+  float cell = 44.0 / uRes.y;
+  vec2 g = vec2(p.x, p.y + uScroll * 0.00012);
+  vec2 cellUv = fract(g / cell) - 0.5;
+  float dot = 1.0 - smoothstep(0.045, 0.085, length(cellUv));
   vec2 pp = vec2(uPointer.x * aspect, uPointer.y);
-  float d = distance(p, pp);
-  float bend = uPointerStrength * 1.6 * exp(-d * d * 22.0);
-  f += bend * sign(p.y - pp.y + 0.0001);
+  float near = exp(-pow(distance(p, pp), 2.0) * 9.0) * uPointerStrength;
+  float wake = 0.16 + near * 0.85 + abs(uScrollVel) * 0.15;
+  vec3 dotColor = mix(uInk, uSignal, near * 0.9);
+  color = mix(color, dotColor, dot * wake * mix(0.16, 0.26, dark));
 
-  float v = abs(fract(f) - 0.5);
-  float width = 0.018 + abs(uScrollVel) * 0.02;
-  float line = 1.0 - smoothstep(0.0, width, v);
+  // A soft halo under the pointer so the wake reads as light, not paint.
+  color = mix(color, uSignal, near * 0.05);
 
-  // Every sixth line carries the signal colour; the rest are ink.
-  float id = floor(f);
-  float accent = step(0.83, fract(id / 6.0));
-  vec3 lineColor = mix(uInk, uSignal, accent * (0.45 + 0.55 * uWarmth));
-  float alpha = line * (0.16 + 0.12 * uWarmth) * (0.7 + 0.5 * accent);
-
-  // A pulse travels along the accent lines every few seconds: a signal passing.
-  float phase = fract(uTime * 0.12 + id * 0.37);
-  float head = fract(phase * 1.6);
-  float pulse = accent * line * exp(-pow((uv.x - head) * 9.0, 2.0)) * step(phase, 0.62);
-  alpha += pulse * 0.55;
-  lineColor = mix(lineColor, uSignal, pulse);
-
-  // Fade the field toward the left so copy stays effortless to read.
-  alpha *= smoothstep(0.05, 0.5, uv.x) * 0.85 + 0.15;
-
-  color = mix(color, lineColor, clamp(alpha, 0.0, 1.0));
   // Paper grain.
-  color += (hash(gl_FragCoord.xy + uTime) - 0.5) * 0.018;
+  color += (hash(gl_FragCoord.xy + uTime) - 0.5) * 0.02;
   outColor = vec4(color, 1.0);
 }`;
 
@@ -141,7 +132,7 @@ export default function SignalCanvas() {
     const u = (name: string) => gl.getUniformLocation(program, name);
     const uniforms = {
       res: u("uRes"), time: u("uTime"), pointer: u("uPointer"), strength: u("uPointerStrength"),
-      vel: u("uScrollVel"), warmth: u("uWarmth"), paper: u("uPaper"), ink: u("uInk"), signal: u("uSignal"),
+      vel: u("uScrollVel"), scroll: u("uScroll"), warmth: u("uWarmth"), paper: u("uPaper"), ink: u("uInk"), signal: u("uSignal"),
     };
 
     const state = { pointer: [0.5, 0.5], targetPointer: [0.5, 0.5], strength: 0, targetStrength: 0, vel: 0, warmth: 0.15, targetWarmth: 0.15, lastScroll: window.scrollY, lastTime: performance.now() };
@@ -164,6 +155,7 @@ export default function SignalCanvas() {
       gl.uniform2f(uniforms.pointer, state.pointer[0], state.pointer[1]);
       gl.uniform1f(uniforms.strength, state.strength);
       gl.uniform1f(uniforms.vel, state.vel);
+      gl.uniform1f(uniforms.scroll, window.scrollY);
       gl.uniform1f(uniforms.warmth, state.warmth);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };

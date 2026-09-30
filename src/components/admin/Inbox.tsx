@@ -24,7 +24,7 @@ function formatWhen(iso: string): string {
   return new Date(iso).toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" });
 }
 
-function MessageCard({ message, busy, onRetry }: { message: Message; busy: boolean; onRetry: (id: string) => void }) {
+function MessageCard({ message, busy, onRetry, onDelete }: { message: Message; busy: boolean; onRetry: (id: string) => void; onDelete: (id: string) => void }) {
   return (
     <article className="studio-message">
       <header className="studio-message-head">
@@ -39,14 +39,19 @@ function MessageCard({ message, busy, onRetry }: { message: Message; busy: boole
         <time dateTime={message.created_at}>{formatWhen(message.created_at)}</time>
       </p>
       <p className="studio-message-body">{message.message}</p>
-      {message.delivery !== "sent" && (
-        <div className="studio-message-foot">
-          {message.error && <span className="studio-hint">{message.error}</span>}
-          <button type="button" className="button button-ghost" disabled={busy} onClick={() => onRetry(message.id)}>
-            Retry email delivery
+      <div className="studio-message-foot">
+        <span className="studio-hint">{message.delivery !== "sent" ? message.error : ""}</span>
+        <div className="studio-actions">
+          {message.delivery !== "sent" && (
+            <button type="button" className="button button-ghost" disabled={busy} onClick={() => onRetry(message.id)}>
+              Retry email delivery
+            </button>
+          )}
+          <button type="button" className="button button-ghost studio-danger" disabled={busy} onClick={() => onDelete(message.id)}>
+            Delete
           </button>
         </div>
-      )}
+      </div>
     </article>
   );
 }
@@ -83,6 +88,22 @@ export default function Inbox() {
     }
   }
 
+  async function handleDelete(id: string) {
+    setBusy(true);
+    setNotice("");
+    try {
+      const response = await fetch("/api/admin/inbox", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || "The message could not be deleted.");
+      setMessages((current) => (current ? current.filter((message) => message.id !== id) : current));
+      setNotice("Message deleted.");
+    } catch (reason) {
+      setNotice(errorMessage(reason));
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function handleRefresh() {
     setNotice("");
     await load();
@@ -104,7 +125,7 @@ export default function Inbox() {
       {messages && messages.length > 0 && (
         <div className="studio-messages">
           {messages.map((message) => (
-            <MessageCard key={message.id} message={message} busy={busy} onRetry={handleRetry} />
+            <MessageCard key={message.id} message={message} busy={busy} onRetry={handleRetry} onDelete={handleDelete} />
           ))}
         </div>
       )}

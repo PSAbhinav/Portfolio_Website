@@ -317,7 +317,7 @@ export const settings: PortfolioContent["settings"] = {
     src: "/video/helpdesk.mp4",
     poster: "/video/helpdesk.jpg",
     title: "How an AI helpdesk answers in under a second",
-    caption: "Silent · 27 s · loops",
+    caption: "Live animation · 27 s · loops",
   },
 };
 

@@ -827,3 +827,8 @@ textarea.studio-input {
     grid-template-columns: 1fr;
   }
 }
+
+.studio-danger {
+  color: var(--signal);
+  border-color: var(--signal);
+}
