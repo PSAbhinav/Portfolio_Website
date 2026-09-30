@@ -109,9 +109,11 @@ export async function run() {
   const inboxText = await page.locator(".studio-inbox").innerText();
   check("admin: inbox lists the saved message as awaiting email", inboxText.includes("Inbox Tester") && /awaiting/i.test(inboxText));
   await shot("inbox");
+  // The public suite may have left its own test messages, so count down by one.
+  const before = await page.locator(".studio-message").count();
   await page.getByRole("button", { name: "Delete" }).first().click();
-  await page.waitForFunction(() => !document.querySelector(".studio-message"), null, { timeout: 8000 }).catch(() => {});
-  check("admin: a message can be deleted from the inbox", (await page.locator(".studio-message").count()) === 0);
+  await page.waitForFunction((n) => document.querySelectorAll(".studio-message").length < n, before, { timeout: 8000 }).catch(() => {});
+  check("admin: a message can be deleted from the inbox", (await page.locator(".studio-message").count()) === before - 1, `${before} before`);
 
   // Analytics loads.
   await page.getByRole("button", { name: "Analytics" }).click();
@@ -132,6 +134,22 @@ export async function run() {
     return { status: response.status, url: data.url, type: served.headers.get("content-type") };
   });
   check("admin: image upload returns a served webp", upload.status === 200 && /^\/api\/media\//.test(upload.url || "") && upload.type === "image/webp", JSON.stringify(upload));
+
+  // Résumé (PDF) upload round trip; a JPG sent as the document is refused.
+  const pdfUpload = await page.evaluate(async () => {
+    const blob = await (await fetch("/resume.pdf")).blob();
+    const form = new FormData();
+    form.append("file", new File([blob], "resume.pdf", { type: "application/pdf" }));
+    const response = await fetch("/api/admin/media", { method: "POST", body: form });
+    const data = await response.json();
+    if (!response.ok) return { status: response.status, error: data.error };
+    const served = await fetch(data.url);
+    const wrong = new FormData();
+    wrong.append("file", new File([await (await fetch("/Profile_Pic.jpg")).blob()], "x.pdf", { type: "application/pdf" }));
+    const refused = await fetch("/api/admin/media", { method: "POST", body: wrong });
+    return { status: response.status, url: data.url, type: served.headers.get("content-type"), refused: refused.status };
+  });
+  check("admin: PDF upload is served as application/pdf and a fake PDF is refused", pdfUpload.status === 200 && pdfUpload.type === "application/pdf" && pdfUpload.refused === 400, JSON.stringify(pdfUpload));
 
   // Sign out → verify stage (already enrolled).
   // The Next dev indicator badge sits over the sidebar foot; only an error dialog counts as a failure.

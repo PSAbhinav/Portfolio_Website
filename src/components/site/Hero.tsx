@@ -40,6 +40,12 @@ export default function Hero() {
             {copy("hero_cta_about", "Read the field notes")}
             <ArrowUpRight />
           </a>
+          {profile.resume && (
+            <a href="/resume" className="text-link" target="_blank" rel="noopener noreferrer">
+              {copy("hero_cta_resume", "View résumé")}
+              <ArrowUpRight />
+            </a>
+          )}
         </div>
         </div>
         {settings.film.enabled && (

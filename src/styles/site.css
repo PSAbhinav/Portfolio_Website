@@ -73,6 +73,18 @@
   transform: scaleX(1);
 }
 
+/* The résumé sits with the section links but opens a document, so it keeps
+   the arrow and never takes the current-section underline. */
+.header-resume {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.footer-resume {
+  font-size: 14px;
+}
+
 .header-tools {
   display: flex;
   align-items: center;
@@ -563,6 +575,20 @@
 
 .reel .gallery-card {
   flex: 0 0 min(56vw, 900px);
+}
+
+/* A reel card shares the viewport with its artwork, so the plate is a little
+   shorter there and a long description is cut rather than pushed off-screen;
+   the grid shows the full text. */
+.reel .gallery-figure {
+  height: min(40vh, 440px);
+}
+
+.reel .gallery-description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
 }
 
 .gallery-card {

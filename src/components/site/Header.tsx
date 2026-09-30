@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useCopy } from "@/components/PortfolioContext";
+import { useCopy, usePortfolio } from "@/components/PortfolioContext";
 import ThemeToggle from "@/components/ThemeToggle";
 import CommandMenu from "@/components/CommandMenu";
 import ScrollProgress from "@/components/motion/ScrollProgress";
@@ -17,6 +17,7 @@ const LINKS = [
 
 export default function Header() {
   const copy = useCopy();
+  const { profile } = usePortfolio();
   const [active, setActive] = useState("");
 
   // Highlight the section currently in view so the header doubles as a map.
@@ -48,6 +49,12 @@ export default function Header() {
               {copy(link.key, link.fallback)}
             </a>
           ))}
+          {profile.resume && (
+            <a href="/resume" target="_blank" rel="noopener noreferrer" className="header-resume">
+              {copy("nav_resume", "Résumé")}
+              <ArrowUpRight size={12} />
+            </a>
+          )}
         </nav>
         <div className="header-tools">
           <ThemeToggle />

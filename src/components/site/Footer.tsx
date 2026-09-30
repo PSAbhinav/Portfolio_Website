@@ -14,6 +14,11 @@ export default function Footer() {
           © {new Date().getFullYear()} {profile.name}
         </p>
         <div className="footer-links">
+          {profile.resume && (
+            <a href="/resume" target="_blank" rel="noopener noreferrer" className="footer-resume">
+              {copy("footer_resume", "Résumé")}
+            </a>
+          )}
           <a href={profile.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
             <Github size={18} />
           </a>

@@ -23,6 +23,8 @@ const image = z
   .string()
   .max(2000)
   .regex(/^\/(?!\/)[a-zA-Z0-9/_ .%()-]+$/, "Use an uploaded image or a path under /public, e.g. /projects/name.png");
+// A document served by this site: a file under /public or a studio upload.
+const localFile = z.union([z.string().max(2000).regex(/^\/(?!\/)[a-zA-Z0-9/_ .%()-]+$/, "Use an uploaded file or a path under /public, e.g. /resume.pdf"), z.literal("")]);
 // Year-month ("2026-08") or empty for "present".
 const yearMonth = z.union([z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/), z.literal("")]);
 
@@ -136,6 +138,8 @@ export const contentSchema = z
         metadataDescription: z.string().max(400),
         github: https,
         linkedin: https,
+        // The résumé PDF behind the Résumé links; empty hides them.
+        resume: localFile,
       })
       .strict(),
     contactEmail: z.string().email().max(254),

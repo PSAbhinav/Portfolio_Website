@@ -62,7 +62,9 @@ export async function run() {
     // Gallery: every project exactly once, reel on desktop, grid on request.
     const cards = await page.locator("#work .gallery-card").count();
     const slugs = await page.locator("#work .gallery-card").evaluateAll((nodes) => nodes.map((n) => n.id));
-    check(`${theme}: all nine projects appear once`, cards === 9 && new Set(slugs).size === 9, `${cards} cards`);
+    // The reel HUD announces the total, so the card count is checked against the content, not a constant.
+    const announced = Number(((await page.locator("#work .reel-hud .mono").last().innerText()) || "0").trim());
+    check(`${theme}: every project appears once`, cards >= 20 && cards === announced && new Set(slugs).size === cards, `${cards} cards, HUD says ${announced}`);
     check(`${theme}: reel is the default on desktop`, (await page.locator("#work .reel").count()) === 1);
     const workTop = await page.evaluate(() => document.getElementById("work").getBoundingClientRect().top + scrollY);
     await page.evaluate((y) => window.scrollTo(0, y), workTop + 1400);
@@ -72,7 +74,7 @@ export async function run() {
     await page.screenshot({ path: `${SHOTS}/${theme}-gallery-reel.png` });
     await page.getByRole("button", { name: "Grid view" }).click();
     await page.waitForTimeout(400);
-    check(`${theme}: grid view shows all cards`, (await page.locator("#work .gallery-grid .gallery-card").count()) === 9);
+    check(`${theme}: grid view shows all cards`, (await page.locator("#work .gallery-grid .gallery-card").count()) === cards);
     await page.screenshot({ path: `${SHOTS}/${theme}-gallery-grid.png` });
 
     // Hash navigation lands below the sticky header.
@@ -85,6 +87,12 @@ export async function run() {
     check(`${theme}: QTrack project is present`, (await page.locator("#work-qtrack").count()) === 1);
     check(`${theme}: two Credly verification links`, (await page.locator("#credentials a[href*='credly.com']").count()) === 2);
     check(`${theme}: certificates open their PDFs`, (await page.locator("#credentials a[href^='/certificates/']").count()) === 4);
+    const resumeLinks = await page.locator("a[href='/resume']").count();
+    const resume = await page.evaluate(async () => {
+      const response = await fetch("/resume");
+      return { status: response.status, type: response.headers.get("content-type") || "", bytes: (await response.arrayBuffer()).byteLength };
+    });
+    check(`${theme}: résumé links open a PDF at /resume`, resumeLinks >= 3 && resume.status === 200 && /application\/pdf/.test(resume.type) && resume.bytes > 10000, JSON.stringify({ resumeLinks, ...resume }));
     await page.screenshot({ path: `${SHOTS}/${theme}-credentials.png` });
 
     // Command palette.

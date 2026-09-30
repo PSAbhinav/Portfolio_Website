@@ -107,3 +107,7 @@ Then `npm run dev` and open http://localhost:3111/admin.
 ## Changing the passphrase from the studio
 
 Open the studio, choose **Security**, enter the current passphrase and a new one (or press *Generate one for me*), and save. The new hash is stored in the database and takes precedence over `ADMIN_PASSPHRASE_HASH`; the environment variable only matters for the very first sign-in. After saving, *Save as text file* downloads the passphrase once; store it in a password manager.
+
+## Replacing the résumé from the studio
+
+The Résumé links in the header, hero and footer all open `/resume`, a stable address that always serves the current file. To replace it: Content → Profile → **Résumé (PDF)** → *Upload PDF* (up to 4 MB), then Save and Publish. The bundled default is `public/resume.pdf`; an uploaded file is stored in the database and served with a readable filename. Clear the field and publish to hide the links.

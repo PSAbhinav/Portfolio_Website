@@ -7,7 +7,7 @@ export type Value = string | number | boolean | null | Value[] | { [key: string]
 export type SectionKey = keyof PortfolioContent;
 
 export const SECTIONS: Record<SectionKey, { label: string; description: string }> = {
-  profile: { label: "Profile", description: "Name, role, portrait and the one-sentence thesis shown in the hero." },
+  profile: { label: "Profile", description: "Name, role, portrait, the one-sentence thesis shown in the hero, and the résumé PDF." },
   contactEmail: { label: "Contact email", description: "The address shown in the Contact section." },
   biography: { label: "Field notes", description: "Paragraphs in the About section, in reading order." },
   experience: { label: "Experience", description: "Roles, dates and the highlights shown in the Now chapter." },
@@ -32,6 +32,7 @@ const LABELS: Record<string, string> = {
   url: "Verify URL",
   file: "Certificate file",
   image: "Image",
+  resume: "Résumé (PDF)",
   metadataTitle: "Browser title",
   metadataDescription: "Search description",
   contactEmail: "Contact email",
@@ -75,6 +76,7 @@ const HINTS: Record<string, string> = {
   url: "https:// link to the credential. Leave empty to hide the Verify link.",
   file: "PDF under /certificates, e.g. /certificates/name.pdf. Shown as View.",
   demo: "https:// link. Leave empty when there is no live demo.",
+  resume: "The PDF behind every Résumé link and /resume. Upload a new one to replace it; leave empty to hide the links.",
   label: "Mono figure label, e.g. 01 / Delivery.",
   metric: "The large figure line, e.g. 92/92 collections · 0 failures.",
   summary: "One or two sentences.",
@@ -237,7 +239,15 @@ function BooleanField({ fieldKey, label, value, onChange }: Omit<EditorProps, "v
   );
 }
 
-function ImageUpload({ onChange }: { onChange: (url: string) => void }) {
+// Images are re-encoded server-side; PDFs are stored as sent. The field name
+// tells the route which it is getting.
+const UPLOADS = {
+  image: { field: "image", accept: "image/jpeg,image/png,image/webp", button: "Upload image", hint: "JPG, PNG or WebP up to 4 MB. Uploaded images are public once published." },
+  pdf: { field: "file", accept: "application/pdf", button: "Upload PDF", hint: "PDF up to 4 MB. It goes live when you publish; the old file stays reachable at its own address." },
+};
+
+function FileUpload({ kind, onChange }: { kind: keyof typeof UPLOADS; onChange: (url: string) => void }) {
+  const spec = UPLOADS[kind];
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
 
@@ -249,7 +259,7 @@ function ImageUpload({ onChange }: { onChange: (url: string) => void }) {
     setError("");
     try {
       const form = new FormData();
-      form.append("image", file);
+      form.append(spec.field, file);
       const response = await fetch("/api/admin/media", { method: "POST", body: form });
       const result = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(result.error || "Upload failed.");
@@ -264,16 +274,10 @@ function ImageUpload({ onChange }: { onChange: (url: string) => void }) {
   return (
     <div className="studio-upload">
       <label className="button button-ghost studio-upload-button">
-        {uploading ? "Uploading…" : "Upload image"}
-        <input
-          type="file"
-          className="sr-only"
-          accept="image/jpeg,image/png,image/webp"
-          disabled={uploading}
-          onChange={handleFile}
-        />
+        {uploading ? "Uploading…" : spec.button}
+        <input type="file" className="sr-only" accept={spec.accept} disabled={uploading} onChange={handleFile} />
       </label>
-      <span className="studio-hint">JPG, PNG or WebP up to 4 MB. Uploaded images are public once published.</span>
+      <span className="studio-hint">{spec.hint}</span>
       <p role="status" className="studio-notice">
         {error}
       </p>
@@ -313,7 +317,8 @@ function TextField({ fieldKey, label, value, onChange }: Omit<EditorProps, "valu
         )}
       </label>
       <Hint fieldKey={fieldKey} id={hintId} />
-      {fieldKey === "image" && <ImageUpload onChange={onChange} />}
+      {fieldKey === "image" && <FileUpload kind="image" onChange={onChange} />}
+      {fieldKey === "resume" && <FileUpload kind="pdf" onChange={onChange} />}
     </div>
   );
 }
