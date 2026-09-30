@@ -28,9 +28,11 @@ test("QTrack leads the projects and settings carry both palettes", () => {
   assert.equal(contentSchema.safeParse({ ...defaultContent, settings: { ...defaultContent.settings, palette: { ...defaultContent.settings.palette, light: { ...defaultContent.settings.palette.light, signal: "red" } } } }).success, false);
 });
 
-test("Anthropic certifications come first", () => {
+test("Anthropic certifications come first and every certificate has its PDF", () => {
   assert.match(defaultContent.certifications[0].title, /^Claude Certified/);
   assert.match(defaultContent.certifications[1].title, /^Claude Certified/);
+  assert.equal(defaultContent.certifications.length, 11);
+  assert.ok(defaultContent.certifications.every((c) => /^\/certificates\/[a-z0-9-]+\.pdf$/.test(c.file)));
 });
 
 test("the résumé is a local document path or empty; remote URLs are rejected", () => {

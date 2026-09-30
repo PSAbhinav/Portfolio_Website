@@ -827,8 +827,8 @@
 /* ===== Toolkit ===== */
 .toolkit-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--s6);
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--s8) var(--s6);
 }
 
 .toolkit-group {
@@ -873,11 +873,42 @@
 }
 
 .journey-item {
+  position: relative;
   display: grid;
   grid-template-columns: 240px 1fr;
   gap: var(--s6);
   padding: var(--s6) 0;
   border-bottom: 1px solid var(--rule);
+}
+
+/* Marker on the line; the heading text sits in a mask it rises out of. */
+.journey-dot {
+  position: absolute;
+  left: 221px;
+  top: calc(var(--s6) + 9px);
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid var(--signal);
+}
+
+.journey-study .journey-dot {
+  border-color: var(--ink-2);
+}
+
+.journey-heading {
+  overflow: hidden;
+}
+
+.journey-heading-text {
+  display: inline-block;
+}
+
+@media (max-width: 1023px) {
+  .journey-dot {
+    display: none;
+  }
 }
 
 .journey-when {

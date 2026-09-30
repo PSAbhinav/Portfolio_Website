@@ -1,6 +1,7 @@
 import { defaultContent } from "../data/portfolio";
 import { contentSchema, type PortfolioContent } from "./content-schema";
 import { mergeWithDefaults } from "./content-merge";
+import { getOwnerEdits } from "./admin/edits-store";
 import type { Sql } from "./sql-types";
 
 let warned = false;
@@ -19,7 +20,7 @@ export async function getPublishedContentWith(sql: Sql | null): Promise<Portfoli
   try {
     const rows = await sql<{ published: unknown }>`SELECT published FROM portfolio_content WHERE id = 1`;
     if (!rows[0]?.published) return defaultContent;
-    const parsed = contentSchema.safeParse(mergeWithDefaults(defaultContent, rows[0].published));
+    const parsed = contentSchema.safeParse(mergeWithDefaults(defaultContent, rows[0].published, await getOwnerEdits(sql)));
     return parsed.success ? parsed.data : fallback("schema mismatch");
   } catch {
     return fallback("database unavailable");
@@ -28,7 +29,7 @@ export async function getPublishedContentWith(sql: Sql | null): Promise<Portfoli
 
 export async function getDraftWith(sql: Sql): Promise<{ content: PortfolioContent; revision: number }> {
   const rows = await sql<{ draft: unknown; revision: number | string }>`SELECT draft, revision FROM portfolio_content WHERE id = 1`;
-  const parsed = rows[0]?.draft ? contentSchema.safeParse(mergeWithDefaults(defaultContent, rows[0].draft)) : null;
+  const parsed = rows[0]?.draft ? contentSchema.safeParse(mergeWithDefaults(defaultContent, rows[0].draft, await getOwnerEdits(sql))) : null;
   return {
     content: parsed?.success ? parsed.data : defaultContent,
     revision: Number(rows[0]?.revision ?? 0),

@@ -1,5 +1,8 @@
+import { defaultContent } from "../../data/portfolio";
+import { editedPaths } from "../content-merge";
 import { contentSchema } from "../content-schema";
 import type { Sql } from "../sql-types";
+import { setOwnerEdits } from "./edits-store";
 
 export type SaveResult = { revision: number } | { error: string; status: 400 | 409 };
 export type PublishResult = { revision: number } | { error: string; status: 409 };
@@ -28,6 +31,9 @@ export async function saveDraft(sql: Sql, content: unknown, revision: number): P
     WHERE id = 1 AND revision = ${revision}
     RETURNING revision`;
   if (!rows.length) return { error: "Another tab changed the draft. Reload before saving.", status: 409 };
+  // What differs from the bundled defaults is what the owner meant to change;
+  // everything else keeps following future releases (see content-merge.ts).
+  await setOwnerEdits(sql, editedPaths(defaultContent, parsed.data));
   return { revision: Number(rows[0].revision) };
 }
 

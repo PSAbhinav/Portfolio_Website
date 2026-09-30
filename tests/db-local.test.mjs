@@ -5,6 +5,8 @@ import os from "node:os";
 import path from "node:path";
 import { openLocalDb } from "../src/lib/db-local.ts";
 import { getPublishedContentWith } from "../src/lib/content-store.ts";
+import { editedPaths } from "../src/lib/content-merge.ts";
+import { setOwnerEdits } from "../src/lib/admin/edits-store.ts";
 import { defaultContent } from "../src/data/portfolio.ts";
 
 const dir = await mkdtemp(path.join(os.tmpdir(), "portfolio-db-"));
@@ -37,6 +39,7 @@ test("published rows in the old v1 shape fall back to the bundled content", asyn
 test("a valid published row is served as-is", async () => {
   const custom = { ...defaultContent, profile: { ...defaultContent.profile, tagline: "Custom tagline." } };
   await sql`UPDATE portfolio_content SET published = ${JSON.stringify(custom)}::jsonb WHERE id = 1`;
+  await setOwnerEdits(sql, editedPaths(defaultContent, custom));
   const content = await getPublishedContentWith(sql);
   assert.equal(content.profile.tagline, "Custom tagline.");
 });

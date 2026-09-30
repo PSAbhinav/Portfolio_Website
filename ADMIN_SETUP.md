@@ -111,3 +111,7 @@ Open the studio, choose **Security**, enter the current passphrase and a new one
 ## Replacing the résumé from the studio
 
 The Résumé links in the header, hero and footer all open `/resume`, a stable address that always serves the current file. To replace it: Content → Profile → **Résumé (PDF)** → *Upload PDF* (up to 4 MB), then Save and Publish. The bundled default is `public/resume.pdf`; an uploaded file is stored in the database and served with a readable filename. Clear the field and publish to hide the links.
+
+## How releases and your edits coexist
+
+Every Save records which fields, items and orderings differ from the content bundled with the site (the "edit record"). When a new release ships different default text, a new project or a new certificate, it shows up on its own; anything you changed, removed or reordered in the studio still wins. The Projects (and other list) sections also offer **Add N bundled items** if you removed something and want it back.

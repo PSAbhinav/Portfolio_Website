@@ -1,6 +1,5 @@
 "use client";
 import { useCopy, usePortfolio } from "@/components/PortfolioContext";
-import Reveal from "@/components/motion/Reveal";
 import { formatRange, startYear, numbered } from "@/lib/format";
 
 type Entry = { key: string; when: string; sortKey: number; title: string; place: string; text: string; kind: "work" | "study" };
@@ -43,15 +42,19 @@ export default function Journey() {
           <span className="journey-line" aria-hidden="true">
             <span />
           </span>
-          {entries.map((entry, index) => (
-            <Reveal as="li" key={entry.key} className={`journey-item journey-${entry.kind}`} delay={index * 40}>
+          {entries.map((entry) => (
+            // Choreography.tsx animates these on scroll; without motion they are simply visible.
+            <li key={entry.key} className={`journey-item journey-${entry.kind}`}>
+              <span className="journey-dot" aria-hidden="true" />
               <span className="mono journey-when">{entry.when}</span>
               <div className="journey-body">
-                <h3>{entry.title}</h3>
+                <h3 className="journey-heading">
+                  <span className="journey-heading-text">{entry.title}</span>
+                </h3>
                 <p className="journey-place">{entry.place}</p>
-                <p className="muted">{entry.text}</p>
+                <p className="muted journey-text">{entry.text}</p>
               </div>
-            </Reveal>
+            </li>
           ))}
         </ol>
       </div>

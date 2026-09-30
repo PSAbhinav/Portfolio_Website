@@ -116,6 +116,25 @@ export default function Choreography() {
         gsap.fromTo(journeyLine, { scaleY: 0 }, { scaleY: 1, ease: "none", scrollTrigger: { trigger: ".journey-list", start: "top 70%", end: "bottom 60%", scrub: 0.4 } });
       }
 
+      // Journey entries: the date slides in along the line, the marker lights,
+      // the title rises out of a mask and the text follows, all tied to the
+      // scroll position; the body also drifts a little faster than the page.
+      document.querySelectorAll<HTMLElement>(".journey-item").forEach((item) => {
+        const timeline = gsap.timeline({
+          scrollTrigger: { trigger: item, start: "top 88%", end: "top 45%", scrub: 0.6 },
+        });
+        timeline
+          .from(item.querySelector(".journey-when"), { x: -32, opacity: 0, duration: 0.5, ease: "power2.out" }, 0)
+          .from(item.querySelector(".journey-dot"), { scale: 0, duration: 0.35, ease: "back.out(2.5)" }, 0.08)
+          .from(item.querySelector(".journey-heading-text"), { yPercent: 110, duration: 0.6, ease: "power3.out" }, 0.1)
+          .from(item.querySelectorAll(".journey-place, .journey-text"), { y: 26, opacity: 0, duration: 0.5, ease: "power2.out", stagger: 0.14 }, 0.3);
+        gsap.fromTo(
+          item.querySelector(".journey-body"),
+          { y: 28 },
+          { y: -28, ease: "none", scrollTrigger: { trigger: item, start: "top bottom", end: "bottom top", scrub: true } },
+        );
+      });
+
       // Toolkit rows cascade in.
       document.querySelectorAll<HTMLElement>(".toolkit-group").forEach((group) => {
         gsap.from(group.querySelectorAll(".toolkit-row"), {

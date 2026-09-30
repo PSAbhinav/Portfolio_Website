@@ -100,7 +100,8 @@ export async function run() {
     // Credentials: verification links for every certificate that has one.
     check(`${theme}: QTrack project is present`, (await page.locator("#work-qtrack").count()) === 1);
     check(`${theme}: two Credly verification links`, (await page.locator("#credentials a[href*='credly.com']").count()) === 2);
-    check(`${theme}: certificates open their PDFs`, (await page.locator("#credentials a[href^='/certificates/']").count()) === 4);
+    check(`${theme}: certificates open their PDFs`, (await page.locator("#credentials a[href^='/certificates/']").count()) >= 11);
+    check(`${theme}: QTrack has no public link`, (await page.locator("#work-qtrack a[href^='http']").count()) === 0);
     const resumeLinks = await page.locator("a[href='/resume']").count();
     const resume = await page.evaluate(async () => {
       const response = await fetch("/resume");
