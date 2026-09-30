@@ -4,7 +4,8 @@ import Logo from "@/components/Logo";
 
 import { useEffect, useState } from "react";
 import type { PortfolioContent } from "@/lib/content-schema";
-import ContentEditor, { SECTIONS, type SectionKey, type Value } from "./ContentEditor";
+import { defaultContent } from "@/data/portfolio";
+import ContentEditor, { ITEM_LABELS, SECTIONS, type SectionKey, type Value } from "./ContentEditor";
 import Inbox from "./Inbox";
 import Security from "./Security";
 import StatsDashboard from "./StatsDashboard";
@@ -22,6 +23,23 @@ const TABS: { id: Tab; label: string; title: string }[] = [
 ];
 
 const SECTION_KEYS = Object.keys(SECTIONS) as SectionKey[];
+
+// Published content is the owner's, so items a release adds to the bundled
+// defaults do not appear on their own. This finds the ones missing (by slug,
+// else title) so the owner can pull them in with one click.
+function sameItem(a: unknown, b: unknown): boolean {
+  if (!a || !b || typeof a !== "object" || typeof b !== "object") return a === b;
+  const x = a as Record<string, unknown>;
+  const y = b as Record<string, unknown>;
+  if (x.slug !== undefined || y.slug !== undefined) return x.slug === y.slug;
+  return x.title !== undefined && x.title === y.title;
+}
+
+function missingBundled(section: SectionKey, current: unknown): unknown[] {
+  const bundled = defaultContent[section];
+  if (!Array.isArray(bundled) || !Array.isArray(current)) return [];
+  return bundled.filter((item) => typeof item === "object" && !current.some((existing) => sameItem(existing, item)));
+}
 
 function draftState(content: PortfolioContent | null, dirty: boolean): string {
   if (!content) return "Loading content…";
@@ -195,6 +213,19 @@ export default function StudioShell({ onSignOut, signingOut }: { onSignOut: () =
                     {SECTIONS[section].label}
                   </h2>
                   <p className="studio-hint">{SECTIONS[section].description}</p>
+                  {missingBundled(section, content[section]).length > 0 && (
+                    <div className="studio-actions">
+                      <button
+                        type="button"
+                        className="button button-ghost"
+                        onClick={() => handleSectionChange([...(content[section] as Value[]), ...(missingBundled(section, content[section]) as Value[])])}
+                      >
+                        Add {missingBundled(section, content[section]).length} bundled {(ITEM_LABELS[section] ?? "item").toLowerCase()}
+                        {missingBundled(section, content[section]).length === 1 ? "" : "s"}
+                      </button>
+                      <span className="studio-hint">Items that ship with the site but are not in your content yet. Added at the end; reorder, edit or remove them, then Save and Publish.</span>
+                    </div>
+                  )}
                 </div>
                 <ContentEditor
                   key={section}

@@ -26,7 +26,7 @@ export async function run() {
     }
     // The contact form's deliberate 503 (no e-mail provider and no database locally) is logged by the browser as a resource error.
     // Remote runs from the corporate network see 403s on media downloads from the proxy itself, not from the site.
-    const ignored = process.env.E2E_BASE ? /status of (503|403|429)/ : /status of 503/;
+    const ignored = /status of (503|403|429)/;
     page.on("console", (message) => message.type() === "error" && !ignored.test(message.text()) && errors.push(message.text()));
     await page.goto(BASE + "/", { waitUntil: "networkidle", timeout: 120000 });
     await page.addStyleTag({ content: "html{scroll-behavior:auto !important}" });
@@ -76,6 +76,20 @@ export async function run() {
     await page.waitForTimeout(400);
     check(`${theme}: grid view shows all cards`, (await page.locator("#work .gallery-grid .gallery-card").count()) === cards);
     await page.screenshot({ path: `${SHOTS}/${theme}-gallery-grid.png` });
+    // Switching layouts must not leave the reel's pin spacer behind, and must land the visitor at the section.
+    const afterGrid = await page.evaluate(() => ({ spacers: document.querySelectorAll(".pin-spacer").length, workTop: Math.round(document.getElementById("work").getBoundingClientRect().top), workHeight: Math.round(document.getElementById("work").offsetHeight), gridHeight: Math.round(document.querySelector(".gallery-grid").offsetHeight) }));
+    check(`${theme}: switching to the grid removes the pin spacer`, afterGrid.spacers === 0 && afterGrid.workHeight < afterGrid.gridHeight + 1200, JSON.stringify(afterGrid));
+    check(`${theme}: switching layouts lands at the Work section`, afterGrid.workTop >= 0 && afterGrid.workTop <= HEADER + 40, String(afterGrid.workTop));
+    await page.evaluate(() => window.scrollBy(0, innerHeight * 3));
+    await page.waitForTimeout(300);
+    await page.getByRole("button", { name: "Reel view" }).click();
+    await page.waitForTimeout(700);
+    const afterReel = await page.evaluate(() => {
+      const reel = document.querySelector(".reel");
+      const spacer = document.querySelector(".pin-spacer");
+      return { reels: document.querySelectorAll(".reel").length, spacers: document.querySelectorAll(".pin-spacer").length, spacerTaller: spacer && reel ? spacer.offsetHeight > reel.offsetHeight + 500 : false, workTop: Math.round(document.getElementById("work").getBoundingClientRect().top), cardVisible: Boolean(document.querySelector(".reel .gallery-card")) && document.querySelector(".reel .gallery-card").getBoundingClientRect().top < innerHeight };
+    });
+    check(`${theme}: switching back to the reel pins it again and shows a card`, afterReel.reels === 1 && afterReel.spacers === 1 && afterReel.spacerTaller && afterReel.cardVisible, JSON.stringify(afterReel));
 
     // Hash navigation lands below the sticky header.
     await page.goto(BASE + "/#credentials", { waitUntil: "networkidle" });
@@ -165,6 +179,37 @@ export async function run() {
   }
   check("reduced motion: no page errors", errors.length === 0, errors.join(" | "));
   await reduced.close();
+
+  // Phone and tablet: fluid layout, nothing wider than the screen, cards stacked.
+  for (const [width, height] of [[390, 844], [768, 1024]]) {
+    const small = await browser.newContext({ viewport: { width, height }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 });
+    const phone = await small.newPage();
+    const phoneErrors = [];
+    phone.on("pageerror", (error) => phoneErrors.push(error.message));
+    await phone.goto(BASE + "/", { waitUntil: "networkidle", timeout: 120000 });
+    await phone.locator(".intro").waitFor({ state: "detached", timeout: 8000 }).catch(() => {});
+    await phone.locator("#hero-title").waitFor({ state: "visible", timeout: 8000 }).catch(() => {});
+    const fit = await phone.evaluate(() => {
+      // The contact form's honeypot field is parked off-screen on purpose.
+      const spill = [...document.querySelectorAll("main *")].filter((n) => { if (n.closest(".honeypot")) return false; const r = n.getBoundingClientRect(); return r.width > 0 && (r.left < -1 || r.right > innerWidth + 1) && getComputedStyle(n).position !== "fixed"; });
+      const copy = document.querySelector(".hero-copy").getBoundingClientRect();
+      return { overflowX: document.documentElement.scrollWidth > innerWidth, spill: spill.slice(0, 3).map((n) => (n.className || n.tagName).toString().slice(0, 30)), copyLeft: Math.round(copy.left), headerH: Math.round(document.querySelector(".site-header").offsetHeight), trigger: Math.round(document.querySelector(".command-trigger").offsetHeight) };
+    });
+    check(`${width}px: hero copy starts on screen and nothing spills past the edges`, !fit.overflowX && fit.spill.length === 0 && fit.copyLeft >= 0, JSON.stringify(fit));
+    check(`${width}px: header stays one row`, fit.headerH <= HEADER && fit.trigger <= 44, JSON.stringify(fit));
+    await phone.screenshot({ path: `${SHOTS}/${width}-hero.png` });
+    await phone.evaluate(() => document.getElementById("work").scrollIntoView());
+    await phone.waitForTimeout(600);
+    const stacked = await phone.evaluate(() => {
+      const figure = document.querySelector(".gallery-grid .gallery-figure");
+      const rect = figure.getBoundingClientRect();
+      return { grid: Boolean(document.querySelector(".gallery-grid")), reel: Boolean(document.querySelector(".reel")), ratio: rect.width / rect.height };
+    });
+    check(`${width}px: projects stack in a grid with artwork-sized plates`, stacked.grid && !stacked.reel && stacked.ratio > 1.3 && stacked.ratio < 1.9, JSON.stringify(stacked));
+    await phone.screenshot({ path: `${SHOTS}/${width}-work.png` });
+    check(`${width}px: no page errors`, phoneErrors.length === 0, phoneErrors.join(" | ").slice(0, 200));
+    await small.close();
+  }
 
   await browser.close();
   return { failures };

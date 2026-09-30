@@ -1,7 +1,7 @@
 "use client";
 import { numbered } from "@/lib/format";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useCopy, usePortfolio } from "@/components/PortfolioContext";
 import Reveal from "@/components/motion/Reveal";
 import { gsap, MOTION_MEDIA, ScrollTrigger, useGSAP } from "@/components/motion/gsap";
@@ -9,6 +9,10 @@ import { ArrowUpRight, Github } from "@/components/Icons";
 import type { Project } from "@/lib/content-schema";
 
 type Mode = "reel" | "grid";
+
+// The reel pins a viewport-tall block, so it also needs enough height for a
+// card; shorter windows get the grid.
+const REEL_MEDIA = `${MOTION_MEDIA} and (min-height: 700px)`;
 
 function Card({ project, index, total, priority }: { project: Project; index: number; total: number; priority: boolean }) {
   return (
@@ -74,14 +78,27 @@ export default function Gallery() {
   const track = useRef<HTMLDivElement>(null);
   const counter = useRef<HTMLSpanElement>(null);
   const bar = useRef<HTMLSpanElement>(null);
+  const trigger = useRef<ScrollTrigger | null>(null);
+  const landAtSection = useRef(false);
+
+  // Every mode change goes through here. The pin is reverted *before* React
+  // swaps the DOM: GSAP wraps the pinned reel in a spacer, and killing the
+  // trigger after the reel is gone would leave that spacer (thousands of
+  // pixels of nothing) behind in the section.
+  const applyMode = useCallback((next: Mode, land: boolean) => {
+    trigger.current?.kill(true);
+    trigger.current = null;
+    landAtSection.current = land;
+    setMode(next);
+  }, []);
 
   useEffect(() => {
-    const media = window.matchMedia(MOTION_MEDIA);
+    const media = window.matchMedia(REEL_MEDIA);
     const update = () => {
       setReelCapable(media.matches);
       // A deep link to one project needs the grid, where anchors scroll normally.
       const deepLink = /^#work-/.test(location.hash);
-      setMode(media.matches && !deepLink ? "reel" : "grid");
+      applyMode(media.matches && !deepLink ? "reel" : "grid", false);
     };
     update();
     media.addEventListener("change", update);
@@ -90,7 +107,19 @@ export default function Gallery() {
       media.removeEventListener("change", update);
       window.removeEventListener("hashchange", update);
     };
-  }, []);
+  }, [applyMode]);
+
+  // After a visitor-initiated switch the page is a different length, so the
+  // old scroll position may point at nothing; land at the top of the section.
+  useEffect(() => {
+    if (!landAtSection.current) return;
+    landAtSection.current = false;
+    const frame = requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+      document.getElementById("work")?.scrollIntoView({ block: "start" });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [mode]);
 
   useGSAP(
     () => {
@@ -120,6 +149,7 @@ export default function Gallery() {
           },
         },
       });
+      trigger.current = tween.scrollTrigger ?? null;
       // Pinning inserts spacer height after the browser has already jumped to
       // any #hash, so re-aim at the target once the layout is final.
       const jumpToHash = () => {
@@ -138,8 +168,10 @@ export default function Gallery() {
       window.addEventListener("hashchange", jumpToHash);
       return () => {
         window.removeEventListener("hashchange", jumpToHash);
-        tween.scrollTrigger?.kill();
+        // Normally already killed by applyMode; on unmount revert the pin too.
+        tween.scrollTrigger?.kill(true);
         tween.kill();
+        trigger.current = null;
       };
     },
     { dependencies: [mode, projects.length], scope: outer },
@@ -157,10 +189,10 @@ export default function Gallery() {
             {copy("work_lede", "") ? <p className="lede">{copy("work_lede", "")}</p> : <span />}
             {reelCapable && (
               <div className="gallery-toggle" role="group" aria-label="Layout">
-                <button type="button" className="chip" aria-pressed={mode === "reel"} onClick={() => setMode("reel")}>
+                <button type="button" className="chip" aria-pressed={mode === "reel"} onClick={() => mode !== "reel" && applyMode("reel", true)}>
                   {copy("work_reel", "Reel view")}
                 </button>
-                <button type="button" className="chip" aria-pressed={mode === "grid"} onClick={() => setMode("grid")}>
+                <button type="button" className="chip" aria-pressed={mode === "grid"} onClick={() => mode !== "grid" && applyMode("grid", true)}>
                   {copy("work_grid", "Grid view")}
                 </button>
               </div>

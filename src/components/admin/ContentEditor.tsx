@@ -53,7 +53,7 @@ const LABELS: Record<string, string> = {
   poster: "Poster image",
 };
 
-const ITEM_LABELS: Record<string, string> = {
+export const ITEM_LABELS: Record<string, string> = {
   biography: "Paragraph",
   experience: "Role",
   highlights: "Highlight",

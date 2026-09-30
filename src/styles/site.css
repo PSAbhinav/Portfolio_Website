@@ -181,8 +181,9 @@
 
 .hero-status {
   display: inline-flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: var(--s3);
+  gap: var(--s2) var(--s3);
   margin-bottom: var(--s8);
   color: var(--ink);
 }
@@ -581,7 +582,8 @@
    shorter there and a long description is cut rather than pushed off-screen;
    the grid shows the full text. */
 .reel .gallery-figure {
-  height: min(40vh, 440px);
+  /* Whatever height is left once the HUD and the card's text have theirs. */
+  height: clamp(200px, 100vh - var(--header-h) - 470px, 440px);
 }
 
 .reel .gallery-description {
@@ -694,6 +696,19 @@
   .gallery-foot {
     flex-direction: column;
     align-items: flex-start;
+  }
+  /* Stacked cards size the plate to the artwork instead of the viewport; the
+     image fills the plate rather than keeping its intrinsic 1600px width. */
+  .gallery-figure {
+    height: auto;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+  .gallery-figure img {
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    object-fit: contain;
   }
 }
 
@@ -1509,12 +1524,24 @@ html.cursor-hot .cursor-ring {
 }
 
 @media (max-width: 1023px) {
-  .story-stage {
+  /* The hero panel's own ratio must drop too: a ratio plus min-height
+     resolves the width from the height and the stage grows past the screen. */
+  .story-stage,
+  .hero-panel .story-stage {
     aspect-ratio: auto;
     min-height: 520px;
   }
   .story-answer {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 479px) {
+  .routing-lanes {
+    grid-template-columns: 1fr;
+  }
+  .story-elapsed-value {
+    font-size: 52px;
   }
 }
 
@@ -1534,6 +1561,8 @@ html.cursor-hot .cursor-ring {
   grid-template-areas: "copy panel" "foot foot";
   gap: var(--s6) var(--s9);
   align-items: center;
+  /* Tracks start at the left edge; centring would let a wide track spill both sides. */
+  justify-content: normal;
   padding-block: var(--s9) var(--s6);
   min-height: calc(100vh - var(--header-h) - 64px);
 }
@@ -1542,6 +1571,7 @@ html.cursor-hot .cursor-ring {
   grid-area: copy;
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .hero-panel {
@@ -1628,9 +1658,30 @@ html.cursor-hot .cursor-ring {
 
 @media (max-width: 1023px) {
   .hero-inner {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     grid-template-areas: "copy" "panel" "foot";
     min-height: 0;
+    padding-block: var(--s7) var(--s5);
+  }
+  .hero .display-1 {
+    font-size: clamp(44px, 12vw, 72px);
+  }
+  .hero-actions {
+    flex-wrap: wrap;
+    row-gap: var(--s3);
+  }
+  /* Declared after the desktop ratio above so it wins at equal specificity:
+     a ratio plus min-height would resolve the width from the height. */
+  .hero-panel .story-stage {
+    aspect-ratio: auto;
+    min-height: 520px;
+  }
+}
+
+@media (max-width: 479px) {
+  /* Phones keep the search button but not its keyboard hint. */
+  .command-trigger .mono {
+    display: none;
   }
 }
 
