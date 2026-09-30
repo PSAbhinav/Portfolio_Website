@@ -1,0 +1,362 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 24px);
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.6;
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background-color 0.3s var(--ease-out), color 0.3s var(--ease-out);
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+dl,
+dd,
+ol,
+ul {
+  margin: 0;
+}
+
+ol,
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 0;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+::selection {
+  background: var(--signal);
+  color: var(--signal-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 4px;
+  border-radius: var(--radius);
+}
+
+/* Type scale */
+.display-1 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(56px, 8vw, 132px);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+}
+
+.display-2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(36px, 4.5vw, 64px);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  font-variation-settings: "opsz" 72, "SOFT" 20;
+}
+
+.display-3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(24px, 2.2vw, 32px);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+
+.lede {
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--ink-2);
+  max-width: 62ch;
+}
+
+.muted {
+  color: var(--ink-2);
+}
+
+.accent {
+  color: var(--signal);
+}
+
+/* Layout */
+.shell {
+  width: var(--shell);
+  margin-inline: auto;
+}
+
+.rule {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 0;
+}
+
+.section {
+  padding-block: var(--s12);
+  border-top: 1px solid var(--rule);
+}
+
+.section-head {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: var(--s6);
+  align-items: start;
+  margin-bottom: var(--s9);
+}
+
+.section-head > .eyebrow {
+  padding-top: 0.9em;
+}
+
+.section-head .display-2 {
+  max-width: 18ch;
+}
+
+.section-head .lede {
+  grid-column: 2;
+  margin-top: var(--s4);
+}
+
+@media (max-width: 1023px) {
+  .section {
+    padding-block: var(--s10);
+  }
+  .section-head {
+    grid-template-columns: 1fr;
+    gap: var(--s3);
+  }
+  .section-head .lede {
+    grid-column: 1;
+  }
+}
+
+/* Controls */
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  min-height: 48px;
+  padding: 0 var(--s5);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: -0.005em;
+  transition: background-color 0.2s var(--ease-out), color 0.2s var(--ease-out), border-color 0.2s var(--ease-out), transform 0.2s var(--ease-out);
+}
+
+.button:hover {
+  transform: translateY(-1px);
+}
+
+.button-primary {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.button-primary:hover {
+  background: var(--signal);
+  border-color: var(--signal);
+  color: var(--signal-ink);
+}
+
+.button-ghost {
+  background: transparent;
+  color: var(--ink);
+}
+
+.button-ghost:hover {
+  border-color: var(--signal);
+  color: var(--signal);
+}
+
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  font-weight: 500;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 2px;
+  transition: border-color 0.2s var(--ease-out), color 0.2s var(--ease-out);
+}
+
+.text-link:hover {
+  color: var(--signal);
+  border-color: var(--signal);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 var(--s3);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--ink-2);
+  transition: border-color 0.2s var(--ease-out), color 0.2s var(--ease-out), background-color 0.2s var(--ease-out);
+}
+
+button.chip:hover,
+.chip[aria-pressed="true"] {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.chip[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* Framed imagery */
+.frame {
+  position: relative;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--paper-2);
+  overflow: hidden;
+}
+
+.frame-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s3);
+  padding: var(--s2) var(--s3);
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--signal);
+  box-shadow: 0 0 0 4px var(--signal-soft);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: -80px;
+  left: var(--s4);
+  z-index: 100;
+  padding: var(--s3) var(--s4);
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: var(--radius);
+}
+
+.skip-link:focus {
+  top: var(--s3);
+}
+
+/* Reveal: visible by default; only with JS do elements start hidden. */
+.reveal {
+  opacity: 1;
+  transform: none;
+}
+
+html.js .reveal:not(.is-in) {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+html.js .reveal {
+  transition: opacity 0.35s var(--ease-out), transform 0.35s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js .reveal:not(.is-in) {
+    transform: none;
+  }
+  .button:hover {
+    transform: none;
+  }
+}

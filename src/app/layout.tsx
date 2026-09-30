@@ -1,23 +1,23 @@
-import './globals.css'
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import { ThemeProvider } from '@/components/ThemeContext'
-
-const inter = Inter({ subsets: ['latin'] })
+import type { Metadata } from "next";
+import "@fontsource-variable/fraunces";
+import "@fontsource-variable/inter-tight";
+import "@fontsource-variable/jetbrains-mono";
+import "./globals.css";
+import { defaultContent } from "@/data/portfolio";
+import { THEME_SCRIPT } from "@/lib/theme";
 
 export const metadata: Metadata = {
-  title: 'Abhinav | Portfolio',
-  description: 'Developer portfolio of P S Abhinav Krishna',
-}
+  title: defaultContent.profile.metadataTitle,
+  description: defaultContent.profile.metadataDescription,
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} bg-black text-white`} suppressHydrationWarning>
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+        {children}
       </body>
     </html>
-  )
+  );
 }

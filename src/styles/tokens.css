@@ -1,0 +1,48 @@
+/* Field Notes design tokens. Light is the default; dark is a full peer. */
+:root {
+  --paper: #f6f1e8;
+  --paper-2: #efe8dc;
+  --ink: #16140f;
+  --ink-2: #5b564b;
+  --rule: #d9d1c2;
+  /* 5.0:1 against --paper, so it can carry small text as well as accents. */
+  --signal: #b8391f;
+  --signal-ink: #fff7f2;
+  --signal-soft: rgba(184, 57, 31, 0.12);
+
+  --font-display: "Fraunces Variable", Georgia, "Times New Roman", serif;
+  --font-body: "Inter Tight Variable", Inter, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, Consolas, monospace;
+
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 24px;
+  --s6: 32px;
+  --s7: 40px;
+  --s8: 48px;
+  --s9: 64px;
+  --s10: 80px;
+  --s11: 96px;
+  --s12: 120px;
+
+  --shell: min(1280px, 100% - 96px);
+  --header-h: 76px;
+  --radius: 2px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --paper: #12110f;
+  --paper-2: #1a1816;
+  --ink: #efe9de;
+  --ink-2: #a69f91;
+  --rule: #2b2825;
+  --signal: #ff6a45;
+  --signal-ink: #1a0c08;
+  --signal-soft: rgba(255, 106, 69, 0.14);
+  color-scheme: dark;
+}
