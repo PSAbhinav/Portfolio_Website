@@ -766,6 +766,9 @@
   gap: var(--s5);
   max-width: 62ch;
   font-size: 18px;
+  text-align: justify;
+  hyphens: auto;
+  text-wrap: pretty;
 }
 
 .about-links {
@@ -1638,24 +1641,33 @@ html.cursor-hot .cursor-ring {
   background: var(--paper-2);
 }
 
-.about-figure::before {
-  content: "";
-  position: absolute;
-  inset: -12px 12px 12px -12px;
-  border: 1px solid var(--rule);
-  pointer-events: none;
+
+.about-figure {
+  border-radius: 18px;
+  overflow: hidden;
 }
 
 .about-figure img {
   aspect-ratio: 4 / 5;
   object-position: center top;
   filter: grayscale(1) contrast(1.08) brightness(1.02);
+  transition: filter 0.6s var(--ease-out);
+}
+
+/* Hovering the plate lifts the treatment and shows the real colours. */
+.about-figure:hover img {
+  filter: none;
+}
+
+.about-figure:hover::after {
+  opacity: 0;
 }
 
 .about-figure::after {
   content: "";
   position: absolute;
   inset: 0 0 34px 0;
+  transition: opacity 0.6s var(--ease-out);
   background: linear-gradient(160deg, var(--signal), var(--ink) 70%);
   mix-blend-mode: screen;
   opacity: 0.22;
@@ -1670,4 +1682,20 @@ html.cursor-hot .cursor-ring {
 
 [data-theme="dark"] .about-figure img {
   filter: grayscale(1) contrast(1.05) brightness(0.92);
+}
+
+.badge-links {
+  display: inline-flex;
+  gap: var(--s4);
+}
+
+/* Hover reveal must outrank the ink-mode plate rules. */
+.about-figure:hover img,
+[data-theme="dark"] .about-figure:hover img {
+  filter: none;
+}
+
+.about-figure:hover::after,
+[data-theme="dark"] .about-figure:hover::after {
+  opacity: 0;
 }

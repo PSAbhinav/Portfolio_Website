@@ -35,11 +35,18 @@ export default function Credentials() {
                   ) : (
                     <span />
                   )}
-                  {certification.url && (
-                    <a href={certification.url} className="text-link" target="_blank" rel="noopener noreferrer">
-                      {/credly\.com/.test(certification.url) ? copy("credentials_verify", "Verify") : copy("credentials_view", "View")} <ArrowUpRight size={14} />
-                    </a>
-                  )}
+                  <span className="badge-links">
+                    {certification.file && (
+                      <a href={certification.file} className="text-link" target="_blank" rel="noopener noreferrer">
+                        {copy("credentials_view", "View")} <ArrowUpRight size={14} />
+                      </a>
+                    )}
+                    {certification.url && (
+                      <a href={certification.url} className="text-link" target="_blank" rel="noopener noreferrer">
+                        {/credly\.com/.test(certification.url) ? copy("credentials_verify", "Verify") : copy("credentials_view", "View")} <ArrowUpRight size={14} />
+                      </a>
+                    )}
+                  </span>
                 </div>
               </li>
             );

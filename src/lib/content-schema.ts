@@ -82,6 +82,7 @@ export const certificationSchema = z
     issuer: short,
     date: yearMonth,
     url: credentialLink,
+    file: z.union([z.string().regex(/^\/certificates\/[a-z0-9-]+\.pdf$/), z.literal("")]).default(""),
     score: optional,
   })
   .strict();

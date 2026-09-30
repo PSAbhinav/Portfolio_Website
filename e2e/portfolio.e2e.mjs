@@ -84,7 +84,7 @@ export async function run() {
     // Credentials: verification links for every certificate that has one.
     check(`${theme}: QTrack project is present`, (await page.locator("#work-qtrack").count()) === 1);
     check(`${theme}: two Credly verification links`, (await page.locator("#credentials a[href*='credly.com']").count()) === 2);
-    check(`${theme}: academy certificates open their PDFs`, (await page.locator("#credentials a[href^='/certificates/']").count()) === 2);
+    check(`${theme}: certificates open their PDFs`, (await page.locator("#credentials a[href^='/certificates/']").count()) === 4);
     await page.screenshot({ path: `${SHOTS}/${theme}-credentials.png` });
 
     // Command palette.

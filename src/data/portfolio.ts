@@ -239,6 +239,7 @@ export const certifications: PortfolioContent["certifications"] = [
     issuer: "Anthropic",
     date: "2026-09",
     url: "https://www.credly.com/badges/0ea1a99f-14a8-4c43-ba6a-e22b0db21da3",
+    file: "/certificates/claude-certified-architect-professional.pdf",
     score: "825 / 1000",
   },
   {
@@ -246,15 +247,17 @@ export const certifications: PortfolioContent["certifications"] = [
     issuer: "Anthropic",
     date: "2026-09",
     url: "https://www.credly.com/badges/0085865c-3e09-404e-9dec-2e75f49da002",
+    file: "/certificates/claude-certified-associate-foundations.pdf",
     score: "835 / 1000",
   },
-  { title: "Claude 101", issuer: "Anthropic Academy", date: "2026-09", url: "/certificates/claude-101.pdf", score: "" },
-  { title: "Claude Code 101", issuer: "Anthropic Academy", date: "2026-09", url: "/certificates/claude-code-101.pdf", score: "" },
+  { title: "Claude 101", issuer: "Anthropic Academy", date: "2026-09", url: "", file: "/certificates/claude-101.pdf", score: "" },
+  { title: "Claude Code 101", issuer: "Anthropic Academy", date: "2026-09", url: "", file: "/certificates/claude-code-101.pdf", score: "" },
   {
     title: "ML Using Python",
     issuer: "Infosys Springboard",
     date: "2025-05",
     url: "https://drive.google.com/file/d/1P__x8h2vE5AYMCb_2IoXHxwWm2r6J1CJ/view",
+    file: "",
     score: "",
   },
   {
@@ -262,6 +265,7 @@ export const certifications: PortfolioContent["certifications"] = [
     issuer: "Infosys Springboard",
     date: "2024-11",
     url: "https://drive.google.com/file/d/18tevBizTpCzR4C0JeQzqS2OEXiE1akWF/view",
+    file: "",
     score: "",
   },
   {
@@ -269,6 +273,7 @@ export const certifications: PortfolioContent["certifications"] = [
     issuer: "Udemy",
     date: "2024-10",
     url: "https://drive.google.com/file/d/1Oke5HUyrqVV0NtdwbYjYFOCqZW9wbjG0/view",
+    file: "",
     score: "",
   },
   {
@@ -276,6 +281,7 @@ export const certifications: PortfolioContent["certifications"] = [
     issuer: "Infosys Springboard",
     date: "2024-02",
     url: "https://drive.google.com/file/d/1txsLQD7kLGX6HC_yixOUjbviPAj1JL_i/view",
+    file: "",
     score: "",
   },
 ];

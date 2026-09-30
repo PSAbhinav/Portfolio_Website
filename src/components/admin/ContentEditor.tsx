@@ -30,6 +30,7 @@ const LABELS: Record<string, string> = {
   linkedin: "LinkedIn URL",
   demo: "Live demo URL",
   url: "Verify URL",
+  file: "Certificate file",
   image: "Image",
   metadataTitle: "Browser title",
   metadataDescription: "Search description",
@@ -72,6 +73,7 @@ const HINTS: Record<string, string> = {
   year: "Shown on the project card. Optional.",
   score: "Optional, e.g. 825 / 1000.",
   url: "https:// link to the credential. Leave empty to hide the Verify link.",
+  file: "PDF under /certificates, e.g. /certificates/name.pdf. Shown as View.",
   demo: "https:// link. Leave empty when there is no live demo.",
   label: "Mono figure label, e.g. 01 / Delivery.",
   metric: "The large figure line, e.g. 92/92 collections · 0 failures.",
@@ -90,7 +92,7 @@ const TEMPLATES: Record<string, Value> = {
   skillGroups: { title: "", skills: [{ name: "", note: "" }] },
   experience: { company: "", title: "", team: "", location: "", start: "", end: "", summary: "", highlights: [] },
   projects: { slug: "", title: "", summary: "", description: "", image: "", github: "", demo: "", tags: [], featured: false, year: "" },
-  certifications: { title: "", issuer: "", date: "", url: "", score: "" },
+  certifications: { title: "", issuer: "", date: "", url: "", file: "", score: "" },
   education: { title: "", place: "", date: "", description: "" },
 };
 

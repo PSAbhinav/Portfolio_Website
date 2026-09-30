@@ -24,3 +24,11 @@ test("arrays are never padded from defaults", () => {
   const merged = mergeWithDefaults(defaultContent, { ...defaultContent, certifications: [] });
   assert.deepEqual(merged.certifications, []);
 });
+
+test("a snapshot credential that matches a bundled one inherits a certificate file", () => {
+  const older = JSON.parse(JSON.stringify(defaultContent));
+  older.certifications = older.certifications.map(({ file, ...rest }) => rest);
+  const merged = mergeWithDefaults(defaultContent, older);
+  assert.equal(merged.certifications[0].file, defaultContent.certifications[0].file);
+  assert.equal(merged.certifications.length, defaultContent.certifications.length);
+});

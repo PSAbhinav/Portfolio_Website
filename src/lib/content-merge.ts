@@ -11,7 +11,7 @@ export function mergeWithDefaults<T>(defaults: T, snapshot: unknown): T {
     const base = (defaults as Record<string, unknown>)[key];
     const value = snapshot[key];
     if (value === undefined) out[key] = base;
-    else if (Array.isArray(base)) out[key] = value;
+    else if (Array.isArray(base)) out[key] = Array.isArray(value) ? fillItems(base, value) : value;
     else if (isRecord(base) && isRecord(value)) out[key] = mergeWithDefaults(base, value);
     else out[key] = value;
   }
@@ -20,4 +20,17 @@ export function mergeWithDefaults<T>(defaults: T, snapshot: unknown): T {
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+// Items are the owner's, but an item that matches a bundled one (same slug or
+// title) inherits any fields it lacks, so a release can add, say, a
+// certificate file to an existing credential without a manual edit.
+function fillItems(defaults: unknown[], items: unknown[]): unknown[] {
+  return items.map((item) => {
+    if (!isRecord(item)) return item;
+    const match = defaults.find(
+      (d) => isRecord(d) && ((d.slug !== undefined && d.slug === item.slug) || (d.title !== undefined && d.title === item.title)),
+    );
+    return match ? mergeWithDefaults(match as Record<string, unknown>, item) : item;
+  });
 }
