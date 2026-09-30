@@ -45,7 +45,23 @@ export default function Choreography() {
         window.addEventListener("intro:done", onDone);
       } else startHero();
 
-      gsap.to(".hero-inner", {
+      // Primary buttons lean toward the pointer.
+      document.querySelectorAll<HTMLElement>(".hero-actions .button, .header-cta").forEach((button) => {
+        const toX = gsap.quickTo(button, "x", { duration: 0.4, ease: "power3.out" });
+        const toY = gsap.quickTo(button, "y", { duration: 0.4, ease: "power3.out" });
+        button.addEventListener("pointermove", (event) => {
+          const box = button.getBoundingClientRect();
+          toX(((event.clientX - box.left) / box.width - 0.5) * 10);
+          toY(((event.clientY - box.top) / box.height - 0.5) * 8);
+        });
+        button.addEventListener("pointerleave", () => {
+          toX(0);
+          toY(0);
+        });
+      });
+      gsap.from(".hero-panel", { clipPath: "inset(0 0 0 100%)", duration: 1.2, ease: "expo.out", delay: 0.5 });
+
+      gsap.to(".hero-copy", {
         yPercent: -14,
         opacity: 0.15,
         ease: "none",
@@ -63,11 +79,6 @@ export default function Choreography() {
           stagger: 0.1,
           scrollTrigger: { trigger: heading, start: "top 88%", once: true },
         });
-      });
-
-      // Section rules draw themselves in.
-      document.querySelectorAll<HTMLElement>(".section").forEach((section) => {
-        ScrollTrigger.create({ trigger: section, start: "top 92%", once: true, onEnter: () => section.classList.add("is-in") });
       });
 
       // Numbers in the field-guide metrics count up.

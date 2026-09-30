@@ -6,7 +6,6 @@ import { useScrubProgress } from "@/components/motion/useScrubProgress";
 import RetrievalExplainer from "@/components/guide/RetrievalExplainer";
 import RoutingExplainer from "@/components/guide/RoutingExplainer";
 import ConnectorsExplainer from "@/components/guide/ConnectorsExplainer";
-import HelpdeskStory from "@/components/site/HelpdeskStory";
 import type { Highlight } from "@/lib/content-schema";
 import { formatRange } from "@/lib/format";
 
@@ -50,7 +49,7 @@ function Chapter({ highlight, index }: { highlight: Highlight; index: number }) 
 }
 
 export default function FieldGuide() {
-  const { experience, settings } = usePortfolio();
+  const { experience } = usePortfolio();
   const copy = useCopy();
   const current = experience[0];
   if (!current) return null;
@@ -87,7 +86,6 @@ export default function FieldGuide() {
           </dl>
           <p className="guide-summary">{current.summary}</p>
         </div>
-        {settings.film.enabled && <HelpdeskStory title={settings.film.title} caption={settings.film.caption} />}
         <div className="guide-chapters">
           {current.highlights.map((highlight, index) => (
             <Chapter key={highlight.label} highlight={highlight} index={index} />

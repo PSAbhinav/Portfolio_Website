@@ -1,9 +1,12 @@
 "use client";
 import { useCopy, usePortfolio } from "@/components/PortfolioContext";
 import { ArrowDown, ArrowUpRight } from "@/components/Icons";
+import HelpdeskStory from "@/components/site/HelpdeskStory";
+import RotatingWords from "@/components/site/RotatingWords";
+import ProofTicker from "@/components/site/ProofTicker";
 
 export default function Hero() {
-  const { profile } = usePortfolio();
+  const { profile, settings } = usePortfolio();
   const copy = useCopy();
   const [first, ...rest] = profile.name.split(" ");
   const last = rest.pop();
@@ -12,6 +15,7 @@ export default function Hero() {
   return (
     <section id="home" className="hero" aria-labelledby="hero-title">
       <div className="shell hero-inner">
+        <div className="hero-copy">
         <p className="hero-status eyebrow">
           <span className="status-dot" />
           <span>
@@ -24,6 +28,9 @@ export default function Hero() {
           </span>
           <span className="hero-name-last">{last}</span>
         </h1>
+        <p className="hero-roles display-3">
+          <RotatingWords words={copy("hero_roles", "AI engineer").split("|").map((w) => w.trim()).filter(Boolean)} />
+        </p>
         <p className="lede hero-tagline">{profile.tagline}</p>
         <div className="hero-actions">
           <a href="#work" className="button button-primary">
@@ -35,6 +42,12 @@ export default function Hero() {
             <ArrowUpRight />
           </a>
         </div>
+        </div>
+        {settings.film.enabled && (
+          <div className="hero-panel">
+            <HelpdeskStory title={settings.film.title} caption={settings.film.caption} />
+          </div>
+        )}
         <div className="hero-foot">
           <span className="eyebrow hero-availability">
             {profile.availability && (
@@ -48,6 +61,7 @@ export default function Hero() {
           </a>
         </div>
       </div>
+      <ProofTicker items={copy("proof_points", "").split("|").map((w) => w.trim()).filter(Boolean)} />
     </section>
   );
 }

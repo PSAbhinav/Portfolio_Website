@@ -86,3 +86,8 @@ export const Check = (p: IconProps) => (
     <path d="m5 12 4 4L19 6" />
   </Icon>
 );
+export const Asterisk = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M12 4v16M5 8l14 8M19 8 5 16" />
+  </Icon>
+);

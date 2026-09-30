@@ -161,7 +161,6 @@ svg {
 
 .section {
   padding-block: var(--s12);
-  border-top: 1px solid var(--rule);
 }
 
 .section-head {

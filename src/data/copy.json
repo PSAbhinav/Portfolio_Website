@@ -45,5 +45,7 @@
   "credentials_view": "View",
   "contact_success": "Message received. I’ll reply by email.",
   "theme_light": "Switch to paper (light)",
-  "theme_dark": "Switch to ink (dark)"
+  "theme_dark": "Switch to ink (dark)",
+  "hero_roles": "AI engineer|Claude Certified Architect|QA-turned-builder|Test-first, always",
+  "proof_points": "Hybrid search across 92 production collections|Two-thirds of intents resolved without an LLM call|QTrack in daily use at Ramco Systems|Claude Certified Architect – Professional|Five enterprise connectors, one knowledge base"
 }
