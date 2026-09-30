@@ -1,7 +1,6 @@
 "use client";
 import { useCopy, usePortfolio } from "@/components/PortfolioContext";
 import SignalField from "@/components/motion/SignalField";
-import TourVideo from "@/components/site/TourVideo";
 import { ArrowDown, ArrowUpRight } from "@/components/Icons";
 
 export default function Hero() {
@@ -39,7 +38,6 @@ export default function Hero() {
             {copy("hero_cta_about", "Read the field notes")}
             <ArrowUpRight />
           </a>
-          <TourVideo />
         </div>
         <div className="hero-foot">
           <span className="eyebrow hero-availability">

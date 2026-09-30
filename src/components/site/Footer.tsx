@@ -1,6 +1,7 @@
 "use client";
 import { useCopy, usePortfolio } from "@/components/PortfolioContext";
 import { Github, Linkedin } from "@/components/Icons";
+import Logo from "@/components/Logo";
 
 export default function Footer() {
   const { profile } = usePortfolio();
@@ -8,9 +9,7 @@ export default function Footer() {
   return (
     <footer className="site-footer">
       <div className="shell footer-inner">
-        <a href="#home" className="wordmark">
-          abhinav<span className="accent">.</span>
-        </a>
+        <Logo size="small" />
         <p className="mono muted footer-copy" suppressHydrationWarning>
           © {new Date().getFullYear()} {profile.name}
         </p>

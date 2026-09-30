@@ -1155,3 +1155,32 @@
   aspect-ratio: 16 / 9;
   background: #000;
 }
+
+/* ===== Brand ===== */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s3);
+  color: var(--ink);
+  line-height: 1;
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 21px;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.brand-small .brand-name {
+  font-size: 18px;
+}
+
+.brand:hover .brand-name {
+  color: var(--signal);
+}
+
+.studio-brand .brand-name {
+  font-size: 18px;
+}

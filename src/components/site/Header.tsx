@@ -5,6 +5,7 @@ import ThemeToggle from "@/components/ThemeToggle";
 import CommandMenu from "@/components/CommandMenu";
 import ScrollProgress from "@/components/motion/ScrollProgress";
 import { ArrowUpRight } from "@/components/Icons";
+import Logo from "@/components/Logo";
 
 const LINKS = [
   { id: "now", key: "nav_now", fallback: "Now" },
@@ -37,9 +38,7 @@ export default function Header() {
     <header className="site-header">
       <ScrollProgress />
       <div className="shell header-inner">
-        <a href="#home" className="wordmark" aria-label="Back to the top">
-          abhinav<span className="accent">.</span>
-        </a>
+        <Logo />
         <nav className="header-nav" aria-label="Sections">
           {LINKS.map((link) => (
             <a key={link.id} href={`#${link.id}`} aria-current={active === link.id ? "true" : undefined}>

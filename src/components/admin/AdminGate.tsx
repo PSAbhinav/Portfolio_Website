@@ -1,5 +1,7 @@
 "use client";
 
+import Logo from "@/components/Logo";
+
 import { useState, type FormEvent } from "react";
 
 export type GateStage = "loading" | "setup" | "signin" | "enroll" | "verify" | "recovery" | "error";
@@ -196,9 +198,7 @@ export default function AdminGate(props: GateProps) {
   return (
     <main className="studio-gate">
       <header className="studio-gate-header">
-        <a href="/" className="studio-wordmark">
-          abhinav<span className="studio-wordmark-dot">.</span>
-        </a>
+        <Logo href="/" size="small" className="studio-brand" />
         <span className="eyebrow">Private studio</span>
       </header>
 

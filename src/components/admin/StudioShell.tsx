@@ -1,5 +1,7 @@
 "use client";
 
+import Logo from "@/components/Logo";
+
 import { useEffect, useState } from "react";
 import type { PortfolioContent } from "@/lib/content-schema";
 import ContentEditor, { SECTIONS, type SectionKey, type Value } from "./ContentEditor";
@@ -95,9 +97,7 @@ export default function StudioShell({ onSignOut, signingOut }: { onSignOut: () =
   return (
     <div className="studio-shell">
       <aside className="studio-sidebar">
-        <a href="/" className="studio-wordmark">
-          abhinav<span className="studio-wordmark-dot">.</span>
-        </a>
+        <Logo href="/" size="small" className="studio-brand" />
         <span className="eyebrow">Private studio</span>
         <nav className="studio-nav" aria-label="Studio sections">
           {TABS.map((item) => (
