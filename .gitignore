@@ -48,3 +48,4 @@ next-env.d.ts
 
 # launch video renders (large binaries)
 /brag-output*/
+/video-output*/
