@@ -13,7 +13,7 @@
   "now_title": "What I build at rTask.ai, explained.",
   "work_eyebrow": "02 / Work",
   "work_title": "Everything I’ve built, in one pass.",
-  "work_lede": "Eight projects. Scroll sideways, or switch to the grid.",
+  "work_lede": "",
   "credentials_eyebrow": "03 / Credentials",
   "credentials_title": "Verified, not self-declared.",
   "credentials_verify": "Verify",
@@ -43,9 +43,10 @@
   "search_empty": "No matches. Try “AI”, “React”, or “contact”.",
   "theme_light": "Switch to light theme",
   "theme_dark": "Switch to dark theme",
-  "now_lede": "Scroll through three problems the product had to solve. Each diagram moves with you.",
   "work_grid": "Grid view",
   "work_reel": "Reel view",
   "credentials_view": "View",
-  "contact_success": "Message received. I’ll reply by email."
+  "contact_success": "Message received. I’ll reply by email.",
+  "hero_cta_tour": "Watch the 24-second tour",
+  "tour_title": "A 24-second tour of this site"
 }

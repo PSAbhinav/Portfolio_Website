@@ -76,6 +76,11 @@ export const Mail = (p: IconProps) => (
     <path d="m3 7 9 6 9-6" />
   </Icon>
 );
+export const Play = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M7 5v14l11-7z" />
+  </Icon>
+);
 export const Check = (p: IconProps) => (
   <Icon {...p}>
     <path d="m5 12 4 4L19 6" />

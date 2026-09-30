@@ -49,7 +49,6 @@ export default function FieldGuide() {
           <h2 id="now-title" className="display-2">
             {copy("now_title", "What I build at rTask.ai, explained.")}
           </h2>
-          <p className="lede">{copy("now_lede", "Scroll through three problems the product had to solve. Each diagram moves with you.")}</p>
         </div>
         <div className="guide-role">
           <dl>

@@ -151,7 +151,7 @@ export default function Gallery() {
             {copy("work_title", "Everything I’ve built, in one pass.")}
           </h2>
           <div className="gallery-tools">
-            <p className="lede">{copy("work_lede", "Eight projects. Scroll sideways, or switch to the grid.")}</p>
+            {copy("work_lede", "") ? <p className="lede">{copy("work_lede", "")}</p> : <span />}
             {reelCapable && (
               <div className="gallery-toggle" role="group" aria-label="Layout">
                 <button type="button" className="chip" aria-pressed={mode === "reel"} onClick={() => setMode("reel")}>
@@ -175,7 +175,7 @@ export default function Gallery() {
             <span className="reel-progress" aria-hidden="true">
               <span ref={bar} />
             </span>
-            <span className="eyebrow">Scroll to move</span>
+            <span className="mono muted">{String(projects.length).padStart(2, "0")}</span>
           </div>
           <div className="reel-track" ref={track}>
             {projects.map((project, index) => (
