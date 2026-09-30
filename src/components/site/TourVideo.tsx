@@ -41,7 +41,7 @@ export default function TourVideo() {
               <Close size={16} />
             </button>
           </div>
-          <video ref={video} controls preload="none" poster="/video/tour.jpg" playsInline width={1920} height={1080}>
+          <video ref={video} controls preload="none" poster="/video/tour.jpg" playsInline width={3840} height={2160}>
             <source src="/video/tour.mp4" type="video/mp4" />
           </video>
         </div>
