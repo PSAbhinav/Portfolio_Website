@@ -37,8 +37,16 @@ export default function RetrievalExplainer({ progress }: { progress: number }) {
       {/* Query */}
       <g className="ex-ink">
         <text x="40" y="52" className="ex-eyebrow">QUERY</text>
-        <rect x="40" y="64" width="330" height="34" className="ex-box" />
-        <text x="52" y="87" className="ex-mono">{QUERY.slice(0, Math.round(QUERY.length * Math.min(1, progress * 4 + 0.2)))}</text>
+        <rect x="40" y="64" width="340" height="34" className="ex-box" />
+        {/* textLength pins the glyph run to the box regardless of which font the visitor's browser resolves. */}
+        {(() => {
+          const shown = Math.round(QUERY.length * Math.min(1, progress * 4 + 0.2));
+          return (
+            <text x="52" y="87" className="ex-mono" textLength={(316 * shown) / QUERY.length} lengthAdjust="spacingAndGlyphs">
+              {QUERY.slice(0, shown)}
+            </text>
+          );
+        })()}
       </g>
 
       {/* Sparse lane */}
@@ -70,17 +78,19 @@ export default function RetrievalExplainer({ progress }: { progress: number }) {
 
       {/* Fused ranking */}
       <g>
-        <text x="390" y="136" className="ex-eyebrow">FUSED RANKING · MILVUS · 92 COLLECTIONS</text>
+        <text x="390" y="136" className="ex-eyebrow">FUSED RANKING · MILVUS</text>
         {RESULTS.map(([title, score], index) => {
           const t = stage(fused, index * 0.15, index * 0.15 + 0.4);
           const y = 160 + index * 52;
           return (
             <g key={title} style={{ opacity: t }} transform={`translate(${(1 - t) * 24} 0)`}>
               <text x="390" y={y + 6} className="ex-mono ex-small">0{index + 1}</text>
-              <text x="416" y={y + 6} className="ex-body">{title}</text>
+              <text x="416" y={y + 6} className="ex-body" textLength={Math.min(236, title.length * 6.4)} lengthAdjust="spacingAndGlyphs">
+                {title}
+              </text>
               <rect x="416" y={y + 16} width="240" height="3" className="ex-track" />
               <rect x="416" y={y + 16} width={240 * score * t} height="3" className="ex-fill" />
-              <text x="700" y={y + 6} textAnchor="end" className="ex-mono ex-small">{score.toFixed(2)}</text>
+              <text x="688" y={y + 6} textAnchor="end" className="ex-mono ex-small">{score.toFixed(2)}</text>
             </g>
           );
         })}
