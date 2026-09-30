@@ -57,7 +57,7 @@ export const projectSchema = z
     summary: z.string().max(200),
     description: text,
     image,
-    github: https,
+    github: optionalHttps,
     demo: optionalHttps,
     tags: z.array(short).max(12),
     featured: z.boolean(),
@@ -83,6 +83,36 @@ export const certificationSchema = z
     date: yearMonth,
     url: credentialLink,
     score: optional,
+  })
+  .strict();
+
+const hex = z.string().regex(/^#[0-9a-fA-F]{6}$/, "Use a six-digit hex colour like #B8391F");
+
+// The seven tokens every colour on the site and in the background derives from.
+export const paletteSchema = z
+  .object({ paper: hex, paper2: hex, ink: hex, ink2: hex, rule: hex, signal: hex, signalInk: hex })
+  .strict();
+
+export const settingsSchema = z
+  .object({
+    // Follow the visitor's clock: paper by day, ink by night. A visitor's own
+    // toggle choice always wins over this.
+    daylightMode: z.boolean(),
+    defaultMode: z.enum(["light", "dark"]),
+    dayStartsAt: z.number().int().min(0).max(23),
+    nightStartsAt: z.number().int().min(0).max(23),
+    palette: z.object({ light: paletteSchema, dark: paletteSchema }).strict(),
+    showIntro: z.boolean(),
+    showCursor: z.boolean(),
+    film: z
+      .object({
+        enabled: z.boolean(),
+        src: z.string().max(2000),
+        poster: z.string().max(2000),
+        title: short,
+        caption: optional,
+      })
+      .strict(),
   })
   .strict();
 
@@ -126,6 +156,7 @@ export const contentSchema = z
     skillGroups: z.array(skillGroupSchema).min(1).max(10),
     certifications: z.array(certificationSchema).max(30),
     education: z.array(educationSchema).max(30),
+    settings: settingsSchema,
     copy: z.record(z.string().max(100), z.string().max(3000)),
   })
   .strict();
@@ -137,3 +168,5 @@ export type Highlight = z.infer<typeof highlightSchema>;
 export type Certification = z.infer<typeof certificationSchema>;
 export type SkillGroup = z.infer<typeof skillGroupSchema>;
 export type Education = z.infer<typeof educationSchema>;
+export type Palette = z.infer<typeof paletteSchema>;
+export type Settings = z.infer<typeof settingsSchema>;

@@ -1,5 +1,5 @@
 "use client";
-import { useCopy } from "@/components/PortfolioContext";
+import { useCopy, usePortfolio } from "@/components/PortfolioContext";
 import Header from "@/components/site/Header";
 import Hero from "@/components/site/Hero";
 import FieldGuide from "@/components/site/FieldGuide";
@@ -19,15 +19,16 @@ import Intro from "@/components/motion/Intro";
 // project once, what proves it, who I am, what I use, how I got here, contact.
 export default function Portfolio() {
   const copy = useCopy();
+  const { settings } = usePortfolio();
   return (
     <>
       <a className="skip-link" href="#main">
         {copy("skip_to_content", "Skip to content")}
       </a>
-      <Intro />
+      {settings.showIntro && <Intro />}
       <SignalCanvas />
       <Choreography />
-      <Cursor />
+      {settings.showCursor && <Cursor />}
       <Header />
       <main id="main">
         <Hero />

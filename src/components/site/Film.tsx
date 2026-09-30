@@ -15,17 +15,32 @@ export default function Film({ src, poster, title, caption }: Props) {
   useEffect(() => {
     const node = video.current;
     if (!node || reduced) return;
+    // React does not always emit the muted attribute on the server, and browsers
+    // only allow autoplay for media that is muted before play() is called.
+    node.muted = true;
+    node.defaultMuted = true;
+    const tryPlay = () => node.play().catch(() => {});
+    // If the browser still refuses, the first gesture anywhere on the page starts it.
+    const onGesture = () => {
+      if (node.paused && node.getBoundingClientRect().top < window.innerHeight) tryPlay();
+    };
+    window.addEventListener("pointerdown", onGesture, { once: true });
+    window.addEventListener("keydown", onGesture, { once: true });
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) node.play().catch(() => {});
+          if (entry.isIntersecting) tryPlay();
           else node.pause();
         });
       },
       { threshold: 0.35 },
     );
     observer.observe(node);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("pointerdown", onGesture);
+      window.removeEventListener("keydown", onGesture);
+    };
   }, [reduced]);
 
   function toggle() {
@@ -43,6 +58,7 @@ export default function Film({ src, poster, title, caption }: Props) {
         src={src}
         poster={poster}
         muted
+        autoPlay={!reduced}
         loop
         playsInline
         preload="metadata"

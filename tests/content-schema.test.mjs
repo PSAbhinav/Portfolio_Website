@@ -22,8 +22,10 @@ test("project slugs must be kebab-case", () => {
   assert.equal(contentSchema.safeParse(bad).success, false);
 });
 
-test("exactly three projects are featured by default", () => {
-  assert.equal(defaultContent.projects.filter((p) => p.featured).length, 3);
+test("QTrack leads the projects and settings carry both palettes", () => {
+  assert.equal(defaultContent.projects[0].slug, "qtrack");
+  assert.ok(defaultContent.settings.palette.light.paper && defaultContent.settings.palette.dark.paper);
+  assert.equal(contentSchema.safeParse({ ...defaultContent, settings: { ...defaultContent.settings, palette: { ...defaultContent.settings.palette, light: { ...defaultContent.settings.palette.light, signal: "red" } } } }).success, false);
 });
 
 test("Anthropic certifications come first", () => {

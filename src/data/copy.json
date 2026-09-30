@@ -36,17 +36,14 @@
   "send_message": "Send message",
   "open_this_message_in_your_email_app": "Open this message in your email app",
   "footer_tagline": "Built with curiosity, tested before shipping.",
-  "privacy": "Privacy",
   "search_placeholder": "Search projects and sections…",
   "search_title": "Find your way around",
   "search_help": "↑ ↓ to move · Enter to open · Esc to close",
   "search_empty": "No matches. Try “AI”, “React”, or “contact”.",
-  "theme_light": "Switch to light theme",
-  "theme_dark": "Switch to dark theme",
   "work_grid": "Grid view",
   "work_reel": "Reel view",
   "credentials_view": "View",
   "contact_success": "Message received. I’ll reply by email.",
-  "film_title": "How an AI helpdesk answers in under a second",
-  "film_caption": "Silent · 27 s · loops"
+  "theme_light": "Switch to paper (light)",
+  "theme_dark": "Switch to ink (dark)"
 }

@@ -70,12 +70,33 @@ export const experience: PortfolioContent["experience"] = [
     start: "2026-04",
     end: "2026-07",
     summary:
-      "Designed and executed test cases for the KPI and OKR set-up modules, then built a Playwright (TypeScript) regression framework with fixtures, page objects and a ten-suite KPI pack.",
-    highlights: [],
+      "Tested the KPI and OKR set-up modules, built a Playwright (TypeScript) regression framework with a ten-suite KPI pack, and replaced the daily manual status reports with QTrack, a test-tracking dashboard I built alone and the company now uses.",
+    highlights: [
+      {
+        label: "01 / QTrack",
+        metric: "Every test, every owner, one dashboard",
+        detail:
+          "Built QTrack end to end as a QA intern: a role-based test-tracking dashboard that replaced hand-written status updates. Deployed at qtrack.ramcouat.com and used daily by the testing teams.",
+        visual: "none",
+      },
+    ],
   },
 ];
 
 export const projects: PortfolioContent["projects"] = [
+  {
+    slug: "qtrack",
+    title: "QTrack — QA tracking dashboard",
+    summary: "One dashboard for every test the team runs, with roles. Built alone as a QA intern; live at Ramco.",
+    description:
+      "As a QA intern I was reporting test status by hand every day, so I built the fix: QTrack, a test-tracking dashboard with role-based access where every suite, run, owner and outcome lives in one place. Designed, built and deployed it end to end on my own; the testing teams at Ramco use it daily. I also automated its first screen with Playwright before moving to the RXD team.",
+    image: "/projects/qtrack.webp",
+    github: "",
+    demo: "https://qtrack.ramcouat.com/",
+    tags: ["QA tooling", "Role-based access", "Deployed at Ramco"],
+    featured: true,
+    year: "2026",
+  },
   {
     slug: "stockpro",
     title: "StockPro — AI Stock Dashboard",
@@ -280,6 +301,26 @@ export const education: PortfolioContent["education"] = [
   },
 ];
 
+export const settings: PortfolioContent["settings"] = {
+  daylightMode: true,
+  defaultMode: "light",
+  dayStartsAt: 6,
+  nightStartsAt: 19,
+  palette: {
+    light: { paper: "#F6F1E8", paper2: "#EFE8DC", ink: "#16140F", ink2: "#5B564B", rule: "#D9D1C2", signal: "#B8391F", signalInk: "#FFF7F2" },
+    dark: { paper: "#12110F", paper2: "#1A1816", ink: "#EFE9DE", ink2: "#A69F91", rule: "#2B2825", signal: "#FF6A45", signalInk: "#1A0C08" },
+  },
+  showIntro: true,
+  showCursor: true,
+  film: {
+    enabled: true,
+    src: "/video/helpdesk.mp4",
+    poster: "/video/helpdesk.jpg",
+    title: "How an AI helpdesk answers in under a second",
+    caption: "Silent · 27 s · loops",
+  },
+};
+
 export const defaultContent: PortfolioContent = {
   profile,
   contactEmail,
@@ -289,5 +330,6 @@ export const defaultContent: PortfolioContent = {
   skillGroups,
   certifications,
   education,
+  settings,
   copy,
 };

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Portfolio from "@/components/Portfolio";
+import ThemeBoot from "@/components/ThemeBoot";
 import { PortfolioProvider } from "@/components/PortfolioContext";
 import { adminOwner } from "@/lib/admin/access";
 import { getDraft } from "@/lib/content-store";
@@ -21,6 +22,7 @@ export default async function DraftPreview() {
 
   return (
     <PortfolioProvider content={draft}>
+      <ThemeBoot content={draft} />
       <div className="studio-draft-banner" role="note">
         <span className="eyebrow">Private draft</span>
         <span>Not published. Only you can see this preview.</span>

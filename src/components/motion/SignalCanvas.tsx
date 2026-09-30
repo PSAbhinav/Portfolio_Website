@@ -43,7 +43,17 @@ void main() {
   float aspect = uRes.x / uRes.y;
   vec2 p = vec2(uv.x * aspect, uv.y);
 
-  // Base field: horizontal hairlines, gently undulating.
+  // Two slow washes of colour drift behind everything: one in ink, one in
+  // the signal colour. They give the paper depth without competing with text.
+  vec2 w1 = vec2(0.72 * aspect + 0.18 * sin(uTime * 0.07), 0.62 + 0.14 * cos(uTime * 0.05));
+  vec2 w2 = vec2(0.30 * aspect + 0.20 * cos(uTime * 0.04 + 2.0), 0.25 + 0.16 * sin(uTime * 0.06 + 1.0));
+  float wash1 = exp(-pow(distance(p, w1), 2.0) * 2.2);
+  float wash2 = exp(-pow(distance(p, w2), 2.0) * 3.0);
+  vec3 color = uPaper;
+  color = mix(color, uSignal, wash1 * (0.045 + 0.05 * uWarmth));
+  color = mix(color, uInk, wash2 * 0.035);
+
+  // The field: horizontal hairlines, gently undulating.
   float lines = 30.0;
   float f = p.y * lines;
   f += 0.9 * fbm(p * 1.4 + vec2(uTime * 0.03, uTime * 0.02));
@@ -65,10 +75,17 @@ void main() {
   vec3 lineColor = mix(uInk, uSignal, accent * (0.45 + 0.55 * uWarmth));
   float alpha = line * (0.16 + 0.12 * uWarmth) * (0.7 + 0.5 * accent);
 
+  // A pulse travels along the accent lines every few seconds: a signal passing.
+  float phase = fract(uTime * 0.12 + id * 0.37);
+  float head = fract(phase * 1.6);
+  float pulse = accent * line * exp(-pow((uv.x - head) * 9.0, 2.0)) * step(phase, 0.62);
+  alpha += pulse * 0.55;
+  lineColor = mix(lineColor, uSignal, pulse);
+
   // Fade the field toward the left so copy stays effortless to read.
   alpha *= smoothstep(0.05, 0.5, uv.x) * 0.85 + 0.15;
 
-  vec3 color = mix(uPaper, lineColor, alpha);
+  color = mix(color, lineColor, clamp(alpha, 0.0, 1.0));
   // Paper grain.
   color += (hash(gl_FragCoord.xy + uTime) - 0.5) * 0.018;
   outColor = vec4(color, 1.0);
@@ -106,8 +123,12 @@ export default function SignalCanvas() {
       gl.attachShader(program, compile(gl.VERTEX_SHADER, VERTEX));
       gl.attachShader(program, compile(gl.FRAGMENT_SHADER, FRAGMENT));
       gl.linkProgram(program);
-      if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw new Error("link");
-    } catch {
+      if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(program) || "link");
+    } catch (error) {
+      // Without a working program the opaque canvas would paint black, so hide
+      // it and let the paper background show instead.
+      console.warn("Signal background disabled:", error instanceof Error ? error.message : error);
+      node.style.display = "none";
       return;
     }
     gl.useProgram(program);

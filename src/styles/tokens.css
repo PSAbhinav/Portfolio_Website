@@ -35,6 +35,9 @@
   color-scheme: light;
 }
 
+/* Palettes are emitted per page by ThemeBoot from the content model. */
+
+/* Fallback palettes for pages without ThemeBoot; the studio's palettes override these. */
 [data-theme="dark"] {
   --paper: #12110f;
   --paper-2: #1a1816;

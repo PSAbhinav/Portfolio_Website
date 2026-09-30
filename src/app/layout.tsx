@@ -4,7 +4,6 @@ import "@fontsource-variable/inter-tight";
 import "@fontsource-variable/jetbrains-mono";
 import "./globals.css";
 import { defaultContent } from "@/data/portfolio";
-import { THEME_SCRIPT } from "@/lib/theme";
 
 export const metadata: Metadata = {
   title: defaultContent.profile.metadataTitle,
@@ -15,7 +14,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
         {children}
       </body>
     </html>

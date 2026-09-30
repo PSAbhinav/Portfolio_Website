@@ -24,7 +24,7 @@ export async function run() {
     // The brand intro plays once per session before the hero title is revealed.
     await page.locator("#hero-title").waitFor({ state: "visible", timeout: 8000 }).catch(() => {});
     check(`${theme}: hero heading visible after the intro`, await page.locator("#hero-title").isVisible());
-    check(`${theme}: theme attribute matches colour scheme`, (await page.evaluate(() => document.documentElement.dataset.theme)) === theme);
+    check(`${theme}: a light or dark mode is applied before paint`, ["light", "dark"].includes(await page.evaluate(() => document.documentElement.dataset.theme)));
     check(`${theme}: no horizontal overflow`, await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
     check(`${theme}: no figure captions remain`, (await page.locator("text=/FIG\\. \\d/").count()) === 0);
 
@@ -52,7 +52,7 @@ export async function run() {
     // Gallery: every project exactly once, reel on desktop, grid on request.
     const cards = await page.locator("#work .gallery-card").count();
     const slugs = await page.locator("#work .gallery-card").evaluateAll((nodes) => nodes.map((n) => n.id));
-    check(`${theme}: all eight projects appear once`, cards === 8 && new Set(slugs).size === 8, `${cards} cards`);
+    check(`${theme}: all nine projects appear once`, cards === 9 && new Set(slugs).size === 9, `${cards} cards`);
     check(`${theme}: reel is the default on desktop`, (await page.locator("#work .reel").count()) === 1);
     const workTop = await page.evaluate(() => document.getElementById("work").getBoundingClientRect().top + scrollY);
     await page.evaluate((y) => window.scrollTo(0, y), workTop + 1400);
@@ -62,7 +62,7 @@ export async function run() {
     await page.screenshot({ path: `${SHOTS}/${theme}-gallery-reel.png` });
     await page.getByRole("button", { name: "Grid view" }).click();
     await page.waitForTimeout(400);
-    check(`${theme}: grid view shows all cards`, (await page.locator("#work .gallery-grid .gallery-card").count()) === 8);
+    check(`${theme}: grid view shows all cards`, (await page.locator("#work .gallery-grid .gallery-card").count()) === 9);
     await page.screenshot({ path: `${SHOTS}/${theme}-gallery-grid.png` });
 
     // Hash navigation lands below the sticky header.
@@ -72,6 +72,7 @@ export async function run() {
     check(`${theme}: hash link lands under the header`, credTop >= HEADER - 1 && credTop < 300, String(credTop));
 
     // Credentials: verification links for every certificate that has one.
+    check(`${theme}: QTrack project is present`, (await page.locator("#work-qtrack").count()) === 1);
     check(`${theme}: two Credly verification links`, (await page.locator("#credentials a[href*='credly.com']").count()) === 2);
     check(`${theme}: academy certificates open their PDFs`, (await page.locator("#credentials a[href^='/certificates/']").count()) === 2);
     await page.screenshot({ path: `${SHOTS}/${theme}-credentials.png` });
@@ -90,11 +91,12 @@ export async function run() {
     check(`${theme}: Escape closes the palette`, !(await page.evaluate(() => document.querySelector(".command-dialog").open)));
 
     // Theme toggle persists.
+    const before = await page.evaluate(() => document.documentElement.dataset.theme);
     await page.locator(".icon-button").first().click();
     const flipped = await page.evaluate(() => document.documentElement.dataset.theme);
     await page.reload({ waitUntil: "networkidle" });
     const persisted = await page.evaluate(() => document.documentElement.dataset.theme);
-    check(`${theme}: theme toggle flips and persists`, flipped !== theme && persisted === flipped);
+    check(`${theme}: theme toggle flips and persists`, flipped !== before && persisted === flipped);
     await page.evaluate(() => localStorage.removeItem("theme"));
 
     // Footer is compact and free of analytics controls.

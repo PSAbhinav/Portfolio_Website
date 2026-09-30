@@ -50,7 +50,7 @@ function Chapter({ highlight, index }: { highlight: Highlight; index: number }) 
 }
 
 export default function FieldGuide() {
-  const { experience } = usePortfolio();
+  const { experience, settings } = usePortfolio();
   const copy = useCopy();
   const current = experience[0];
   if (!current) return null;
@@ -87,12 +87,9 @@ export default function FieldGuide() {
           </dl>
           <p className="guide-summary">{current.summary}</p>
         </div>
-        <Film
-          src="/video/helpdesk.mp4"
-          poster="/video/helpdesk.jpg"
-          title={copy("film_title", "How an AI helpdesk answers in under a second")}
-          caption={copy("film_caption", "Silent · 27 s · loops")}
-        />
+        {settings.film.enabled && settings.film.src && (
+          <Film src={settings.film.src} poster={settings.film.poster} title={settings.film.title} caption={settings.film.caption} />
+        )}
         <div className="guide-chapters">
           {current.highlights.map((highlight, index) => (
             <Chapter key={highlight.label} highlight={highlight} index={index} />

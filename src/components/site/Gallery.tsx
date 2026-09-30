@@ -44,9 +44,11 @@ function Card({ project, index, total, priority }: { project: Project; index: nu
             ))}
           </ul>
           <div className="case-links">
-            <a href={project.github} className="text-link" target="_blank" rel="noopener noreferrer">
-              <Github size={16} /> GitHub <ArrowUpRight size={14} />
-            </a>
+            {project.github && (
+              <a href={project.github} className="text-link" target="_blank" rel="noopener noreferrer">
+                <Github size={16} /> GitHub <ArrowUpRight size={14} />
+              </a>
+            )}
             {project.demo && (
               <a href={project.demo} className="text-link" target="_blank" rel="noopener noreferrer">
                 Live <ArrowUpRight size={14} />

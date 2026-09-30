@@ -35,8 +35,8 @@ export default function CommandMenu() {
       id: project.slug,
       label: project.title,
       hint: project.tags.join(" · "),
-      href: project.featured ? `#work-${project.slug}` : project.github,
-      external: !project.featured,
+      href: project.featured ? `#work-${project.slug}` : project.github || project.demo || "#work",
+      external: !project.featured && Boolean(project.github || project.demo),
     }));
     const all = [...sections, ...projectResults];
     if (!needle) return all.slice(0, 10);

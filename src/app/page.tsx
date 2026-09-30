@@ -3,6 +3,7 @@ import { cache } from "react";
 import Portfolio from "@/components/Portfolio";
 import { PortfolioProvider } from "@/components/PortfolioContext";
 import Analytics from "@/components/Analytics";
+import ThemeBoot from "@/components/ThemeBoot";
 import { getPublishedContent as loadPublishedContent } from "@/lib/content-store";
 
 export const dynamic = "force-dynamic";
@@ -29,6 +30,7 @@ export default async function Home() {
   const content = await getPublishedContent();
   return (
     <PortfolioProvider content={content}>
+      <ThemeBoot content={content} />
       <Portfolio />
       <Analytics />
     </PortfolioProvider>

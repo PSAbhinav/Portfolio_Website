@@ -21,6 +21,7 @@ export const SECTIONS: Record<SectionKey, { label: string; description: string }
     description: "Badges in the Credentials section. Add a verify URL and a score when you have them.",
   },
   education: { label: "Education", description: "Entries merged into the Journey timeline." },
+  settings: { label: "Settings", description: "Daylight mode and its hours, the two palettes, the brand intro, the signal cursor, and the Field guide film." },
   copy: { label: "Interface copy", description: "Headings, labels and introductions used across the site." },
 };
 
@@ -33,6 +34,21 @@ const LABELS: Record<string, string> = {
   metadataTitle: "Browser title",
   metadataDescription: "Search description",
   contactEmail: "Contact email",
+  paper: "Paper (background)",
+  paper2: "Paper 2 (raised surfaces)",
+  ink: "Ink (text)",
+  ink2: "Ink 2 (secondary text)",
+  rule: "Rule (hairlines)",
+  signal: "Signal (accent)",
+  signalInk: "Text on signal",
+  daylightMode: "Follow the visitor's clock",
+  defaultMode: "Default when daylight mode is off",
+  dayStartsAt: "Paper from (hour, 0-23)",
+  nightStartsAt: "Ink from (hour, 0-23)",
+  showIntro: "Show the brand intro",
+  showCursor: "Show the signal cursor",
+  src: "Video file",
+  poster: "Poster image",
 };
 
 const ITEM_LABELS: Record<string, string> = {
@@ -61,6 +77,8 @@ const HINTS: Record<string, string> = {
   metric: "The large figure line, e.g. 92/92 collections · 0 failures.",
   summary: "One or two sentences.",
   note: "One line on where you use it.",
+  defaultMode: "light or dark.",
+  src: "Path under /public (e.g. /video/helpdesk.mp4) or an uploaded file URL.",
 };
 
 // Templates for adding the first item to an empty list.
@@ -278,13 +296,18 @@ function TextField({ fieldKey, label, value, onChange }: Omit<EditorProps, "valu
         {long ? (
           <textarea className="studio-input" rows={4} value={text} aria-describedby={describedBy} onChange={handleChange} />
         ) : (
-          <input
-            className="studio-input"
-            type={typeof value === "number" ? "number" : "text"}
-            value={text}
-            aria-describedby={describedBy}
-            onChange={handleChange}
-          />
+          <span className="studio-inline">
+            {/^#[0-9a-fA-F]{6}$/.test(text) && (
+              <input type="color" className="studio-color" value={text} aria-label={`${label} colour`} onChange={handleChange} />
+            )}
+            <input
+              className="studio-input"
+              type={typeof value === "number" ? "number" : "text"}
+              value={text}
+              aria-describedby={describedBy}
+              onChange={handleChange}
+            />
+          </span>
         )}
       </label>
       <Hint fieldKey={fieldKey} id={hintId} />

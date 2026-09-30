@@ -47,7 +47,7 @@ export default function Header() {
           ))}
         </nav>
         <div className="header-tools">
-          <ThemeToggle labelLight={copy("theme_light", "Switch to light theme")} labelDark={copy("theme_dark", "Switch to dark theme")} />
+          <ThemeToggle />
           <CommandMenu />
           <a href="#contact" className="button button-ghost header-cta">
             {copy("nav_contact", "Let’s talk")}

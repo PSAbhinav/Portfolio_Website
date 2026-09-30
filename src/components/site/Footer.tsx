@@ -20,9 +20,6 @@ export default function Footer() {
           <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
             <Linkedin size={18} />
           </a>
-          <a href="/privacy" className="mono">
-            {copy("privacy", "Privacy")}
-          </a>
         </div>
       </div>
     </footer>
