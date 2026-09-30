@@ -20,6 +20,11 @@ export default function Credentials() {
         <ul className="badge-grid">
           {certifications.map((certification, index) => {
             const primary = /anthropic/i.test(certification.issuer) && certification.url;
+            // Older snapshots kept the PDF in `url`; never show the same document twice.
+            const verifyUrl =
+              certification.url && certification.url !== certification.file && !(certification.file && certification.url.startsWith("/certificates/"))
+                ? certification.url
+                : "";
             return (
               <li key={certification.title + certification.date} className={`badge ${primary ? "badge-primary" : ""}`}>
                 <div className="badge-top">
@@ -41,9 +46,9 @@ export default function Credentials() {
                         {copy("credentials_view", "View")} <ArrowUpRight size={14} />
                       </a>
                     )}
-                    {certification.url && (
-                      <a href={certification.url} className="text-link" target="_blank" rel="noopener noreferrer">
-                        {/credly\.com/.test(certification.url) ? copy("credentials_verify", "Verify") : copy("credentials_view", "View")} <ArrowUpRight size={14} />
+                    {verifyUrl && (
+                      <a href={verifyUrl} className="text-link" target="_blank" rel="noopener noreferrer">
+                        {/credly\.com/.test(verifyUrl) ? copy("credentials_verify", "Verify") : copy("credentials_view", "View")} <ArrowUpRight size={14} />
                       </a>
                     )}
                   </span>
