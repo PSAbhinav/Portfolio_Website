@@ -31,3 +31,7 @@ CREATE TABLE IF NOT EXISTS contact_inbox (
 ALTER TABLE admin_totp ADD COLUMN IF NOT EXISTS recovery_hashes jsonb NOT NULL DEFAULT '[]'::jsonb;
 ALTER TABLE contact_inbox ADD COLUMN IF NOT EXISTS error text NOT NULL DEFAULT '';
 ALTER TABLE content_history ADD COLUMN IF NOT EXISTS revision integer NOT NULL DEFAULT 0;
+
+CREATE TABLE IF NOT EXISTS admin_settings (
+ key text PRIMARY KEY, value text NOT NULL, updated_at timestamptz NOT NULL DEFAULT NOW()
+);

@@ -1,4 +1,5 @@
 "use client";
+import { numbered } from "@/lib/format";
 import Image from "next/image";
 import { useCopy, usePortfolio } from "@/components/PortfolioContext";
 import Reveal from "@/components/motion/Reveal";
@@ -19,7 +20,7 @@ export default function About() {
           </figcaption>
         </Reveal>
         <div className="about-body">
-          <span className="eyebrow">{copy("about_eyebrow", "04 / Field notes")}</span>
+          <span className="eyebrow">{numbered(copy("about_eyebrow", "04 / Field notes"), 1)}</span>
           <h2 id="about-title" className="display-2">
             {copy("about_title", "The person behind the commits.")}
           </h2>

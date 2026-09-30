@@ -1,4 +1,5 @@
 "use client";
+import { numbered } from "@/lib/format";
 import { useCopy, usePortfolio } from "@/components/PortfolioContext";
 import Reveal from "@/components/motion/Reveal";
 
@@ -10,7 +11,7 @@ export default function Toolkit() {
     <section id="toolkit" className="section toolkit" aria-labelledby="toolkit-title">
       <div className="shell">
         <div className="section-head">
-          <span className="eyebrow">{copy("toolkit_eyebrow", "05 / Toolkit")}</span>
+          <span className="eyebrow">{numbered(copy("toolkit_eyebrow", "05 / Toolkit"), 5)}</span>
           <h2 id="toolkit-title" className="display-2">
             {copy("toolkit_title", "Tools, and what I use them for.")}
           </h2>

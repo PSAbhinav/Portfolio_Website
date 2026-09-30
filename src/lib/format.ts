@@ -17,3 +17,10 @@ export function startYear(value: string): number {
   const match = /(\d{4})/.exec(value);
   return match ? Number(match[1]) : 0;
 }
+
+// "03 / Credentials" → "01 / Credentials": the number follows the section's
+// real position in the page, whatever the stored copy says.
+export function numbered(text: string, position: number): string {
+  const label = text.replace(/^\s*\d+\s*\/\s*/, "");
+  return `${String(position).padStart(2, "0")} / ${label}`;
+}

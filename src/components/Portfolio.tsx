@@ -32,10 +32,10 @@ export default function Portfolio() {
       <Header />
       <main id="main">
         <Hero />
+        <About />
         <FieldGuide />
         <Gallery />
         <Credentials />
-        <About />
         <Toolkit />
         <Journey />
         <Contact />

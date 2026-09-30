@@ -1,7 +1,7 @@
 "use client";
 import { useCopy, usePortfolio } from "@/components/PortfolioContext";
 import Reveal from "@/components/motion/Reveal";
-import { formatRange, startYear } from "@/lib/format";
+import { formatRange, startYear, numbered } from "@/lib/format";
 
 type Entry = { key: string; when: string; sortKey: number; title: string; place: string; text: string; kind: "work" | "study" };
 
@@ -34,7 +34,7 @@ export default function Journey() {
     <section id="journey" className="section journey" aria-labelledby="journey-title">
       <div className="shell">
         <div className="section-head">
-          <span className="eyebrow">{copy("journey_eyebrow", "06 / Journey")}</span>
+          <span className="eyebrow">{numbered(copy("journey_eyebrow", "06 / Journey"), 6)}</span>
           <h2 id="journey-title" className="display-2">
             {copy("journey_title", "How I got here.")}
           </h2>

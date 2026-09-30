@@ -1,4 +1,5 @@
 "use client";
+import { numbered } from "@/lib/format";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useCopy, usePortfolio } from "@/components/PortfolioContext";
@@ -148,7 +149,7 @@ export default function Gallery() {
     <section id="work" className="section gallery" aria-labelledby="work-title">
       <div className="shell">
         <div className="section-head">
-          <span className="eyebrow">{copy("work_eyebrow", "02 / Work")}</span>
+          <span className="eyebrow">{numbered(copy("work_eyebrow", "02 / Work"), 3)}</span>
           <h2 id="work-title" className="display-2">
             {copy("work_title", "Everything I’ve built, in one pass.")}
           </h2>

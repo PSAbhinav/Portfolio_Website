@@ -7,7 +7,7 @@ import RetrievalExplainer from "@/components/guide/RetrievalExplainer";
 import RoutingExplainer from "@/components/guide/RoutingExplainer";
 import ConnectorsExplainer from "@/components/guide/ConnectorsExplainer";
 import type { Highlight } from "@/lib/content-schema";
-import { formatRange } from "@/lib/format";
+import { formatRange, numbered } from "@/lib/format";
 
 // Wraps whole numbers so the choreography can count them up on entry.
 function countable(text: string) {
@@ -58,7 +58,7 @@ export default function FieldGuide() {
     <section id="now" className="section guide" aria-labelledby="now-title">
       <div className="shell">
         <div className="section-head">
-          <span className="eyebrow">{copy("now_eyebrow", "01 / Field guide")}</span>
+          <span className="eyebrow">{numbered(copy("now_eyebrow", "01 / Field guide"), 2)}</span>
           <h2 id="now-title" className="display-2">
             {copy("now_title", "What I build at rTask.ai, explained.")}
           </h2>

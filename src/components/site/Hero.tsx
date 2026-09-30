@@ -3,7 +3,6 @@ import { useCopy, usePortfolio } from "@/components/PortfolioContext";
 import { ArrowDown, ArrowUpRight } from "@/components/Icons";
 import HelpdeskStory from "@/components/site/HelpdeskStory";
 import RotatingWords from "@/components/site/RotatingWords";
-import ProofTicker from "@/components/site/ProofTicker";
 
 export default function Hero() {
   const { profile, settings } = usePortfolio();
@@ -61,7 +60,6 @@ export default function Hero() {
           </a>
         </div>
       </div>
-      <ProofTicker items={copy("proof_points", "").split("|").map((w) => w.trim()).filter(Boolean)} />
     </section>
   );
 }

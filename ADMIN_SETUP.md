@@ -103,3 +103,7 @@ Then `npm run dev` and open http://localhost:3111/admin.
 - `ADMIN_DEV_BYPASS=true` skips the passphrase with a synthetic owner session. The authenticator step is still required, so enrolment, verification and recovery codes are tested for real. To test the passphrase step locally, leave the bypass off and add `ADMIN_PASSPHRASE_HASH` from step 2.
 - Both flags only work when `NODE_ENV` is not `production` and `VERCEL` is unset. A production build or any Vercel deployment ignores them. Never set them on Vercel.
 - Without SMTP settings, contact messages are still saved to the inbox as "Awaiting email" and can be retried from the Inbox once SMTP is configured.
+
+## Changing the passphrase from the studio
+
+Open the studio, choose **Security**, enter the current passphrase and a new one (or press *Generate one for me*), and save. The new hash is stored in the database and takes precedence over `ADMIN_PASSPHRASE_HASH`; the environment variable only matters for the very first sign-in. After saving, *Save as text file* downloads the passphrase once; store it in a password manager.

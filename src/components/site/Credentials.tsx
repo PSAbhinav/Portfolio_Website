@@ -1,7 +1,7 @@
 "use client";
 import { useCopy, usePortfolio } from "@/components/PortfolioContext";
 import { ArrowUpRight, Check } from "@/components/Icons";
-import { formatMonth } from "@/lib/format";
+import { formatMonth, numbered } from "@/lib/format";
 
 export default function Credentials() {
   const { certifications } = usePortfolio();
@@ -12,7 +12,7 @@ export default function Credentials() {
     <section id="credentials" className="section credentials" aria-labelledby="credentials-title">
       <div className="shell">
         <div className="section-head">
-          <span className="eyebrow">{copy("credentials_eyebrow", "03 / Credentials")}</span>
+          <span className="eyebrow">{numbered(copy("credentials_eyebrow", "03 / Credentials"), 4)}</span>
           <h2 id="credentials-title" className="display-2">
             {copy("credentials_title", "Verified, not self-declared.")}
           </h2>

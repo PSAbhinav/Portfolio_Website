@@ -8,7 +8,7 @@ import { ArrowUpRight } from "@/components/Icons";
 import Logo from "@/components/Logo";
 
 const LINKS = [
-  { id: "now", key: "nav_now", fallback: "Now" },
+  { id: "now", key: "nav_guide", fallback: "Field guide" },
   { id: "work", key: "nav_work", fallback: "Work" },
   { id: "credentials", key: "nav_credentials", fallback: "Credentials" },
   { id: "toolkit", key: "nav_toolkit", fallback: "Toolkit" },
@@ -23,10 +23,13 @@ export default function Header() {
   useEffect(() => {
     const sections = LINKS.map((link) => document.getElementById(link.id)).filter(Boolean) as HTMLElement[];
     if (!sections.length) return;
+    // Track every section's state so the highlight clears when none is in the band.
+    const inBand = new Set<string>();
     const observer = new IntersectionObserver(
       (entries) => {
-        const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        if (visible[0]) setActive(visible[0].target.id);
+        entries.forEach((entry) => (entry.isIntersecting ? inBand.add(entry.target.id) : inBand.delete(entry.target.id)));
+        const first = LINKS.find((link) => inBand.has(link.id));
+        setActive(first ? first.id : "");
       },
       { rootMargin: "-40% 0px -50% 0px", threshold: [0, 0.1, 0.5] },
     );

@@ -1,4 +1,5 @@
 "use client";
+import { numbered } from "@/lib/format";
 import { useRef, useState } from "react";
 import { useCopy, usePortfolio } from "@/components/PortfolioContext";
 import { ArrowUpRight, Mail } from "@/components/Icons";
@@ -62,7 +63,7 @@ export default function Contact() {
     <section id="contact" className="section contact" aria-labelledby="contact-title">
       <div className="shell contact-layout">
         <div className="contact-copy">
-          <span className="eyebrow">{copy("contact_eyebrow", "07 / Contact")}</span>
+          <span className="eyebrow">{numbered(copy("contact_eyebrow", "07 / Contact"), 7)}</span>
           <h2 id="contact-title" className="display-2">
             {copy("contact_title", "Let’s build something that holds up.")}
           </h2>

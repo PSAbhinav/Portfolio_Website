@@ -6,10 +6,11 @@ import { useEffect, useState } from "react";
 import type { PortfolioContent } from "@/lib/content-schema";
 import ContentEditor, { SECTIONS, type SectionKey, type Value } from "./ContentEditor";
 import Inbox from "./Inbox";
+import Security from "./Security";
 import StatsDashboard from "./StatsDashboard";
 import { errorMessage, requestJson } from "./api";
 
-type Tab = "content" | "analytics" | "inbox";
+type Tab = "content" | "analytics" | "inbox" | "security";
 type DraftResponse = { content: PortfolioContent; revision: number };
 type RevisionResponse = { revision: number };
 
@@ -17,6 +18,7 @@ const TABS: { id: Tab; label: string; title: string }[] = [
   { id: "content", label: "Content", title: "Your portfolio, your words." },
   { id: "analytics", label: "Analytics", title: "Your portfolio, in numbers." },
   { id: "inbox", label: "Inbox", title: "Messages from visitors." },
+  { id: "security", label: "Security", title: "Your passphrase." },
 ];
 
 const SECTION_KEYS = Object.keys(SECTIONS) as SectionKey[];
@@ -170,6 +172,7 @@ export default function StudioShell({ onSignOut, signingOut }: { onSignOut: () =
 
           {tab === "analytics" && <StatsDashboard />}
           {tab === "inbox" && <Inbox />}
+          {tab === "security" && <Security />}
           {tab === "content" && !content && <p className="studio-empty">Loading your content…</p>}
           {tab === "content" && content && (
             <>

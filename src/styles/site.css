@@ -1597,61 +1597,6 @@ html.cursor-hot .cursor-ring {
   margin-top: var(--s6);
 }
 
-.ticker {
-  overflow: hidden;
-  border-top: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
-  background: color-mix(in srgb, var(--paper-2) 60%, transparent);
-  padding-block: var(--s3);
-}
-
-.ticker-track {
-  display: flex;
-  gap: var(--s8);
-  width: max-content;
-  animation: ticker 48s linear infinite;
-}
-
-.ticker:hover .ticker-track {
-  animation-play-state: paused;
-}
-
-.ticker-item {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--s3);
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-2);
-  white-space: nowrap;
-}
-
-.ticker-item svg {
-  color: var(--signal);
-}
-
-@keyframes ticker {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ticker-track {
-    animation: none;
-    flex-wrap: wrap;
-    width: auto;
-  }
-  .ticker-item[aria-hidden="true"] {
-    display: none;
-  }
-}
-
 @media (max-width: 1023px) {
   .hero-inner {
     grid-template-columns: 1fr;
@@ -1685,4 +1630,44 @@ html.cursor-hot .cursor-ring {
 
 .hero-panel .routing-lanes {
   gap: var(--s5);
+}
+
+/* ===== About portrait: editorial duotone plate ===== */
+.about-figure {
+  position: relative;
+  background: var(--paper-2);
+}
+
+.about-figure::before {
+  content: "";
+  position: absolute;
+  inset: -12px 12px 12px -12px;
+  border: 1px solid var(--rule);
+  pointer-events: none;
+}
+
+.about-figure img {
+  aspect-ratio: 4 / 5;
+  object-position: center top;
+  filter: grayscale(1) contrast(1.08) brightness(1.02);
+}
+
+.about-figure::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 34px 0;
+  background: linear-gradient(160deg, var(--signal), var(--ink) 70%);
+  mix-blend-mode: screen;
+  opacity: 0.22;
+  pointer-events: none;
+}
+
+[data-theme="dark"] .about-figure::after {
+  mix-blend-mode: multiply;
+  opacity: 0.55;
+  background: linear-gradient(160deg, var(--signal), var(--paper) 75%);
+}
+
+[data-theme="dark"] .about-figure img {
+  filter: grayscale(1) contrast(1.05) brightness(0.92);
 }
