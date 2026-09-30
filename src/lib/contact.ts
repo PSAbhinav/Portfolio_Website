@@ -1,3 +1,4 @@
+import { sameOrigin } from "./origin";
 // Transport-independent contact handling, also used by the automated tests.
 export type ContactMessage = {
   name: string;
@@ -30,8 +31,7 @@ export async function handleContact(
   configured: boolean,
   onResult?: ResultHandler,
 ) {
-  const origin = request.headers.get("origin");
-  if (!origin || origin !== new URL(request.url).origin)
+  if (!sameOrigin(request))
     return response(
       { error: "Please send your message from the portfolio website." },
       403,

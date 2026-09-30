@@ -40,12 +40,7 @@ export async function clearMfaCookie(): Promise<void> {
   });
 }
 
-export function sameOrigin(request: Request): boolean {
-  const origin = request.headers.get("origin");
-  const configured = process.env.SITE_URL || process.env.NEXTAUTH_URL;
-  const expected = configured ? new URL(configured).origin : new URL(request.url).origin;
-  return origin === expected;
-}
+export { sameOrigin } from "../origin";
 
 export function privateJson(data: unknown, status = 200): Response {
   return Response.json(data, {
