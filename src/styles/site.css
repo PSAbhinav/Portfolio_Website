@@ -526,7 +526,7 @@
 
 .reel {
   position: relative;
-  height: 100vh;
+  height: calc(100vh - var(--header-h));
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -558,8 +558,8 @@
 .reel-track {
   display: flex;
   gap: var(--s8);
-  padding-left: calc((100vw - var(--shell)) / 2);
-  padding-right: calc((100vw - var(--shell)) / 2);
+  padding-left: calc((100% - var(--shell)) / 2);
+  padding-right: calc((100% - var(--shell)) / 2);
   will-change: transform;
 }
 
@@ -573,11 +573,26 @@
   gap: var(--s5);
 }
 
+/* Artwork is shown whole on a paper mat; nothing is cropped. Flex, not grid:
+   percentage max-height only resolves against a definite flex container. */
+.gallery-figure {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: min(52vh, 560px);
+  padding: var(--s5);
+}
+
 .gallery-figure img {
-  width: 100%;
+  width: auto;
   height: auto;
-  aspect-ratio: 16 / 10;
-  object-fit: cover;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.gallery-grid .gallery-figure {
+  height: 420px;
 }
 
 .gallery-body {

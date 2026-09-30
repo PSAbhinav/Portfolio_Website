@@ -92,13 +92,19 @@ export default function Gallery() {
   useGSAP(
     () => {
       if (mode !== "reel" || !outer.current || !track.current) return;
-      const distance = () => track.current!.scrollWidth - outer.current!.clientWidth;
+      // scrollWidth ignores the track's trailing padding, so add it back or the
+      // last card stops flush against the viewport edge.
+      const distance = () => {
+        const trailing = parseFloat(getComputedStyle(track.current!).paddingRight) || 0;
+        return track.current!.scrollWidth + trailing - outer.current!.clientWidth;
+      };
+      const headerHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--header-h")) || 76;
       const tween = gsap.to(track.current, {
         x: () => -distance(),
         ease: "none",
         scrollTrigger: {
           trigger: outer.current,
-          start: "top top",
+          start: `top ${headerHeight}px`,
           end: () => `+=${distance()}`,
           scrub: 0.5,
           pin: true,
