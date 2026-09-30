@@ -14,7 +14,7 @@ type GateProps = {
   devBypass: boolean;
   enrollment: Enrollment | null;
   recoveryCodes: string[];
-  onSignIn: () => void;
+  onSignIn: (passphrase: string) => Promise<boolean>;
   onEnroll: () => void;
   onVerify: (code: string) => Promise<boolean>;
   onRecoverySaved: () => void;
@@ -32,7 +32,7 @@ const HEADINGS: Record<GateStage, string> = {
 };
 
 const STEP_LABELS: Partial<Record<GateStage, string>> = {
-  signin: "Step 1 of 2 · Google",
+  signin: "Step 1 of 2 · Passphrase",
   enroll: "Step 2 of 2 · Authenticator",
   verify: "Step 2 of 2 · Authenticator",
   recovery: "Recovery codes",
@@ -56,8 +56,8 @@ function SetupStage() {
         and no analytics are exposed until then.
       </p>
       <ul className="studio-checklist">
-        <li>Google OAuth client, or the local development bypass</li>
-        <li>NEXTAUTH_SECRET and ADMIN_ENCRYPTION_KEY</li>
+        <li>ADMIN_PASSPHRASE_HASH, or the local development bypass</li>
+        <li>ADMIN_SESSION_SECRET and ADMIN_ENCRYPTION_KEY</li>
         <li>A Postgres database (Neon, or the local PGlite database)</li>
       </ul>
       <p className="studio-hint">Follow ADMIN_SETUP.md in the project, then restart the server.</p>
@@ -65,13 +65,35 @@ function SetupStage() {
   );
 }
 
-function SignInStage({ onSignIn }: { onSignIn: () => void }) {
+function SignInStage({ busy, onSignIn }: Pick<GateProps, "busy" | "onSignIn">) {
+  const [passphrase, setPassphrase] = useState("");
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const accepted = await onSignIn(passphrase);
+    if (!accepted) setPassphrase("");
+  }
+
   return (
     <>
-      <p className="studio-gate-lede">Sign in with the registered owner account. Authenticator verification comes next.</p>
-      <button type="button" className="button button-primary" onClick={onSignIn}>
-        Continue with Google ↗
-      </button>
+      <p className="studio-gate-lede">Enter the owner passphrase. Authenticator verification comes next.</p>
+      <form className="studio-form" onSubmit={handleSubmit}>
+        <label className="studio-field">
+          <span className="studio-label">Passphrase</span>
+          <input
+            className="studio-input"
+            type="password"
+            autoComplete="current-password"
+            value={passphrase}
+            onChange={(event) => setPassphrase(event.target.value)}
+            required
+            maxLength={512}
+          />
+        </label>
+        <button type="submit" className="button button-primary" disabled={busy}>
+          {busy ? "Checking…" : "Continue"}
+        </button>
+      </form>
     </>
   );
 }
@@ -122,7 +144,7 @@ function EnrollStage({ busy, enrollment, onEnroll, onVerify }: Pick<GateProps, "
   }
   return (
     <>
-      <p className="studio-gate-lede">Scan this code in Google Authenticator, then enter the six-digit code it shows.</p>
+      <p className="studio-gate-lede">Scan this code in your authenticator app, then enter the six-digit code it shows.</p>
       <div className="studio-qr">
         <img src={enrollment.qr} width={200} height={200} alt="Private enrolment QR code for your authenticator app" />
         <div className="studio-qr-key">
@@ -169,7 +191,7 @@ function StageBody(props: GateProps) {
     case "setup":
       return <SetupStage />;
     case "signin":
-      return <SignInStage onSignIn={props.onSignIn} />;
+      return <SignInStage busy={props.busy} onSignIn={props.onSignIn} />;
     case "enroll":
       return <EnrollStage busy={props.busy} enrollment={props.enrollment} onEnroll={props.onEnroll} onVerify={props.onVerify} />;
     case "verify":

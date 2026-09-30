@@ -6,8 +6,22 @@ import { useScrubProgress } from "@/components/motion/useScrubProgress";
 import RetrievalExplainer from "@/components/guide/RetrievalExplainer";
 import RoutingExplainer from "@/components/guide/RoutingExplainer";
 import ConnectorsExplainer from "@/components/guide/ConnectorsExplainer";
+import Film from "@/components/site/Film";
 import type { Highlight } from "@/lib/content-schema";
 import { formatRange } from "@/lib/format";
+
+// Wraps whole numbers so the choreography can count them up on entry.
+function countable(text: string) {
+  return text.split(/(\d+)/).map((part, index) =>
+    /^\d+$/.test(part) ? (
+      <span key={index} data-count={part}>
+        {part}
+      </span>
+    ) : (
+      part
+    ),
+  );
+}
 
 function Chapter({ highlight, index }: { highlight: Highlight; index: number }) {
   const ref = useRef<HTMLElement>(null);
@@ -26,7 +40,7 @@ function Chapter({ highlight, index }: { highlight: Highlight; index: number }) 
       <div className="guide-text">
         <Reveal>
           <span className="eyebrow">{highlight.label}</span>
-          <h3 className="display-3 guide-metric">{highlight.metric}</h3>
+          <h3 className="display-3 guide-metric">{countable(highlight.metric)}</h3>
           <p className="guide-detail">{highlight.detail}</p>
         </Reveal>
       </div>
@@ -73,6 +87,12 @@ export default function FieldGuide() {
           </dl>
           <p className="guide-summary">{current.summary}</p>
         </div>
+        <Film
+          src="/video/helpdesk.mp4"
+          poster="/video/helpdesk.jpg"
+          title={copy("film_title", "How an AI helpdesk answers in under a second")}
+          caption={copy("film_caption", "Silent · 27 s · loops")}
+        />
         <div className="guide-chapters">
           {current.highlights.map((highlight, index) => (
             <Chapter key={highlight.label} highlight={highlight} index={index} />

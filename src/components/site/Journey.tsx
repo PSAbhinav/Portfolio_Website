@@ -40,6 +40,9 @@ export default function Journey() {
           </h2>
         </div>
         <ol className="journey-list">
+          <span className="journey-line" aria-hidden="true">
+            <span />
+          </span>
           {entries.map((entry, index) => (
             <Reveal as="li" key={entry.key} className={`journey-item journey-${entry.kind}`} delay={index * 40}>
               <span className="mono journey-when">{entry.when}</span>

@@ -21,7 +21,9 @@ export async function run() {
     await page.goto(BASE + "/", { waitUntil: "networkidle", timeout: 120000 });
     await page.addStyleTag({ content: "html{scroll-behavior:auto !important}" });
 
-    check(`${theme}: hero heading visible`, await page.locator("#hero-title").isVisible());
+    // The brand intro plays once per session before the hero title is revealed.
+    await page.locator("#hero-title").waitFor({ state: "visible", timeout: 8000 }).catch(() => {});
+    check(`${theme}: hero heading visible after the intro`, await page.locator("#hero-title").isVisible());
     check(`${theme}: theme attribute matches colour scheme`, (await page.evaluate(() => document.documentElement.dataset.theme)) === theme);
     check(`${theme}: no horizontal overflow`, await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
     check(`${theme}: no figure captions remain`, (await page.locator("text=/FIG\\. \\d/").count()) === 0);

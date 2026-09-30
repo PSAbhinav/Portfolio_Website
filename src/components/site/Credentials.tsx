@@ -1,6 +1,5 @@
 "use client";
 import { useCopy, usePortfolio } from "@/components/PortfolioContext";
-import Reveal from "@/components/motion/Reveal";
 import { ArrowUpRight, Check } from "@/components/Icons";
 import { formatMonth } from "@/lib/format";
 
@@ -22,7 +21,7 @@ export default function Credentials() {
           {certifications.map((certification, index) => {
             const primary = /anthropic/i.test(certification.issuer) && certification.url;
             return (
-              <Reveal as="li" key={certification.title + certification.date} className={`badge ${primary ? "badge-primary" : ""}`} delay={(index % 4) * 50}>
+              <li key={certification.title + certification.date} className={`badge ${primary ? "badge-primary" : ""}`}>
                 <div className="badge-top">
                   <span className="eyebrow">{certification.issuer}</span>
                   <span className="mono muted">{formatMonth(certification.date)}</span>
@@ -42,7 +41,7 @@ export default function Credentials() {
                     </a>
                   )}
                 </div>
-              </Reveal>
+              </li>
             );
           })}
         </ul>

@@ -36,7 +36,7 @@ export async function enrollmentStatus(sql: Sql, sub: string): Promise<{ enrolle
 }
 
 // Creates or reuses a pending secret for ten minutes. Returns null once an
-// authenticator is enabled, so a stolen Google session cannot re-enrol.
+// authenticator is enabled, so a stolen passphrase session cannot re-enrol.
 export async function beginEnrollment(sql: Sql, sub: string): Promise<{ secret: string } | null> {
   const encrypted = encryptSecret(new Secret({ size: 20 }).base32);
   const rows = await sql<{ secret: string }>`
@@ -123,7 +123,7 @@ export async function verifyCode(sql: Sql, sub: string, code: string, now: numbe
   return { ok: true, recoveryCodes };
 }
 
-// One MFA session per Google session. Returns the raw token for the cookie;
+// One MFA session per passphrase sign-in. Returns the raw token for the cookie;
 // only its hash is stored.
 export async function createMfaSession(sql: Sql, sub: string, sid: string): Promise<string> {
   const token = randomBytes(32).toString("hex");

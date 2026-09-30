@@ -1,15 +1,15 @@
 import "server-only";
 import { cookies } from "next/headers";
 import { sqlClient } from "@/lib/db";
-import { googleOwner, type OwnerSession } from "./auth";
+import { owner as passphraseOwner, type OwnerSession } from "./auth";
 import { mfaSessionValid } from "./totp";
 
 export const MFA_COOKIE = process.env.NODE_ENV === "production" ? "__Host-portfolio-mfa" : "portfolio-mfa";
 const MFA_SECONDS = 4 * 60 * 60;
 
-// Google identity plus a live MFA session bound to that exact Google session.
+// Passphrase session plus a live MFA session bound to that exact sign-in.
 export async function adminOwner(): Promise<OwnerSession | null> {
-  const owner = await googleOwner();
+  const owner = await passphraseOwner();
   if (!owner) return null;
   const token = (await cookies()).get(MFA_COOKIE)?.value;
   if (!token) return null;
@@ -42,9 +42,8 @@ export async function clearMfaCookie(): Promise<void> {
 
 export function sameOrigin(request: Request): boolean {
   const origin = request.headers.get("origin");
-  const expected = process.env.NEXTAUTH_URL
-    ? new URL(process.env.NEXTAUTH_URL).origin
-    : new URL(request.url).origin;
+  const configured = process.env.SITE_URL || process.env.NEXTAUTH_URL;
+  const expected = configured ? new URL(configured).origin : new URL(request.url).origin;
   return origin === expected;
 }
 

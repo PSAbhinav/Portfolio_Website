@@ -1,6 +1,5 @@
 "use client";
 import { useCopy, usePortfolio } from "@/components/PortfolioContext";
-import SignalField from "@/components/motion/SignalField";
 import { ArrowDown, ArrowUpRight } from "@/components/Icons";
 
 export default function Hero() {
@@ -12,9 +11,6 @@ export default function Hero() {
 
   return (
     <section id="home" className="hero" aria-labelledby="hero-title">
-      <div className="hero-field" aria-hidden="true">
-        <SignalField />
-      </div>
       <div className="shell hero-inner">
         <p className="hero-status eyebrow">
           <span className="status-dot" />

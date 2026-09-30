@@ -30,7 +30,7 @@ Home → Field guide (three scroll-driven interactive explainers of the rTask.ai
 
 ## Admin studio
 
-`/admin` is the owner's private studio: Google sign-in restricted to the owner address, authenticator (TOTP) verification with one-use recovery codes, draft → preview → publish content editing (every publish is recorded in `content_history`; a restore screen is not built yet), an anonymous analytics dashboard, and a contact inbox with delivery retry. Setup, including local development with an in-process Postgres and the development-only owner bypass, is documented in `ADMIN_SETUP.md`.
+`/admin` is the owner's private studio: a passphrase (stored only as an scrypt hash, rate limited in the database), then authenticator (TOTP) verification with one-use recovery codes, draft → preview → publish content editing (every publish is recorded in `content_history`; a restore screen is not built yet), an anonymous analytics dashboard, and a contact inbox with delivery retry. Setup, including local development with an in-process Postgres and the development-only passphrase bypass, is documented in `ADMIN_SETUP.md`.
 
 ## Contact e-mail
 

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { signIn, signOut } from "next-auth/react";
 import AdminGate, { type Enrollment, type GateStage } from "./AdminGate";
 import StudioShell from "./StudioShell";
 import { errorMessage, requestJson } from "./api";
@@ -44,8 +43,21 @@ export default function AdminPanel({ configured, devBypass }: { configured: bool
     };
   }, [configured]);
 
-  function handleSignIn() {
-    signIn("google", { callbackUrl: "/admin" });
+  async function handleSignIn(passphrase: string): Promise<boolean> {
+    setBusy(true);
+    setNotice("");
+    let accepted = false;
+    try {
+      await requestJson("/api/admin/session", { passphrase });
+      accepted = true;
+      setStage(await checkAccess());
+    } catch (reason) {
+      if (accepted) setStage("error");
+      setNotice(errorMessage(reason));
+    } finally {
+      setBusy(false);
+    }
+    return accepted;
   }
 
   async function handleEnroll() {
@@ -91,13 +103,9 @@ export default function AdminPanel({ configured, devBypass }: { configured: bool
     try {
       await requestJson("/api/admin/logout", {});
     } catch {
-      // Continue: the Google session is still ended below.
+      // Reload regardless: the gate re-checks the session on load.
     }
-    if (devBypass) {
-      window.location.assign("/admin");
-      return;
-    }
-    await signOut({ callbackUrl: "/admin" });
+    window.location.assign("/admin");
   }
 
   if (stage === "ready") return <StudioShell onSignOut={handleSignOut} signingOut={busy} />;

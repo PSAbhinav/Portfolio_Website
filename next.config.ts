@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
   outputFileTracingRoot: path.resolve("."),
   // PGlite ships WebAssembly and sharp ships native binaries; neither should be bundled.
   serverExternalPackages: ["@electric-sql/pglite", "sharp"],
+  images: { qualities: [75, 90] },
   async headers() {
     return [
       { source: "/admin", headers: PRIVATE_HEADERS },

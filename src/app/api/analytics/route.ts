@@ -85,7 +85,7 @@ function validTarget(kind: string, target: string): boolean {
 
 export async function POST(request: Request) {
   if (request.headers.get("origin") !== new URL(request.url).origin) return empty(403);
-  const secret = process.env.ANALYTICS_SALT || process.env.NEXTAUTH_SECRET;
+  const secret = process.env.ANALYTICS_SALT || process.env.ADMIN_SESSION_SECRET || process.env.NEXTAUTH_SECRET;
   if (!databaseConfigured() || !secret) return empty(204);
   if (!request.headers.get("content-type")?.includes("application/json")) return empty(400);
   if (Number(request.headers.get("content-length") || 0) > MAX_BODY) return empty(400);

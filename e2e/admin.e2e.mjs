@@ -1,6 +1,6 @@
 // Admin studio flow against the local PGlite database with the development
 // owner bypass. Requires .env.local with ADMIN_LOCAL_DB, ADMIN_DEV_BYPASS,
-// NEXTAUTH_SECRET, ADMIN_ENCRYPTION_KEY and NEXTAUTH_URL (see ADMIN_SETUP.md).
+// ADMIN_SESSION_SECRET and ADMIN_ENCRYPTION_KEY (see ADMIN_SETUP.md).
 import { createRequire } from "node:module";
 import { BASE, SHOTS, loadPlaywright } from "./lib.mjs";
 
@@ -36,7 +36,7 @@ export async function run() {
   }
 
   // Enrolment: fresh database → "Make it yours."
-  check("admin: bypass skips Google and lands on enrolment", heading === "Make it yours.", heading);
+  check("admin: bypass skips the passphrase and lands on enrolment", heading === "Make it yours.", heading);
   await shot("enroll");
   await page.getByRole("button", { name: "Set up authenticator" }).click();
   await page.waitForSelector("[data-testid=totp-secret]");
