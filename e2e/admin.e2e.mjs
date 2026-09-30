@@ -103,7 +103,7 @@ export async function run() {
     const response = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: "Inbox Tester", email: "inbox@example.com", phone: "", message: "Saved to the inbox while SMTP is unconfigured.", website: "" }) });
     return response.status;
   });
-  check("admin: contact without SMTP answers 503 but is stored", contactStatus === 503, String(contactStatus));
+  check("admin: contact without SMTP succeeds because the message is stored", contactStatus === 200, String(contactStatus));
   await page.getByRole("button", { name: "Inbox" }).click();
   await page.waitForSelector(".studio-message");
   const inboxText = await page.locator(".studio-inbox").innerText();

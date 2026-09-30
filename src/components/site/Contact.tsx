@@ -107,7 +107,7 @@ export default function Contact() {
             </button>
           </fieldset>
           <p className={`form-status ${status}`} role="status" aria-live="polite">
-            {status === "success" ? "Message sent. Thanks for reaching out — I’ll get back to you soon." : status === "error" ? error : ""}
+            {status === "success" ? copy("contact_success", "Message received. I’ll reply by email.") : status === "error" ? error : ""}
           </p>
           {status === "error" && (
             <a className="text-link" href={`mailto:${contactEmail}${draft}`}>

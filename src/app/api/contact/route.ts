@@ -13,20 +13,22 @@ const DELIVERY: Record<ContactOutcome, { delivery: Delivery; error: string }> = 
   failed: { delivery: "failed", error: "The email provider did not accept the message." },
 };
 
-async function persist(message: ContactMessage, outcome: ContactOutcome) {
-  const sql = await sqlClient();
-  const { delivery, error } = DELIVERY[outcome];
-  await saveMessage(sql, message, delivery, error);
-}
-
+// The form succeeds whenever the message is safe: e-mailed, or stored in the
+// studio inbox when no e-mail provider is configured. Only with neither does
+// the visitor see the "unavailable" fallback.
 export async function POST(request: Request) {
-  // Deliver to the address the published site shows, so editing it in the
-  // studio changes where mail goes as well as what visitors see.
   const { contactEmail } = await getPublishedContent();
-  return handleContact(
-    request,
-    (message) => deliverContactMessage(message, contactEmail),
-    smtpConfigured(),
-    databaseConfigured() ? persist : undefined,
-  );
+  const email = smtpConfigured();
+  const store = databaseConfigured();
+
+  async function persist(message: ContactMessage, outcome: ContactOutcome) {
+    const sql = await sqlClient();
+    const effective: ContactOutcome = outcome === "sent" && !email ? "unconfigured" : outcome;
+    const { delivery, error } = DELIVERY[effective];
+    await saveMessage(sql, message, delivery, error);
+  }
+
+  const send = email ? (message: ContactMessage) => deliverContactMessage(message, contactEmail) : async () => {};
+
+  return handleContact(request, send, email || store, store ? persist : undefined);
 }

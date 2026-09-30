@@ -21,7 +21,7 @@ Bundled content lives in `src/data/portfolio.ts` (profile, experience, projects,
 
 ## Sections and motion
 
-Home → Now (pinned two-column chapter on desktop, stacked below 1024px or with reduced motion) → Work (three case studies with a sticky chapter rail, then a filterable project index) → Credentials → About → Toolkit → Journey → Contact.
+Home → Field guide (three scroll-driven interactive explainers of the rTask.ai work: hybrid retrieval, intent routing, connectors) → Work (every project once, as a pinned horizontal reel on desktop or a grid otherwise, with a toggle) → Credentials → About → Toolkit → Journey → Contact.
 
 - One animation engine: GSAP with ScrollTrigger, scoped by `gsap.matchMedia()` to desktop widths without `prefers-reduced-motion`.
 - Reveal-on-scroll only hides content when JavaScript is present (`html.js`), so the page reads fully without it.

@@ -26,8 +26,15 @@ const image = z
 // Year-month ("2026-08") or empty for "present".
 const yearMonth = z.union([z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/), z.literal("")]);
 
+// `visual` picks the interactive explainer drawn beside a highlight in the
+// Field guide; "none" renders the text alone.
 export const highlightSchema = z
-  .object({ label: short, metric: short, detail: text })
+  .object({
+    label: short,
+    metric: short,
+    detail: text,
+    visual: z.enum(["none", "retrieval", "routing", "connectors"]).default("none"),
+  })
   .strict();
 
 export const experienceSchema = z
@@ -65,12 +72,16 @@ export const skillGroupSchema = z
   })
   .strict();
 
+// A credential link is either an https:// verification page or a PDF shipped
+// with the site under /certificates.
+const credentialLink = z.union([https, z.string().regex(/^\/certificates\/[a-z0-9-]+\.pdf$/), z.literal("")]);
+
 export const certificationSchema = z
   .object({
     title: short,
     issuer: short,
     date: yearMonth,
-    url: optionalHttps,
+    url: credentialLink,
     score: optional,
   })
   .strict();

@@ -45,3 +45,6 @@ next-env.d.ts
 # local development database (PGlite)
 /.local-db/
 /e2e/shots/
+
+# launch video renders (large binaries)
+/brag-output*/

@@ -40,8 +40,13 @@ export default function Hero() {
           </a>
         </div>
         <div className="hero-foot">
-          <span className="eyebrow">{copy("hero_figure", "FIG. 01 — SIGNAL FIELD")}</span>
-          {profile.availability && <span className="eyebrow hero-availability">{profile.availability}</span>}
+          <span className="eyebrow hero-availability">
+            {profile.availability && (
+              <>
+                <span className="status-dot" /> {profile.availability}
+              </>
+            )}
+          </span>
           <a href="#now" className="eyebrow hero-scroll">
             Scroll <ArrowDown size={14} />
           </a>

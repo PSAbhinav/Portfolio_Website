@@ -2,8 +2,8 @@
 import { useCopy } from "@/components/PortfolioContext";
 import Header from "@/components/site/Header";
 import Hero from "@/components/site/Hero";
-import Now from "@/components/site/Now";
-import Work from "@/components/site/Work";
+import FieldGuide from "@/components/site/FieldGuide";
+import Gallery from "@/components/site/Gallery";
 import Credentials from "@/components/site/Credentials";
 import About from "@/components/site/About";
 import Toolkit from "@/components/site/Toolkit";
@@ -11,8 +11,8 @@ import Journey from "@/components/site/Journey";
 import Contact from "@/components/site/Contact";
 import Footer from "@/components/site/Footer";
 
-// Section order is the story: who I am now, what I shipped, what proves it,
-// who I am, what I use, how I got here, how to reach me.
+// Section order is the story: what I build now (explained, not listed), every
+// project once, what proves it, who I am, what I use, how I got here, contact.
 export default function Portfolio() {
   const copy = useCopy();
   return (
@@ -23,8 +23,8 @@ export default function Portfolio() {
       <Header />
       <main id="main">
         <Hero />
-        <Now />
-        <Work />
+        <FieldGuide />
+        <Gallery />
         <Credentials />
         <About />
         <Toolkit />

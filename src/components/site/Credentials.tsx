@@ -38,7 +38,7 @@ export default function Credentials() {
                   )}
                   {certification.url && (
                     <a href={certification.url} className="text-link" target="_blank" rel="noopener noreferrer">
-                      {copy("credentials_verify", "Verify")} <ArrowUpRight size={14} />
+                      {/credly\.com/.test(certification.url) ? copy("credentials_verify", "Verify") : copy("credentials_view", "View")} <ArrowUpRight size={14} />
                     </a>
                   )}
                 </div>

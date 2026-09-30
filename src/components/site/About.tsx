@@ -12,9 +12,9 @@ export default function About() {
     <section id="about" className="section about" aria-labelledby="about-title">
       <div className="shell about-layout">
         <Reveal as="figure" className="frame about-figure">
-          <Image src={profile.image} alt={`Portrait of ${profile.name}`} width={720} height={900} sizes="(min-width: 1024px) 30vw, 100vw" />
+          <Image src={profile.image} alt={`Portrait of ${profile.name}`} width={720} height={900} quality={90} sizes="(min-width: 1024px) 30vw, 100vw" />
           <figcaption className="frame-caption">
-            <span>{copy("about_figure", "FIG. 02 — FIELD NOTES")}</span>
+            <span>{profile.name}</span>
             <span>{profile.location}</span>
           </figcaption>
         </Reveal>
