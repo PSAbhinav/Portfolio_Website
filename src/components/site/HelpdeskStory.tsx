@@ -186,7 +186,7 @@ export default function HelpdeskStory({ title, caption }: Props) {
             </div>
           </div>
           <p className="story-label story-outro" style={{ opacity: Math.max(0, (t - 0.55) / 0.45) }}>
-            Built test-first at Ramco Systems · rTask.ai
+            Built test-first at Ramco Systems · Chia AI
           </p>
         </section>
       </div>
