@@ -64,6 +64,8 @@ export const projectSchema = z
     tags: z.array(short).max(12),
     featured: z.boolean(),
     year: z.string().max(20),
+    // Points shown in the project's case-study dialog: problem, what was built, stack, outcome.
+    details: z.array(z.string().min(1).max(600)).max(12).default([]),
   })
   .strict();
 

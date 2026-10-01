@@ -6,6 +6,7 @@ import { useCopy, usePortfolio } from "@/components/PortfolioContext";
 import Reveal from "@/components/motion/Reveal";
 import { gsap, MOTION_MEDIA, ScrollTrigger, useGSAP } from "@/components/motion/gsap";
 import { ArrowUpRight, Github } from "@/components/Icons";
+import ProjectDialog from "@/components/site/ProjectDialog";
 import type { Project } from "@/lib/content-schema";
 
 type Mode = "reel" | "grid";
@@ -14,19 +15,22 @@ type Mode = "reel" | "grid";
 // card; shorter windows get the grid.
 const REEL_MEDIA = `${MOTION_MEDIA} and (min-height: 700px)`;
 
-function Card({ project, index, total, priority }: { project: Project; index: number; total: number; priority: boolean }) {
+function Card({ project, index, total, priority, onOpen, openLabel }: { project: Project; index: number; total: number; priority: boolean; onOpen: (slug: string) => void; openLabel: string }) {
   return (
     <article id={`work-${project.slug}`} className="gallery-card" aria-labelledby={`gallery-${project.slug}`}>
       <div className="frame gallery-figure">
-        <Image
-          src={project.image}
-          alt={`${project.title} screenshot`}
-          width={1600}
-          height={1000}
-          quality={90}
-          priority={priority}
-          sizes="(min-width: 1024px) 56vw, 100vw"
-        />
+        <button type="button" className="gallery-open" onClick={() => onOpen(project.slug)} aria-label={`${openLabel}: ${project.title}`}>
+          <Image
+            src={project.image}
+            alt={`${project.title} screenshot`}
+            width={1600}
+            height={1000}
+            quality={90}
+            priority={priority}
+            sizes="(min-width: 1024px) 56vw, 100vw"
+          />
+          <span className="gallery-open-hint mono">{openLabel}</span>
+        </button>
       </div>
       <div className="gallery-body">
         <div className="gallery-meta">
@@ -36,10 +40,15 @@ function Card({ project, index, total, priority }: { project: Project; index: nu
           <span className="mono muted">{project.year || project.tags[0]}</span>
         </div>
         <h3 id={`gallery-${project.slug}`} className="display-3">
-          {project.title}
+          <button type="button" className="gallery-title-button" onClick={() => onOpen(project.slug)}>
+            {project.title}
+          </button>
         </h3>
         <p className="gallery-summary">{project.summary}</p>
         <p className="gallery-description muted">{project.description}</p>
+        <button type="button" className="text-link gallery-more" onClick={() => onOpen(project.slug)}>
+          {openLabel} <ArrowUpRight size={14} />
+        </button>
         <div className="gallery-foot">
           <ul className="tag-list" aria-label="Technologies">
             {project.tags.slice(0, 3).map((tag) => (
@@ -74,6 +83,24 @@ export default function Gallery() {
   const copy = useCopy();
   const [mode, setMode] = useState<Mode>("grid");
   const [reelCapable, setReelCapable] = useState(false);
+  const [openSlug, setOpenSlug] = useState<string | null>(null);
+  const openLabel = copy("project_open", "Open case study");
+
+  // The case study is addressable: opening writes #work-<slug>, closing
+  // returns to #work, and a visit that starts on #work-<slug> opens it.
+  const openProject = useCallback((slug: string) => {
+    setOpenSlug(slug);
+    history.replaceState(null, "", `#work-${slug}`);
+  }, []);
+  const closeProject = useCallback(() => {
+    setOpenSlug(null);
+    if (/^#work-/.test(location.hash)) history.replaceState(null, "", "#work");
+  }, []);
+  useEffect(() => {
+    const match = /^#work-([a-z0-9-]+)$/.exec(location.hash);
+    if (match && projects.some((p) => p.slug === match[1])) setOpenSlug(match[1]);
+  }, [projects]);
+  const openIndex = projects.findIndex((p) => p.slug === openSlug);
   const outer = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLDivElement>(null);
   const counter = useRef<HTMLSpanElement>(null);
@@ -219,7 +246,7 @@ export default function Gallery() {
           </div>
           <div className="reel-track" ref={track}>
             {projects.map((project, index) => (
-              <Card key={project.slug} project={project} index={index} total={projects.length} priority={index < 2} />
+              <Card key={project.slug} project={project} index={index} total={projects.length} priority={index < 2} onOpen={openProject} openLabel={openLabel} />
             ))}
           </div>
         </div>
@@ -228,12 +255,13 @@ export default function Gallery() {
           <div className="gallery-grid">
             {projects.map((project, index) => (
               <Reveal key={project.slug} delay={(index % 2) * 60}>
-                <Card project={project} index={index} total={projects.length} priority={index < 2} />
+                <Card project={project} index={index} total={projects.length} priority={index < 2} onOpen={openProject} openLabel={openLabel} />
               </Reveal>
             ))}
           </div>
         </div>
       )}
+      <ProjectDialog project={openIndex >= 0 ? projects[openIndex] : null} index={openIndex} total={projects.length} onClose={closeProject} />
     </section>
   );
 }

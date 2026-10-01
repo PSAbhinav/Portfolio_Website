@@ -53,5 +53,9 @@
   "footer_resume": "Résumé",
   "now_lede": "Three pieces of the helpdesk work are shown as interactive explainers. The rest is listed as delivered, at the level a reviewer can verify in conversation.",
   "now_also": "Also delivered",
-  "nav_guide": "Experience"
+  "nav_guide": "Experience",
+  "project_open": "Open case study",
+  "project_close": "Close",
+  "project_details_title": "In detail",
+  "project_live": "Live"
 }

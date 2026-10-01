@@ -139,6 +139,13 @@ export const projects: PortfolioContent["projects"] = [
     tags: ["QA tooling", "Role-based access", "Internal at Ramco"],
     featured: true,
     year: "2026",
+    details: [
+      "The problem: as a QA intern I was compiling the daily test status by hand from several people's notes.",
+      "Built a role-based dashboard where suites, runs, owners and outcomes live in one place, with views for testers, leads and managers.",
+      "The automation framework pushes its results into QTrack after each run, so the board reflects the latest execution without manual entry.",
+      "Automated its first screen with Playwright, which became the seed of the team's regression framework.",
+      "Deployed internally and used daily by Ramco's testing teams. Internal, so there is no public link.",
+    ],
   },
   {
     slug: "cmd-blueprint",
@@ -152,6 +159,14 @@ export const projects: PortfolioContent["projects"] = [
     tags: ["Next.js", "shadcn/ui", "Design system"],
     featured: false,
     year: "2026",
+    details: [
+      "Import a React repository and the platform extracts its components into a searchable library with live, sandboxed previews.",
+      "Fifteen screens: an import pipeline with live progress, a library with search and tag filters, a studio with canvas, inspector and code pane, plus tokens, storyboard, testing, docs, insights and a mission-control view of agent runs and approvals.",
+      "An agent rail where every change is proposed as plan cards and approved before anything is applied.",
+      "A design-system seed with tokens and light and dark themes; the app moved to Next.js 16 with shadcn/ui.",
+      "Playwright browser verification and accessibility fixes, with lint, typecheck, test and build gates all green.",
+      "Not mine: the container stack, storage, CI, publishing and the model integration, which a colleague owned.",
+    ],
   },
   {
     slug: "vibe-check",
@@ -165,6 +180,14 @@ export const projects: PortfolioContent["projects"] = [
     tags: ["Next.js", "Behavioural design", "Internal at Ramco"],
     featured: false,
     year: "2026",
+    details: [
+      "A card opens on the laptop once a day with an avatar and one question, answered with a tap or a key in about ten seconds, followed by a reveal screen with a title of the day and a short note from HR.",
+      "A question engine over 257 questions in two banks and five HR-defined buckets: no repeats within a year, anchor questions every 45 days, a cooldown after negative answers and per-person timing spread.",
+      "A mood dashboard with a hero dial, 7, 30 and 90-day trends, views by bucket, team and grade, strongest and weakest questions, a burnout watch and Excel export; any group under seven people is hidden.",
+      "An admin console with four server-enforced roles covering schedule, question bank, people import and export, and 'what changed' posts.",
+      "Microsoft single sign-on, web push with a local-delivery fallback, Docker and Vercel deploy kits, 95 unit and 22 end-to-end tests.",
+      "Kickoff to a pilot-ready prototype in four days, through four HR reviews and a leadership demo, with the approvals, rollout and demo documents written alongside.",
+    ],
   },
   {
     slug: "orbital-academy",
@@ -178,6 +201,14 @@ export const projects: PortfolioContent["projects"] = [
     tags: ["TypeScript", "Physics engine", "3D"],
     featured: true,
     year: "2026",
+    details: [
+      "Assembly: a catalogue of about 30 real engines and 34 real stages (Falcon 9, Saturn V, Angara, Electron, Starship) with side boosters and parallel staging; builds that cannot lift off are disabled with the reason shown.",
+      "Payload sets the target orbit and the delta-v budget; the site and weather step runs a real go/no-go poll.",
+      "Launch from a webcast-style mission control room with live telemetry, Max-Q, engine cut-off and stage separation.",
+      "Orbit: arm a guidance-planned insertion burn at apoapsis. Every number comes from the rocket equation, drag, gravity turns and Kepler orbits.",
+      "Explanations adapt to the player as kid, student or engineer; a Spacepedia and a Solar System explorer unlock with progress.",
+      "Successor to two earlier prototypes, rebuilt from scratch on a real physics engine; deployed on GitHub Pages and Vercel.",
+    ],
   },
   {
     slug: "dsa-visualizer",
@@ -191,6 +222,13 @@ export const projects: PortfolioContent["projects"] = [
     tags: ["Next.js", "Framer Motion", "Firebase"],
     featured: true,
     year: "2026",
+    details: [
+      "Step-through visualisers for arrays, strings, linked lists, stacks, queues, trees, graphs, sorting and dynamic programming.",
+      "A topic progression across beginner, intermediate, advanced and pro, each with pseudocode, complexity analysis and real-world analogies.",
+      "Practice problems mapped to each topic with difficulty, hints and expected complexity.",
+      "Progress tracking with Google sign-in, Firebase and local persistence.",
+      "Next.js App Router, React 19, TypeScript, Tailwind CSS 4, Framer Motion, NextAuth and Zustand, with SEO metadata and a sitemap; deployed on Vercel.",
+    ],
   },
   {
     slug: "claude-marketplace",
@@ -204,6 +242,13 @@ export const projects: PortfolioContent["projects"] = [
     tags: ["Claude Code", "Plugins", "Python"],
     featured: false,
     year: "2026",
+    details: [
+      "Component packs per category present 423 agents, 346 slash commands, 885 skills and 92 MCP servers as native Claude Code plugins.",
+      "Independent community plugins are installed straight from their public upstream repositories, with no private mirrors.",
+      "Reference material for hooks, settings, loops and sandbox templates is vendored for browsing only, because plugin hooks execute automatically once enabled.",
+      "A live dashboard to browse everything with search and filters.",
+      "Install with /plugin marketplace add PSAbhinav/claude-plugins.",
+    ],
   },
   {
     slug: "portfolio-website",
@@ -217,6 +262,12 @@ export const projects: PortfolioContent["projects"] = [
     tags: ["Next.js", "GSAP", "WebGL"],
     featured: false,
     year: "2026",
+    details: [
+      "Identity: warm paper and ink with one vermilion signal colour, Fraunces, Inter Tight and JetBrains Mono, and a daylight mode that follows the visitor's clock.",
+      "Motion: GSAP ScrollTrigger chapters that always have a plain alternative, a WebGL shader background, a pinned horizontal reel of projects and scroll-driven explainers of the helpdesk work.",
+      "Studio: passphrase and authenticator sign-in, an editor for every word on the site, analytics, a contact inbox, image and PDF uploads and résumé replacement. An edit record lets releases change defaults without overwriting the owner's edits.",
+      "Next.js 15, React 19, TypeScript, Neon Postgres with PGlite locally, zod schemas, and Playwright end-to-end suites at desktop, phone and tablet sizes.",
+    ],
   },
   {
     slug: "agentic-ai-learning-hub",
@@ -230,6 +281,12 @@ export const projects: PortfolioContent["projects"] = [
     tags: ["Teaching", "Course platform", "Web app"],
     featured: false,
     year: "2026",
+    details: [
+      "Thirteen modules from AI foundations, prompt engineering and LLM APIs through RAG, agents, enterprise automation, context engineering and shipping to production.",
+      "A lesson studio, a planner and awards, with progress saved per account; two interchangeable designs, Classic and Visual, share the same saved progress.",
+      "Companion to the eight weekly sessions I ran for colleagues: eight decks, eight study guides and 38 live demos.",
+      "Vanilla HTML, CSS and JavaScript with serverless functions on Vercel and the Gemini API behind the demos.",
+    ],
   },
   {
     slug: "learning-agentic-ai-quiz",
@@ -243,6 +300,12 @@ export const projects: PortfolioContent["projects"] = [
     tags: ["Live quiz", "Teaching", "Web app"],
     featured: false,
     year: "2026",
+    details: [
+      "Host console with a session picker, a six-digit PIN, a live monitor, answer reveal with the distribution and a leaderboard.",
+      "Players join with the PIN and a display name; questions are timed, with speed-based scoring from 500 to 1000 points.",
+      "Season-wide standings persist across all eight sessions by player name, with milestone quizzes at the half and the end of the course.",
+      "Node.js serverless functions on Vercel with Upstash Redis for game state, and a 3D player view built with React Three Fiber.",
+    ],
   },
   {
     slug: "shadowtrace",
@@ -256,6 +319,12 @@ export const projects: PortfolioContent["projects"] = [
     tags: ["TypeScript", "Security", "Realtime"],
     featured: false,
     year: "2026",
+    details: [
+      "A zero-mock rule: every event, geolocation and threat score comes from live telemetry, with no fallbacks or hard-coded samples.",
+      "Real-time IP-to-geo resolution for every authentication event, with risk scores computed from login patterns and device metadata.",
+      "TOTP-protected restoration and a Google-style sign-out-everywhere that revokes every session.",
+      "Google Identity Services for sign-in; TypeScript throughout; deployed on Vercel.",
+    ],
   },
   {
     slug: "analystos",
@@ -269,6 +338,11 @@ export const projects: PortfolioContent["projects"] = [
     tags: ["Finance", "AI", "3D UI"],
     featured: false,
     year: "2026",
+    details: [
+      "A 3D-first analyst operating system: hero cockpit, global intelligence view, feature grid, DCF sandbox, pricing plans, an about timeline and a secure vault.",
+      "Live discounted-cash-flow models and an AI investment committee that reaches a consensus view.",
+      "Positioned for next-generation investors; deployed on Vercel.",
+    ],
   },
   {
     slug: "stockpro",
@@ -282,6 +356,11 @@ export const projects: PortfolioContent["projects"] = [
     tags: ["Python", "Next.js", "AI"],
     featured: false,
     year: "2025",
+    details: [
+      "AI-powered price predictions with technical analysis and multi-timeframe signals.",
+      "Live NSE and NASDAQ movers, real-time news and a global stock search.",
+      "A Python API and data pipeline behind a Next.js front end, with Dockerfiles and deployment configs for Render and Vercel.",
+    ],
   },
   {
     slug: "nexus-command",
@@ -295,6 +374,12 @@ export const projects: PortfolioContent["projects"] = [
     tags: ["React", "Firebase", "Vite"],
     featured: false,
     year: "2026",
+    details: [
+      "A finance tracker with income, expenses, savings and interactive charts.",
+      "Kanban tasks with a focus timer and priority sorting, goals and habit streaks, and mood, sleep and hydration trends.",
+      "The Midnight Aurora look: glassmorphism, 3D tilt, magnetic buttons and animated counters.",
+      "React with Vite, Firebase authentication and Firestore sync.",
+    ],
   },
   {
     slug: "fitlife",
@@ -308,6 +393,12 @@ export const projects: PortfolioContent["projects"] = [
     tags: ["Personal app", "Planning", "Web app"],
     featured: false,
     year: "2026",
+    details: [
+      "The day as a timeline of blocks with a live card for what is happening now and what comes next.",
+      "A twelve-week dumbbell and bodyweight programme with a coach note per week and the day's session.",
+      "A vegetarian high-protein plan with protein per plate.",
+      "Everything is generated from one person's settings; visitors see a sample day for a fictional profile until they sign in.",
+    ],
   },
   {
     slug: "keystone",
@@ -321,6 +412,11 @@ export const projects: PortfolioContent["projects"] = [
     tags: ["Education", "Role-based access", "Web app"],
     featured: false,
     year: "2026",
+    details: [
+      "Students take assessments in a focused examination experience with practice and feedback together in one place.",
+      "Tutors review attempts; administrators provision accounts and manage the workspace.",
+      "Sign-in with administrator-issued accounts; signing in ends any previous session for that account.",
+    ],
   },
   {
     slug: "task-manager",
@@ -334,6 +430,11 @@ export const projects: PortfolioContent["projects"] = [
     tags: ["React", "Firebase", "Vite"],
     featured: false,
     year: "2026",
+    details: [
+      "Tasks, courses and a real-time daily schedule in one portal.",
+      "Sign-in restricted to institutional e-mail addresses.",
+      "Firebase cloud sync across devices, with dark and light themes.",
+    ],
   },
   {
     slug: "culinary-recommender",
@@ -347,6 +448,11 @@ export const projects: PortfolioContent["projects"] = [
     tags: ["AI", "Recommendation", "Final-year project"],
     featured: false,
     year: "2025",
+    details: [
+      "Final-year engineering project, February to December 2025.",
+      "Generates personalised recipes from the ingredients and preferences a user enters.",
+      "Recommendation logic paired with a dynamic interface, built for scalability and real-time response.",
+    ],
   },
   {
     slug: "smart-package-assistant",
@@ -360,6 +466,11 @@ export const projects: PortfolioContent["projects"] = [
     tags: ["Python", "Linux", "TUI"],
     featured: false,
     year: "2025",
+    details: [
+      "Describe what you need in plain words; the assistant detects the intent.",
+      "Concurrent search across APT, Snap and Flatpak with relevance ranking.",
+      "Install with a simple command; a coloured terminal UI and a desktop launcher for Zorin OS 18 and Ubuntu 22.04.",
+    ],
   },
   {
     slug: "leetcode-bot",
@@ -373,6 +484,11 @@ export const projects: PortfolioContent["projects"] = [
     tags: ["n8n", "Discord", "Automation"],
     featured: false,
     year: "2025",
+    details: [
+      "Picks three Easy, one Medium and one Hard unsolved problem each day.",
+      "Never repeats a problem until the whole set is solved; Google Sheets is both the database and the log.",
+      "Formatted Discord notifications on a configurable schedule, daily or weekends only; built entirely in n8n.",
+    ],
   },
   {
     slug: "ai-quote-generator",
@@ -386,6 +502,10 @@ export const projects: PortfolioContent["projects"] = [
     tags: ["TypeScript", "Gemini API", "AI Studio"],
     featured: false,
     year: "2026",
+    details: [
+      "Generates unique, meaningful quotes from the mood or topic the user picks.",
+      "Built in Google AI Studio with the Gemini API, in TypeScript.",
+    ],
   },
   {
     slug: "ai-chess-bot",
@@ -399,6 +519,11 @@ export const projects: PortfolioContent["projects"] = [
     tags: ["Python", "Pygame", "Search algorithms"],
     featured: false,
     year: "2025",
+    details: [
+      "A graphical board in Pygame with a two-player mode.",
+      "An AI opponent that searches a fixed depth with negamax and alpha-beta pruning.",
+      "The full rule set: checkmate, stalemate, pawn promotion, en passant and castling.",
+    ],
   },
   {
     slug: "audio-to-text",
@@ -412,6 +537,11 @@ export const projects: PortfolioContent["projects"] = [
     tags: ["Python", "Flask", "Whisper"],
     featured: false,
     year: "2025",
+    details: [
+      "A Flask web app that runs OpenAI's Whisper model locally.",
+      "Transcribes WAV recordings to text with segment-level timestamps.",
+      "A download endpoint for the source audio; needs ffmpeg on the path.",
+    ],
   },
   {
     slug: "basic-firewall",
@@ -425,6 +555,11 @@ export const projects: PortfolioContent["projects"] = [
     tags: ["Python", "Windows", "Networking"],
     featured: false,
     year: "2025",
+    details: [
+      "Blocks or unblocks domains, both bare and www, by redirecting them in the Windows hosts file.",
+      "Flushes the DNS cache automatically after each change.",
+      "Tests whether a site is blocked at the DNS level; requires administrator rights by design.",
+    ],
   },
   {
     slug: "satellite-sim-phases",
@@ -438,6 +573,10 @@ export const projects: PortfolioContent["projects"] = [
     tags: ["JavaScript", "Prototype", "Simulation"],
     featured: false,
     year: "2025",
+    details: [
+      "Two iterations of the original satellite simulator, each a JavaScript front end with its own back end.",
+      "Mock telemetry rather than a physics engine; kept public as the record of where Orbital Academy started.",
+    ],
   },
   {
     slug: "acadmaster",
@@ -451,6 +590,10 @@ export const projects: PortfolioContent["projects"] = [
     tags: ["React", "JavaScript", "Education"],
     featured: false,
     year: "",
+    details: [
+      "Automates CGPA and SGPA calculations across grading systems.",
+      "Stores historical results; a collaborative project with a classmate.",
+    ],
   },
 ];
 

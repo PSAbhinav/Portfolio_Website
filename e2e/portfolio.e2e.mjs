@@ -91,6 +91,19 @@ export async function run() {
     const afterGrid = await page.evaluate(() => ({ spacers: document.querySelectorAll(".pin-spacer").length, workTop: Math.round(document.getElementById("work").getBoundingClientRect().top), workHeight: Math.round(document.getElementById("work").offsetHeight), gridHeight: Math.round(document.querySelector(".gallery-grid").offsetHeight) }));
     check(`${theme}: switching to the grid removes the pin spacer`, afterGrid.spacers === 0 && afterGrid.workHeight < afterGrid.gridHeight + 1200, JSON.stringify(afterGrid));
     check(`${theme}: switching layouts lands at the Work section`, afterGrid.workTop >= 0 && afterGrid.workTop <= HEADER + 40, String(afterGrid.workTop));
+    // Every card opens a case study with the full text; Escape closes it and the hash returns to #work.
+    await page.locator("#work-qtrack .gallery-title-button").scrollIntoViewIfNeeded();
+    await page.locator("#work-qtrack .gallery-title-button").click();
+    await page.waitForTimeout(400);
+    const dialogState = await page.evaluate(() => {
+      const dialog = document.querySelector(".project-dialog");
+      return { open: dialog?.open === true, title: document.getElementById("project-dialog-title")?.textContent || "", details: document.querySelectorAll(".project-dialog-details li").length, hash: location.hash, scrollLocked: document.documentElement.classList.contains("has-dialog") };
+    });
+    check(`${theme}: a project opens as a case study`, dialogState.open && /QTrack/.test(dialogState.title) && dialogState.details >= 3 && dialogState.hash === "#work-qtrack" && dialogState.scrollLocked, JSON.stringify(dialogState));
+    await page.screenshot({ path: `${SHOTS}/${theme}-project-dialog.png` });
+    await page.keyboard.press("Escape");
+    await page.waitForTimeout(300);
+    check(`${theme}: Escape closes the case study`, await page.evaluate(() => document.querySelector(".project-dialog")?.open === false && location.hash === "#work"));
     await page.evaluate(() => window.scrollBy(0, innerHeight * 3));
     await page.waitForTimeout(300);
     await page.getByRole("button", { name: "Reel view" }).click();
@@ -208,6 +221,9 @@ export async function run() {
       return { overflowX: document.documentElement.scrollWidth > innerWidth, spill: spill.slice(0, 3).map((n) => (n.className || n.tagName).toString().slice(0, 30)), copyLeft: Math.round(copy.left), headerH: Math.round(document.querySelector(".site-header").offsetHeight), trigger: Math.round(document.querySelector(".command-trigger").offsetHeight) };
     });
     check(`${width}px: hero copy starts on screen and nothing spills past the edges`, !fit.overflowX && fit.spill.length === 0 && fit.copyLeft >= 0, JSON.stringify(fit));
+    // Mobile Chrome zooms the whole page out when anything is wider than the screen; the layout must stay at device width.
+    const layoutWidth = await phone.evaluate(() => ({ inner: innerWidth, doc: document.documentElement.scrollWidth }));
+    check(`${width}px: layout viewport equals the device width`, layoutWidth.inner === width && layoutWidth.doc <= width, JSON.stringify(layoutWidth));
     check(`${width}px: header stays one row`, fit.headerH <= HEADER && fit.trigger <= 44, JSON.stringify(fit));
     await phone.screenshot({ path: `${SHOTS}/${width}-hero.png` });
     await phone.evaluate(() => document.getElementById("work").scrollIntoView());
