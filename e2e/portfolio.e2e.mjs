@@ -40,6 +40,8 @@ export async function run() {
 
     // Field guide: three chapters, explainers scrub with scroll.
     check(`${theme}: field guide has three chapters`, (await page.locator("#now .guide-chapter").count()) === 3);
+    check(`${theme}: the rest of the Ramco work is listed`, (await page.locator("#now .guide-card").count()) >= 7 && (await page.locator("#now .guide-role").count()) === 2);
+    check(`${theme}: no internal hostnames on the page`, (await page.locator("text=/ramcouat\\.com/").count()) === 0);
     const chapterTop = await page.evaluate(() => document.getElementById("now-1").getBoundingClientRect().top + scrollY);
     await page.evaluate((y) => window.scrollTo(0, y), chapterTop - 700);
     await page.waitForTimeout(400);

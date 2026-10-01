@@ -48,7 +48,7 @@ export const experienceSchema = z
     start: yearMonth,
     end: yearMonth,
     summary: text,
-    highlights: z.array(highlightSchema).max(6),
+    highlights: z.array(highlightSchema).max(12),
   })
   .strict();
 

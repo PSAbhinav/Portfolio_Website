@@ -8,7 +8,7 @@ import { ArrowUpRight } from "@/components/Icons";
 import Logo from "@/components/Logo";
 
 const LINKS = [
-  { id: "now", key: "nav_guide", fallback: "Field guide" },
+  { id: "now", key: "nav_guide", fallback: "Experience" },
   { id: "work", key: "nav_work", fallback: "Work" },
   { id: "credentials", key: "nav_credentials", fallback: "Credentials" },
   { id: "toolkit", key: "nav_toolkit", fallback: "Toolkit" },

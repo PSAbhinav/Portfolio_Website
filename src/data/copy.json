@@ -9,8 +9,8 @@
   "nav_toolkit": "Toolkit",
   "nav_journey": "Journey",
   "nav_contact": "Let’s talk",
-  "now_eyebrow": "01 / Field guide",
-  "now_title": "What I build at rTask.ai, explained.",
+  "now_eyebrow": "02 / Experience",
+  "now_title": "Work at Ramco Systems.",
   "work_eyebrow": "02 / Work",
   "work_title": "Everything I’ve built, in one pass.",
   "work_lede": "",
@@ -50,5 +50,8 @@
   "proof_points": "Hybrid search across 92 production collections|Two-thirds of intents resolved without an LLM call|QTrack in daily use at Ramco Systems|Claude Certified Architect – Professional|Five enterprise connectors, one knowledge base",
   "nav_resume": "Résumé",
   "hero_cta_resume": "View résumé",
-  "footer_resume": "Résumé"
+  "footer_resume": "Résumé",
+  "now_lede": "Three pieces of the helpdesk work are shown as interactive explainers. The rest is listed as delivered, at the level a reviewer can verify in conversation.",
+  "now_also": "Also delivered",
+  "nav_guide": "Experience"
 }

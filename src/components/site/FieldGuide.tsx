@@ -6,7 +6,7 @@ import { useScrubProgress } from "@/components/motion/useScrubProgress";
 import RetrievalExplainer from "@/components/guide/RetrievalExplainer";
 import RoutingExplainer from "@/components/guide/RoutingExplainer";
 import ConnectorsExplainer from "@/components/guide/ConnectorsExplainer";
-import type { Highlight } from "@/lib/content-schema";
+import type { Experience, Highlight } from "@/lib/content-schema";
 import { formatRange, numbered } from "@/lib/format";
 
 // Wraps whole numbers so the choreography can count them up on entry.
@@ -22,6 +22,7 @@ function countable(text: string) {
   );
 }
 
+// A highlight with an explainer becomes a scroll-driven chapter.
 function Chapter({ highlight, index }: { highlight: Highlight; index: number }) {
   const ref = useRef<HTMLElement>(null);
   const progress = useScrubProgress(ref);
@@ -30,12 +31,12 @@ function Chapter({ highlight, index }: { highlight: Highlight; index: number }) 
       <RetrievalExplainer progress={progress} />
     ) : highlight.visual === "connectors" ? (
       <ConnectorsExplainer progress={progress} />
-    ) : highlight.visual === "routing" ? (
+    ) : (
       <RoutingExplainer />
-    ) : null;
+    );
 
   return (
-    <article ref={ref} id={`now-${index + 1}`} className={`guide-chapter ${visual ? "" : "guide-chapter-text"}`}>
+    <article ref={ref} id={`now-${index + 1}`} className="guide-chapter">
       <div className="guide-text">
         <Reveal>
           <span className="eyebrow">{highlight.label}</span>
@@ -43,54 +44,80 @@ function Chapter({ highlight, index }: { highlight: Highlight; index: number }) 
           <p className="guide-detail">{highlight.detail}</p>
         </Reveal>
       </div>
-      {visual && <div className="guide-visual frame">{visual}</div>}
+      <div className="guide-visual frame">{visual}</div>
     </article>
+  );
+}
+
+// Everything else is listed plainly: what was built, for whom, and what was not mine.
+function Ledger({ items, title }: { items: Highlight[]; title: string }) {
+  if (!items.length) return null;
+  return (
+    <div className="guide-ledger-wrap">
+      {title && <h3 className="eyebrow guide-ledger-title">{title}</h3>}
+      <ul className="guide-ledger">
+        {items.map((item, index) => (
+          <Reveal as="li" key={item.label} className="guide-card" delay={(index % 2) * 70}>
+            <span className="mono muted">{item.label}</span>
+            <h4 className="guide-card-title">{item.metric}</h4>
+            <p className="muted">{item.detail}</p>
+          </Reveal>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function Role({ role, chapterOffset, alsoLabel }: { role: Experience; chapterOffset: number; alsoLabel: string }) {
+  const explained = role.highlights.filter((h) => h.visual !== "none");
+  const listed = role.highlights.filter((h) => h.visual === "none");
+  return (
+    <div className="guide-role-block">
+      <header className="guide-role">
+        <span className="mono guide-role-when">{formatRange(role.start, role.end)}</span>
+        <div className="guide-role-head">
+          <h3 className="guide-role-title">{role.title}</h3>
+          <p className="guide-role-meta">
+            {role.company}
+            {role.team ? ` · ${role.team}` : ""}
+            {role.location ? ` · ${role.location}` : ""}
+          </p>
+          <p className="guide-summary">{role.summary}</p>
+        </div>
+      </header>
+      {explained.length > 0 && (
+        <div className="guide-chapters">
+          {explained.map((highlight, index) => (
+            <Chapter key={highlight.label} highlight={highlight} index={chapterOffset + index} />
+          ))}
+        </div>
+      )}
+      <Ledger items={listed} title={explained.length ? alsoLabel : ""} />
+    </div>
   );
 }
 
 export default function FieldGuide() {
   const { experience } = usePortfolio();
   const copy = useCopy();
-  const current = experience[0];
-  if (!current) return null;
+  if (!experience.length) return null;
+  let offset = 0;
 
   return (
     <section id="now" className="section guide" aria-labelledby="now-title">
       <div className="shell">
         <div className="section-head">
-          <span className="eyebrow">{numbered(copy("now_eyebrow", "01 / Field guide"), 2)}</span>
+          <span className="eyebrow">{numbered(copy("now_eyebrow", "02 / Experience"), 2)}</span>
           <h2 id="now-title" className="display-2">
-            {copy("now_title", "What I build at rTask.ai, explained.")}
+            {copy("now_title", "Work at Ramco Systems.")}
           </h2>
+          {copy("now_lede", "") && <p className="lede">{copy("now_lede", "")}</p>}
         </div>
-        <div className="guide-role">
-          <dl>
-            <div>
-              <dt className="eyebrow">Company</dt>
-              <dd>{current.company}</dd>
-            </div>
-            <div>
-              <dt className="eyebrow">Role</dt>
-              <dd>{current.title}</dd>
-            </div>
-            {current.team && (
-              <div>
-                <dt className="eyebrow">Team</dt>
-                <dd>{current.team}</dd>
-              </div>
-            )}
-            <div>
-              <dt className="eyebrow">Since</dt>
-              <dd>{formatRange(current.start, current.end)}</dd>
-            </div>
-          </dl>
-          <p className="guide-summary">{current.summary}</p>
-        </div>
-        <div className="guide-chapters">
-          {current.highlights.map((highlight, index) => (
-            <Chapter key={highlight.label} highlight={highlight} index={index} />
-          ))}
-        </div>
+        {experience.map((role) => {
+          const block = <Role key={`${role.company}-${role.start}`} role={role} chapterOffset={offset} alsoLabel={copy("now_also", "Also delivered")} />;
+          offset += role.highlights.filter((h) => h.visual !== "none").length;
+          return block;
+        })}
       </div>
     </section>
   );

@@ -232,33 +232,89 @@
 }
 
 /* ===== Field guide ===== */
+.guide-role-block + .guide-role-block {
+  margin-top: var(--s12);
+}
+
+/* Role header reads like a résumé entry: period in the margin, title, one
+   line of meta, a short summary. */
 .guide-role {
   display: grid;
   grid-template-columns: 240px 1fr;
   gap: var(--s6);
-  padding: var(--s6) 0;
-  border-top: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
+  padding: var(--s7) 0;
+  border-top: 1px solid var(--ink);
   margin-bottom: var(--s10);
 }
 
-.guide-role dl {
-  display: grid;
-  grid-template-columns: repeat(4, auto);
-  gap: var(--s4) var(--s7);
-  grid-column: 1 / -1;
+.guide-role-when {
+  color: var(--signal);
+  padding-top: 8px;
 }
 
-.guide-role dd {
-  margin-top: var(--s1);
+.guide-role-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 2.4vw, 38px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.guide-role-meta {
+  margin-top: var(--s2);
   font-weight: 500;
 }
 
 .guide-summary {
-  grid-column: 2;
-  max-width: 62ch;
+  margin-top: var(--s4);
+  max-width: 68ch;
   color: var(--ink-2);
   font-size: 18px;
+}
+
+.guide-ledger-wrap {
+  margin-top: var(--s10);
+}
+
+.guide-ledger-title {
+  padding-bottom: var(--s4);
+  border-bottom: 1px solid var(--rule);
+}
+
+.guide-ledger {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s8) var(--s8);
+  margin-top: var(--s6);
+}
+
+.guide-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+  padding-top: var(--s5);
+  border-top: 1px solid var(--rule);
+}
+
+.guide-card-title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  max-width: 22ch;
+}
+
+.guide-card p {
+  font-size: 16px;
+  max-width: 56ch;
+}
+
+@media (max-width: 1023px) {
+  .guide-role {
+    grid-template-columns: 1fr;
+  }
+  .guide-ledger {
+    grid-template-columns: 1fr;
+  }
 }
 
 .guide-chapters {

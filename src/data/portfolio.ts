@@ -15,7 +15,7 @@ export const profile: PortfolioContent["profile"] = {
     "I build AI-first software that has to work on a Monday morning: helpdesk agents, retrieval pipelines and the tests that keep them honest.",
   metadataTitle: "P S Abhinav Krishna — AI engineer",
   metadataDescription:
-    "Portfolio of P S Abhinav Krishna: Project Trainee at Ramco Systems on rTask.ai, Claude Certified Architect, builder of practical AI and full-stack applications.",
+    "Portfolio of P S Abhinav Krishna: Project Trainee at Ramco Systems on Chia AI, Claude Certified Architect, builder of practical AI and full-stack applications.",
   github: "https://github.com/PSAbhinav",
   linkedin: "https://linkedin.com/in/abhinav-pemmaraju-765221255",
   resume: "/resume.pdf",
@@ -33,12 +33,12 @@ export const experience: PortfolioContent["experience"] = [
   {
     company: "Ramco Systems",
     title: "Project Trainee, RXD",
-    team: "rTask.ai product engineering",
+    team: "Chia AI product engineering",
     location: "Bengaluru, India",
     start: "2026-07",
     end: "",
     summary:
-      "rTask.ai is Ramco's AI-first helpdesk. I work where retrieval, routing and the product surface meet, shipping test-first across the React front end, the Node API and the Python retrieval service.",
+      "My main assignment is Chia AI, Ramco's AI-first helpdesk platform: retrieval, intent routing and the knowledge-base experience, shipped test-first across a React front end, a Node.js API and a Python retrieval service. Alongside it I have delivered front-end work for two other product teams, an employee-engagement product with HR, and an internal learning programme on agentic AI.",
     highlights: [
       {
         label: "01 / Retrieval",
@@ -61,6 +61,41 @@ export const experience: PortfolioContent["experience"] = [
           "Fixed the UI and UX of the Knowledge Base Connectors across Notion, Confluence, Google Drive, SharePoint and Azure, owning the final look and feel, a 200-item fix list through six review rounds, and a tracker from commit to UAT.",
         visual: "connectors",
       },
+      {
+        label: "04 / Component platform",
+        metric: "The front end of a component platform, fifteen screens",
+        detail:
+          "Built the user interface of an internal platform that imports a React repository, extracts its components into a searchable library with live previews, and lets a team edit, check and merge them with an AI agent's plan approved first. Fifteen screens, a design-system seed with light and dark themes, Playwright verification and accessibility fixes. Infrastructure and the model integration were a colleague's.",
+        visual: "none",
+      },
+      {
+        label: "05 / Knowledge visualiser",
+        metric: "A knowledge base you can fly through, for the ERP team",
+        detail:
+          "Owned the front end of a 3D knowledge-base explorer and its 2D execution-flow view: radar and sonar sweeps in SVG and CSS, animated journey traces, auto-play down a service chain, camera pacing, zoom-to-cursor, a presenter mode and a calm chrome that fades when idle, all honouring reduced motion. Graph logic, data and back end were a colleague's.",
+        visual: "none",
+      },
+      {
+        label: "06 / Employee engagement",
+        metric: "Vibe Check, a ten-second daily mood pulse built with HR",
+        detail:
+          "From kickoff to a pilot-ready prototype in four days: a card that opens once a day with one question, a reveal screen, a mood dashboard by team that never shows a group under seven people, an admin console with four roles, Microsoft sign-in and a deploy kit. A 257-question engine with repeat and cooldown rules, 95 unit and 22 end-to-end tests, and the approvals, rollout and demo documents.",
+        visual: "none",
+      },
+      {
+        label: "07 / Low-code enablement",
+        metric: "React screens rebuilt as low-code modules, then taught",
+        detail:
+          "Rebuilt HR set-up screens from React into the company's low-code studio as page definitions: list and card views with create, edit, filter, import and export drawers, following shared conventions. Ran a learning-and-teaching module so a colleague could ship their own, which they did.",
+        visual: "none",
+      },
+      {
+        label: "08 / Teaching",
+        metric: "An eight-session agentic AI programme with a live quiz",
+        detail:
+          "Planned and delivered eight weekly sessions for colleagues, from AI foundations and prompt engineering through RAG, agents, context engineering and shipping to production: eight decks, eight study guides, 38 live demos, and a quiz app with a host console, speed scoring and standings that carry across the season.",
+        visual: "none",
+      },
     ],
   },
   {
@@ -71,13 +106,20 @@ export const experience: PortfolioContent["experience"] = [
     start: "2026-04",
     end: "2026-07",
     summary:
-      "Tested the KPI and OKR set-up modules, built a Playwright (TypeScript) regression framework with a ten-suite KPI pack, and replaced the daily manual status reports with QTrack, a test-tracking dashboard I built alone and the company now uses.",
+      "Tested HR set-up modules, built the team's Playwright regression framework and a starter kit other testers adopted, and replaced hand-written daily status reports with QTrack, a test-tracking dashboard I built alone that the testing teams still use.",
     highlights: [
       {
         label: "01 / QTrack",
         metric: "Every test, every owner, one dashboard",
         detail:
-          "Built QTrack end to end as a QA intern: a role-based test-tracking dashboard that replaced hand-written status updates. Deployed at qtrack.ramcouat.com and used daily by the testing teams.",
+          "Built QTrack end to end as a QA intern: a role-based test-tracking dashboard where every suite, run, owner and outcome lives in one place. Deployed internally and used daily by the testing teams in place of manual status updates.",
+        visual: "none",
+      },
+      {
+        label: "02 / Test automation",
+        metric: "An Excel-driven Playwright framework and a starter kit",
+        detail:
+          "Test cases are written once in a spreadsheet; the framework generates standard Playwright specs from it, runs them in parallel on Chrome and Edge, and reports back against the original case IDs. 127 cases across ten suites for one module, a second module scaffolded, page objects and fixtures, a handover pack, and a copy-and-go starter kit colleagues used for their own screens.",
         visual: "none",
       },
     ],
@@ -88,7 +130,7 @@ export const projects: PortfolioContent["projects"] = [
   {
     slug: "qtrack",
     title: "QTrack — QA tracking dashboard",
-    summary: "One dashboard for every test the team runs, with roles. Built alone as a QA intern; live at Ramco.",
+    summary: "One dashboard for every test the team runs, with roles. Built alone as a QA intern; in daily use at Ramco.",
     description:
       "Reporting test status by hand every day as a QA intern, I built the fix: a test-tracking dashboard with role-based access where every suite, run, owner and outcome lives in one place. Designed, built and deployed alone; Ramco's testing teams use it daily. Its first screen is automated with Playwright.",
     image: "/projects/qtrack.webp",
@@ -96,6 +138,32 @@ export const projects: PortfolioContent["projects"] = [
     demo: "",
     tags: ["QA tooling", "Role-based access", "Internal at Ramco"],
     featured: true,
+    year: "2026",
+  },
+  {
+    slug: "cmd-blueprint",
+    title: "Component platform — front end and blueprint",
+    summary: "A platform that turns a React repository into a searchable, previewable, editable component library. I built its fifteen screens.",
+    description:
+      "Import a React repository and the platform extracts its components into a library with live previews, a studio workspace, token and storyboard views, testing and docs, plus an agent rail whose plans you approve before anything changes. I built the entire front end and its design-system seed; the public blueprint page explains the product from first principles.",
+    image: "/projects/cmd-blueprint.webp",
+    github: "",
+    demo: "https://cmd-2-blueprint.vercel.app/",
+    tags: ["Next.js", "shadcn/ui", "Design system"],
+    featured: false,
+    year: "2026",
+  },
+  {
+    slug: "vibe-check",
+    title: "Vibe Check — daily team mood pulse",
+    summary: "One question a day, answered in ten seconds from a card on the laptop; HR reads the mood by team, never by person.",
+    description:
+      "Built with HR from kickoff to a pilot-ready prototype: a daily card with an avatar and one question, a reveal screen with a note from HR, a mood dashboard with trends by team and bucket that hides any group under seven people, an admin console with four roles, Microsoft sign-in and a deploy kit. 257 questions, 95 unit and 22 end-to-end tests.",
+    image: "/projects/vibe-check.webp",
+    github: "",
+    demo: "",
+    tags: ["Next.js", "Behavioural design", "Internal at Ramco"],
+    featured: false,
     year: "2026",
   },
   {
@@ -142,7 +210,7 @@ export const projects: PortfolioContent["projects"] = [
     title: "Field Notes — this portfolio",
     summary: "The site you are reading: scroll-driven chapters, a shader background and a private studio that edits everything without code.",
     description:
-      "Next.js 15 with a paper-and-ink identity and one vermilion signal colour: scroll-linked chapters that always have a plain alternative, a WebGL background, interactive explainers of the rTask.ai work, and a studio behind a passphrase and an authenticator for content, analytics, the inbox and this résumé.",
+      "Next.js 15 with a paper-and-ink identity and one vermilion signal colour: scroll-linked chapters that always have a plain alternative, a WebGL background, interactive explainers of the helpdesk work, and a studio behind a passphrase and an authenticator for content, analytics, the inbox and this résumé.",
     image: "/projects/portfolio-website.webp",
     github: "https://github.com/PSAbhinav/Portfolio_Website",
     demo: "https://abhinavs-portfolio.vercel.app/",
