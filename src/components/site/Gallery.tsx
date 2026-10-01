@@ -85,7 +85,12 @@ export default function Gallery() {
   // swaps the DOM: GSAP wraps the pinned reel in a spacer, and killing the
   // trigger after the reel is gone would leave that spacer (thousands of
   // pixels of nothing) behind in the section.
+  const current = useRef<Mode>("grid");
   const applyMode = useCallback((next: Mode, land: boolean) => {
+    // Hash changes and media events call this freely; only a real change may
+    // touch the pin, or a header link to #work would leave the reel unpinned.
+    if (current.current === next) return;
+    current.current = next;
     trigger.current?.kill(true);
     trigger.current = null;
     landAtSection.current = land;

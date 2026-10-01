@@ -71,6 +71,15 @@ export async function run() {
     await page.waitForTimeout(600);
     const shifted = await page.evaluate(() => new DOMMatrix(getComputedStyle(document.querySelector(".reel-track")).transform).m41);
     check(`${theme}: reel travels sideways as the page scrolls`, shifted < -200, String(Math.round(shifted)));
+    // A header link to #work changes the hash without changing the mode; the pin must survive it.
+    await page.click(".header-nav a[href='#work']");
+    await page.waitForTimeout(700);
+    const afterHash = await page.evaluate(() => {
+      const reel = document.querySelector(".reel");
+      const spacer = document.querySelector(".pin-spacer");
+      return { spacers: document.querySelectorAll(".pin-spacer").length, pinned: spacer && reel ? spacer.offsetHeight > reel.offsetHeight + 500 : false };
+    });
+    check(`${theme}: the reel stays pinned after a header link to #work`, afterHash.spacers === 1 && afterHash.pinned, JSON.stringify(afterHash));
     await page.screenshot({ path: `${SHOTS}/${theme}-gallery-reel.png` });
     await page.getByRole("button", { name: "Grid view" }).click();
     await page.waitForTimeout(400);
